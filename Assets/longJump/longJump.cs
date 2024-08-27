@@ -2,28 +2,30 @@ using UnityEngine;
 
 public class LongJump3D : MonoBehaviour
 {
-    public float maxSpeed = 30f;              // Maximale Geschwindigkeit
-    public int clicksToMaxSpeed = 10;         // Anzahl der Klicks, um maximale Geschwindigkeit zu erreichen
-    public float rapidDeceleration = 30f;     // Schnelle Geschwindigkeitsabnahme
-    public float deceleration = 5f;           // Normale Geschwindigkeitsabnahme
-    public float jumpForce = 10f;             // Kraft des Sprungs
-    public float perfectTimingWindow = 0.5f;  // Zeitfenster für perfekten Sprung
-    public float timingRange = 2f;            // Zeitfenster, um den Sprung zu starten
+    public float maxSpeed = 20f;                 // Maximale Geschwindigkeit 
+    public int clicksToMaxSpeed = 20;           // Anzahl der Klicks
+    public float rapidDeceleration = 2f;        // Schnelle Geschwindigkeitsabnahme
+    public float deceleration = 0.5f;           // Normale Geschwindigkeitsabnahme
+    public float jumpForce = 10f;               // Kraft des Sprungs
+    public float perfectTimingWindow = 0.5f;    // Zeitfenster für perfekten Sprung
+    public float timingRange = 2f;              // Zeitfenster, um den Sprung zu starten
 
-    private Rigidbody rb;                     // Rigidbody des Spielers
-    private bool hasJumped = false;           // Hat der Spieler bereits gesprungen?
-    private Vector3 jumpStartPosition;        // Position des Sprungstartpunkts
-    private float startTime;                  // Startzeit des Anlaufs
-    private float currentSpeed = 0f;          // Aktuelle Geschwindigkeit des Spielers
-    private bool lastKeyWasLeft = false;      // Um zu verfolgen, welche Pfeiltaste zuletzt gedrückt wurde
-    private float lastKeyTime;                // Zeit, zu der die letzte Pfeiltaste gedrückt wurde
-    private bool canBuildSpeed = true;        // Ob der Spieler die Geschwindigkeit aufbauen kann
-    private float acceleration;               // Effektive Beschleunigung
+    private Rigidbody rb;                       // Rigidbody des Spielers
+    private bool hasJumped = false;             // Hat der Spieler bereits gesprungen?
+    private Vector3 jumpStartPosition;          // Position des Sprungstartpunkts
+    private float startTime;                    // Startzeit des Anlaufs
+    private float currentSpeed = 0f;            // Aktuelle Geschwindigkeit des Spielers
+    private bool lastKeyWasLeft = false;        // Um zu verfolgen, welche Pfeiltaste zuletzt gedrückt wurde
+    private float lastKeyTime;                  // Zeit, zu der die letzte Pfeiltaste gedrückt wurde
+    private bool canBuildSpeed = true;          // Ob der Spieler die Geschwindigkeit aufbauen kann
+    private float acceleration;                 // Effektive Beschleunigung
+    private bool foul = false;
+    float jumpDistance;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        startTime = Time.time;  // Setze die Startzeit beim Spielbeginn
+        startTime = Time.time;
         lastKeyTime = Time.time;
 
         // Berechne die Beschleunigung pro Klick so, dass nach 10 Klicks die maximale Geschwindigkeit erreicht wird
@@ -49,15 +51,15 @@ public class LongJump3D : MonoBehaviour
                 if (!lastKeyWasLeft && Time.time - lastKeyTime < 0.5f)
                 {
                     // Geschwindigkeit erhöhen, wenn die Tasten korrekt abwechselnd gedrückt wurden
-                    currentSpeed = Mathf.Min(currentSpeed + acceleration, maxSpeed);
+                    IncreaseSpeed();
                     lastKeyWasLeft = true;
                     lastKeyTime = Time.time;
                 }
                 else
                 {
                     // Schnelle Geschwindigkeitsreduktion, wenn die Tasten nicht korrekt abwechselnd gedrückt wurden
-                    currentSpeed = Mathf.Max(currentSpeed - rapidDeceleration * Time.deltaTime, 0);
-                    lastKeyTime = Time.time; // Zeit auch aktualisieren, wenn die Taste nicht korrekt gedrückt wurde
+                    DecreaseSpeedRapidly();
+                    lastKeyTime = Time.time;
                 }
             }
             else if (Input.GetKeyDown(KeyCode.RightArrow))
@@ -65,15 +67,15 @@ public class LongJump3D : MonoBehaviour
                 if (lastKeyWasLeft && Time.time - lastKeyTime < 0.5f)
                 {
                     // Geschwindigkeit erhöhen, wenn die Tasten korrekt abwechselnd gedrückt wurden
-                    currentSpeed = Mathf.Min(currentSpeed + acceleration, maxSpeed);
+                    IncreaseSpeed();
                     lastKeyWasLeft = false;
                     lastKeyTime = Time.time;
                 }
                 else
                 {
                     // Schnelle Geschwindigkeitsreduktion, wenn die Tasten nicht korrekt abwechselnd gedrückt wurden
-                    currentSpeed = Mathf.Max(currentSpeed - rapidDeceleration * Time.deltaTime, 0);
-                    lastKeyTime = Time.time; // Zeit auch aktualisieren, wenn die Taste nicht korrekt gedrückt wurde
+                    DecreaseSpeedRapidly();
+                    lastKeyTime = Time.time;
                 }
             }
         }
@@ -83,6 +85,26 @@ public class LongJump3D : MonoBehaviour
         {
             currentSpeed = Mathf.Max(currentSpeed - rapidDeceleration * Time.deltaTime, 0);
         }
+    }
+
+    private void IncreaseSpeed()
+    {
+        if (currentSpeed < maxSpeed)
+        {
+            // Normale Beschleunigung bis 15 km/h
+            currentSpeed = Mathf.Min(currentSpeed + acceleration, maxSpeed);
+
+            // Reduzierte Beschleunigung
+            if (currentSpeed >= maxSpeed)
+            {
+                acceleration = 0.25f;  // Sehr langsame Beschleunigung
+            }
+        }
+    }
+
+    private void DecreaseSpeedRapidly()
+    {
+        currentSpeed = Mathf.Max(currentSpeed - rapidDeceleration * Time.deltaTime, 0);
     }
 
     private void Move()
@@ -130,15 +152,26 @@ public class LongJump3D : MonoBehaviour
         // Sicherstellen, dass die Berechnung und das Zurücksetzen nur erfolgen, wenn der Spieler nach dem Sprung landet
         if (hasJumped && collision.gameObject.CompareTag("Ground"))
         {
+            GameObject jumpOffObject = GameObject.FindWithTag("JumpOff");
             // Berechne die Sprungweite
-            float jumpDistance = Vector3.Distance(jumpStartPosition, transform.position);
+            jumpDistance = Vector3.Distance(jumpOffObject.transform.position, transform.position);
+            jumpDistance = jumpDistance/5;
             Debug.Log("Sprungweite: " + jumpDistance);
 
             // Nach dem Landen, setze den Sprung zurück
-            hasJumped = false;           // Spieler kann wieder springen
+            hasJumped = true;           // Spieler kann wieder springen
             startTime = Time.time;       // Setze die Startzeit für den nächsten Anlauf zurück
             currentSpeed = 0f;           // Geschwindigkeit zurücksetzen
-            canBuildSpeed = true;        // Erlaube den Aufbau der Geschwindigkeit wieder
+            canBuildSpeed = false;        // Erlaube den Aufbau der Geschwindigkeit wieder
+        }
+    }
+    
+    void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Foul"))
+        {
+            foul = true;
+            Debug.Log(foul);
         }
     }
 }
