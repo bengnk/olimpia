@@ -314,11 +314,11 @@ Transform:
   m_GameObject: {fileID: 548126421}
   serializedVersion: 2
   m_LocalRotation: {x: 0.27059805, y: -0.6532815, z: 0.27059805, w: 0.6532815}
-  m_LocalPosition: {x: 11.454048, y: 4.696489, z: -4.77}
-  m_LocalScale: {x: 0.78840023, y: 0.6057965, z: 0.6057966}
+  m_LocalPosition: {x: 8.320002, y: 6.68, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1698414224}
   m_LocalEulerAnglesHint: {x: 45, y: -90, z: 0}
 --- !u!1 &1698414220
 GameObject:
@@ -332,8 +332,8 @@ GameObject:
   - component: {fileID: 1698414223}
   - component: {fileID: 1698414222}
   - component: {fileID: 1698414221}
-  - component: {fileID: 1698414225}
   - component: {fileID: 1698414226}
+  - component: {fileID: 1698414227}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -424,28 +424,10 @@ Transform:
   m_LocalPosition: {x: 6.7, y: 0.42, z: -4.77}
   m_LocalScale: {x: 0.5714, y: 0.6401929, z: 0.7884}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 548126424}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1698414225
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1698414220}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0624174f2f070844c8e87f8657b45455, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxSpeed: 30
-  clicksToMaxSpeed: 10
-  rapidDeceleration: 30
-  deceleration: 5
-  jumpForce: 10
-  perfectTimingWindow: 0.5
-  timingRange: 2
 --- !u!54 &1698414226
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -473,6 +455,22 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1698414227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1698414220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6083799bd827946488c4ee81eecfafba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxSpeed: 30
+  clicksToMaxSpeed: 10
+  rapidDeceleration: 30
+  deceleration: 5
 --- !u!1 &2001197518
 GameObject:
   m_ObjectHideFlags: 0
@@ -571,7 +569,6 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 548126424}
   - {fileID: 2001197520}
   - {fileID: 1698414224}
   - {fileID: 292208517}
