@@ -130,12 +130,12 @@ public class LongJump3D : MonoBehaviour
             // Prüfen, ob die Leertaste innerhalb des Sprungzeitfensters gedrückt wurde
             if (perfectJumpOff)
             {
-                Jump(jumpSpeed/ 1.5f);  // Perfekter Sprung
+                Jump(jumpSpeed/ 1.1f);  // Perfekter Sprung
                 Debug.Log("Perfect");
             }
             else
             {
-                Jump(jumpSpeed / 2.0f);  // Nicht perfekter Sprung, halbe Kraft
+                Jump(jumpSpeed / 1.5f);  // Nicht perfekter Sprung, halbe Kraft
             }
 
             hasJumped = true;  // Spieler hat gesprungen
