@@ -41,7 +41,7 @@ public class LongJump3D : MonoBehaviour
         float minSpeed = 0.1f;    // Minimale Geschwindigkeit
         float maxSpeed = 30f;   // Maximale Geschwindigkeit
         float minAnimationSpeed = 0.5f; // Minimale Animationsgeschwindigkeit
-        float maxAnimationSpeed = 1.0f; // Maximale Animationsgeschwindigkeit
+        float maxAnimationSpeed = 1.2f; // Maximale Animationsgeschwindigkeit
 
         if (currentSpeed > 0f)
         {
