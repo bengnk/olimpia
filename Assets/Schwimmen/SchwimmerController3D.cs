@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class SchwimmerController3D : MonoBehaviour
 {
     public float initialMoveAmount = 0.5f; // Der Ausgangsimpuls, der nach jedem Klick gesetzt wird
-    public float deceleration = 0.2f; // Abnahme der Geschwindigkeit pro Sekunde
+    public float waterDeceleration = 0.05f; // Abnahme der Geschwindigkeit pro Sekunde im Wasser
     public float sizeIncreaseRate = 0.1f; // Geschwindigkeit, mit der die Größe der Buttons zunimmt
     public float maxButtonSize = 3f; // Maximale Größe der Buttons
     public float minDistanceBetweenButtons = 100f; // Mindestabstand zwischen den Buttons
@@ -31,7 +31,8 @@ public class SchwimmerController3D : MonoBehaviour
     private bool hasTouchedWater = false; // Zustandsvariable, um den Wasserberührungszustand zu verfolgen
     private float elapsedTime = 0f;  // Speichert die verstrichene Zeit nach dem Stopp des Timers
 
-   
+    private Animator animator; // Animator-Referenz
+
     void Start(){
         rb = GetComponent<Rigidbody>();
         if (rb == null) {
@@ -40,26 +41,29 @@ public class SchwimmerController3D : MonoBehaviour
         rb.useGravity = true;
         rb.isKinematic = false;
         currentSpeed = 0; // Initialisiert currentSpeed
+
+        animator = GetComponent<Animator>(); // Animator-Komponente abrufen
     }
 
     void Update()
     {
         if (Input.GetMouseButtonDown(0) && !isJumping && !hasTouchedWater)
         {
+            animator.SetBool("jump", true);
             StartJump();
             StartTimer();
-
         }
         afterJump();
-        
+        AdjustSwimAnimationSpeed();
     }
 
     private void StartJump()
-        {
-          isJumping = true;
-          rb.velocity = new Vector3(0, jumpForce, jumpForwardSpeed);
-         
-        }
+    {
+        isJumping = true;
+        rb.velocity = new Vector3(0, jumpForce, jumpForwardSpeed);
+        currentSpeed = jumpForwardSpeed; // Setzt die aktuelle Geschwindigkeit
+        
+    }
 
     private void StartTimer()
     {
@@ -67,7 +71,7 @@ public class SchwimmerController3D : MonoBehaviour
         timerRunning = true;
     }
 
-      private void StopTimer()
+    private void StopTimer()
     {
         if (timerRunning)
         {
@@ -82,7 +86,8 @@ public class SchwimmerController3D : MonoBehaviour
         if (currentSpeed > 0)
         {
             transform.position += transform.forward * currentSpeed * Time.deltaTime;
-            currentSpeed -= deceleration * Time.deltaTime; // Verlangsame die Kapsel
+            // Verwende unterschiedliche Verzögerungen je nachdem, ob die Kapsel im Wasser ist oder nicht
+            currentSpeed -= hasTouchedWater ? waterDeceleration * Time.deltaTime : waterDeceleration * 5 * Time.deltaTime;
         }
         else
         {
@@ -98,7 +103,7 @@ public class SchwimmerController3D : MonoBehaviour
         HandleSpecialButton();
     }
 
-     void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Water"))
         {
@@ -106,10 +111,15 @@ public class SchwimmerController3D : MonoBehaviour
             hasTouchedWater = true;
             rb.isKinematic = true;
             rb.useGravity = false; // Deaktiviert die Gravitation, wenn das Wasser berührt wird
-            rb.velocity = new Vector3(0, 0, initialMoveAmount); // Setzt die Bewegung im Wasser fort
+            rb.velocity = new Vector3(0, 0, currentSpeed); // Setzt die Bewegung im Wasser fort, basierend auf der aktuellen Geschwindigkeit
+            animator.SetBool("jump", false);
+
+        
         }
         else if (other.CompareTag("Ende"))
         {
+            currentSpeed = 0;
+            animator.SetBool("stop", true);
             StopTimer();
         }
     }
@@ -206,6 +216,21 @@ public class SchwimmerController3D : MonoBehaviour
                 specialButton.gameObject.SetActive(false);
                 isSpecialButtonActive = false;
             }
+        }
+    }
+
+    private void AdjustSwimAnimationSpeed()
+    {
+        if (hasTouchedWater)
+        {
+            // Setzt die Animationsgeschwindigkeit proportional zur aktuellen Geschwindigkeit.
+            float normalizedSpeed = currentSpeed / jumpForwardSpeed; // Normalisiert auf die Geschwindigkeit des Sprungs
+            animator.speed = Mathf.Clamp(normalizedSpeed, 0.1f, 1.5f); // Begrenze die Geschwindigkeit auf einen sinnvollen Bereich
+        }
+        else
+        {
+            // Setze die Animationsgeschwindigkeit auf den Standardwert, wenn der Spieler nicht schwimmt.
+            animator.speed = 1.0f;
         }
     }
 }
