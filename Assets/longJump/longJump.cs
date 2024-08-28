@@ -20,6 +20,7 @@ public class LongJump3D : MonoBehaviour
     private bool canBuildSpeed = true;          // Ob der Spieler die Geschwindigkeit aufbauen kann
     private float acceleration;                 // Effektive Beschleunigung
     private bool foul = false;
+    private bool perfectJumpOff = false;
     float jumpDistance;
 
     void Start()
@@ -127,13 +128,14 @@ public class LongJump3D : MonoBehaviour
             float jumpSpeed = Mathf.Clamp(currentSpeed, 0, maxSpeed);
 
             // Prüfen, ob die Leertaste innerhalb des Sprungzeitfensters gedrückt wurde
-            if (elapsedTime >= timingRange && elapsedTime <= timingRange + perfectTimingWindow)
+            if (perfectJumpOff)
             {
-                Jump(jumpSpeed);  // Perfekter Sprung
+                Jump(jumpSpeed/ 1.5f);  // Perfekter Sprung
+                Debug.Log("Perfect");
             }
             else
             {
-                Jump(jumpSpeed / 2);  // Nicht perfekter Sprung, halbe Kraft
+                Jump(jumpSpeed / 2.0f);  // Nicht perfekter Sprung, halbe Kraft
             }
 
             hasJumped = true;  // Spieler hat gesprungen
@@ -171,7 +173,20 @@ public class LongJump3D : MonoBehaviour
         if (other.CompareTag("Foul"))
         {
             foul = true;
-            Debug.Log(foul);
+            Debug.Log("foul");
+        }
+
+        if(other.CompareTag("JumpOff"))
+        {
+            perfectJumpOff = true;
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("JumpOff"))
+        {
+            perfectJumpOff = false;
         }
     }
 }
