@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class LongJump3D : MonoBehaviour
 {
-    public float maxSpeed = 20f;                 // Maximale Geschwindigkeit 
-    public int clicksToMaxSpeed = 20;           // Anzahl der Klicks
+    public float maxSpeed = 35f;                 // Maximale Geschwindigkeit 
+    public int clicksToMaxSpeed = 100;           // Anzahl der Klicks
     public float rapidDeceleration = 2f;        // Schnelle Geschwindigkeitsabnahme
     public float deceleration = 0.5f;           // Normale Geschwindigkeitsabnahme
     public float jumpForce = 10f;               // Kraft des Sprungs
@@ -23,6 +23,8 @@ public class LongJump3D : MonoBehaviour
     private bool perfectJumpOff = false;
     float jumpDistance;
 
+    private Animator animator;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -31,10 +33,30 @@ public class LongJump3D : MonoBehaviour
 
         // Berechne die Beschleunigung pro Klick so, dass nach 10 Klicks die maximale Geschwindigkeit erreicht wird
         acceleration = maxSpeed / clicksToMaxSpeed;
+        animator = GetComponent<Animator>();
     }
 
     void Update()
     {
+        float minSpeed = 0.1f;    // Minimale Geschwindigkeit
+        float maxSpeed = 30f;   // Maximale Geschwindigkeit
+        float minAnimationSpeed = 0.5f; // Minimale Animationsgeschwindigkeit
+        float maxAnimationSpeed = 1.0f; // Maximale Animationsgeschwindigkeit
+
+        if (currentSpeed > 0f)
+        {
+            // Berechne die Animationsgeschwindigkeit basierend auf der aktuellen Geschwindigkeit
+            float animationSpeed = Mathf.Lerp(minAnimationSpeed, maxAnimationSpeed, Mathf.InverseLerp(minSpeed, maxSpeed, currentSpeed));
+            
+            animator.SetBool("Start", true);
+            animator.speed = animationSpeed;
+        }
+        else
+        {
+            // Deaktiviere die Animation, wenn die Geschwindigkeit 0 ist
+            animator.SetBool("Start", false);
+        }
+
         if (!hasJumped)
         {
             HandleInput();
@@ -110,6 +132,7 @@ public class LongJump3D : MonoBehaviour
 
     private void Move()
     {
+        
         // Bewege das Objekt entsprechend der aktuellen Geschwindigkeit nach vorne
         transform.Translate(Vector3.forward * currentSpeed * Time.deltaTime);
     }
