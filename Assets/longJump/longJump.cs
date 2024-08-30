@@ -49,12 +49,13 @@ public class LongJump3D : MonoBehaviour
             float animationSpeed = Mathf.Lerp(minAnimationSpeed, maxAnimationSpeed, Mathf.InverseLerp(minSpeed, maxSpeed, currentSpeed));
             
             animator.SetBool("Start", true);
+            animator.SetBool("Stand", false);
             animator.speed = animationSpeed;
         }
         else
         {
             // Deaktiviere die Animation, wenn die Geschwindigkeit 0 ist
-            animator.SetBool("Start", false);
+            animator.SetBool("Stand", true);
         }
 
         if (!hasJumped)
@@ -141,6 +142,8 @@ public class LongJump3D : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            animator.SetBool("Start", false);
+            animator.SetBool("Jump", true);
             float currentTime = Time.time;
             float elapsedTime = currentTime - startTime;
 
@@ -177,6 +180,7 @@ public class LongJump3D : MonoBehaviour
         // Sicherstellen, dass die Berechnung und das Zurücksetzen nur erfolgen, wenn der Spieler nach dem Sprung landet
         if (hasJumped && collision.gameObject.CompareTag("Ground"))
         {
+            animator.SetBool("Jump", false);
             GameObject jumpOffObject = GameObject.FindWithTag("JumpOff");
             // Berechne die Sprungweite
             jumpDistance = Vector3.Distance(jumpOffObject.transform.position, transform.position);
