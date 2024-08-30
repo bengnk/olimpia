@@ -20,6 +20,7 @@ public class SchwimmerController3D : MonoBehaviour
     private float currentSpeed = 0f; // Aktuelle Geschwindigkeit der Kapsel
     private bool isSpecialButtonActive = false; // Status des speziellen Buttons
     private float specialButtonTimer = 0f; // Timer für den speziellen Button
+    private bool goalReached = false; // Variable, um zu prüfen, ob das Ziel erreicht wurde
 
     public float jumpForce = 5f;
     public float jumpForwardSpeed = 5f;
@@ -30,6 +31,7 @@ public class SchwimmerController3D : MonoBehaviour
     private bool timerRunning = false;
     private bool hasTouchedWater = false; // Zustandsvariable, um den Wasserberührungszustand zu verfolgen
     private float elapsedTime = 0f;  // Speichert die verstrichene Zeit nach dem Stopp des Timers
+    public Text timerText;  // Fügen Sie die using-Anweisung `using UnityEngine.UI;` oben im Skript hinzu, falls nicht bereits vorhanden.
 
     private Animator animator; // Animator-Referenz
 
@@ -55,6 +57,10 @@ public class SchwimmerController3D : MonoBehaviour
         }
         afterJump();
         AdjustSwimAnimationSpeed();
+        if (timerRunning)
+        {
+            UpdateTimerUI();
+        }
     }
 
     private void StartJump()
@@ -71,15 +77,24 @@ public class SchwimmerController3D : MonoBehaviour
         timerRunning = true;
     }
 
+    private void UpdateTimerUI()
+    {
+        float timeSinceStart = Time.time - timerStartTime;
+        timerText.text = "Zeit: " + timeSinceStart.ToString("F2") + " Sekunden";
+    }
+
+
     private void StopTimer()
     {
         if (timerRunning)
         {
             elapsedTime = Time.time - timerStartTime;
             timerRunning = false;
+            timerText.text = "Endzeit: " + elapsedTime.ToString("F2") + " Sekunden";
             Debug.Log("Zeit gestoppt: " + elapsedTime + " Sekunden.");
         }
     }
+
 
     void afterJump(){
         // Wenn die Geschwindigkeit größer als 0 ist, bewege die Kapsel nach vorne
@@ -118,6 +133,7 @@ public class SchwimmerController3D : MonoBehaviour
         }
         else if (other.CompareTag("Ende"))
         {
+            goalReached = true;  // Setze die Variable, dass das Ziel erreicht wurde
             currentSpeed = 0;
             animator.SetBool("stop", true);
             StopTimer();
@@ -138,7 +154,7 @@ public class SchwimmerController3D : MonoBehaviour
 
     public void Button1Pressed()
     {
-        if (lastButtonPressed != 1)
+        if (!goalReached && lastButtonPressed != 1)
         {
             ResetSpeed();
             AdjustButtonProperties(button1);
@@ -149,7 +165,7 @@ public class SchwimmerController3D : MonoBehaviour
 
     public void Button2Pressed()
     {
-        if (lastButtonPressed != 2)
+        if (!goalReached && lastButtonPressed != 2)
         {
             ResetSpeed();
             AdjustButtonProperties(button2);
@@ -160,9 +176,12 @@ public class SchwimmerController3D : MonoBehaviour
 
     public void SpecialButtonPressed()
     {
-        currentSpeed *= specialButtonSpeedMultiplier;
-        specialButton.gameObject.SetActive(false);
-        isSpecialButtonActive = false;
+        if (!goalReached)
+        {
+            currentSpeed *= specialButtonSpeedMultiplier;
+            specialButton.gameObject.SetActive(false);
+            isSpecialButtonActive = false;
+        }
     }
 
     private void ResetSpeed()
