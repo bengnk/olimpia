@@ -7,6 +7,11 @@ TagManager:
   - Wand
   - Water
   - Ende
+  - whiteCircle
+  - blackCircle
+  - blueCircle
+  - redCircle
+  - yellowCircle
   layers:
   - Default
   - TransparentFX
