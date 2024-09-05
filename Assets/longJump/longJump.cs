@@ -21,7 +21,9 @@ public class LongJump3D : MonoBehaviour
     private float acceleration;                 // Effektive Beschleunigung
     private bool foul = false;
     private bool perfectJumpOff = false;
+    float lastSpeed;
     float jumpDistance;
+    float maxHeight = 0;
 
     private Animator animator;
 
@@ -51,6 +53,7 @@ public class LongJump3D : MonoBehaviour
             animator.SetBool("Start", true);
             animator.SetBool("Stand", false);
             animator.speed = animationSpeed;
+            lastSpeed = currentSpeed;
         }
         else
         {
@@ -64,6 +67,22 @@ public class LongJump3D : MonoBehaviour
             Move();
             CheckJump();
         }
+
+        float height = CalculateCurrentHeight();
+        
+        if (height > maxHeight)
+        {
+            maxHeight = height;
+        }
+
+        if (hasJumped && height > 0f && height < 1f && maxHeight > 1f) 
+        {
+            Debug.Log(height);
+            animator.SetBool("Landing", true);
+            animator.SetBool("Jump", false);
+        }
+        
+        
     }
 
     private void HandleInput()
@@ -180,7 +199,7 @@ public class LongJump3D : MonoBehaviour
         // Sicherstellen, dass die Berechnung und das Zurücksetzen nur erfolgen, wenn der Spieler nach dem Sprung landet
         if (hasJumped && collision.gameObject.CompareTag("Ground"))
         {
-            animator.SetBool("Jump", false);
+
             GameObject jumpOffObject = GameObject.FindWithTag("JumpOff");
             // Berechne die Sprungweite
             jumpDistance = Vector3.Distance(jumpOffObject.transform.position, transform.position);
@@ -193,6 +212,13 @@ public class LongJump3D : MonoBehaviour
             currentSpeed = 0f;           // Geschwindigkeit zurücksetzen
             canBuildSpeed = false;        // Erlaube den Aufbau der Geschwindigkeit wieder
         }
+    }
+
+    private float CalculateCurrentHeight()
+    {
+        GameObject jumpOffObject = GameObject.FindWithTag("JumpOff");
+        // Berechnet die Höhe relativ zum Startpunkt des Sprungs
+        return transform.position.y - jumpOffObject.transform.position.y;
     }
     
     void OnTriggerStay(Collider other)
