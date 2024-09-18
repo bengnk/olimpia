@@ -4,5 +4,14 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Startbildschirm/Start.unity
+    guid: 590ec2c328aa3df4b99cb27a8347130c
+  - enabled: 1
+    path: "Assets/Startbildschirm/Men\xFC.unity"
+    guid: 6f541b196119fa04791e0fe3b45afb7d
+  - enabled: 1
+    path: Assets/Schwimmen/Scenes/Schwimmen.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects: {}
