@@ -79,7 +79,7 @@ public class LongJump3D : MonoBehaviour
         if (isSlowingDown)
         {
             // Reduziere die Geschwindigkeit
-            float extremeRapidDeceleration = 1.25f;
+            float extremeRapidDeceleration = 1.4f;
             animator.speed = 0.75f;
             lastSpeed -= extremeRapidDeceleration * Time.deltaTime;
             lastSpeed = Mathf.Max(0, lastSpeed);
