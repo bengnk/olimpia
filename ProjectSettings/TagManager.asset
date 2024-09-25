@@ -3,15 +3,12 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags:
-  - Wand
-  - Water
-  - Ende
+  tags: []
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - UIForeground
+  - 
   - Water
   - UI
   - 
