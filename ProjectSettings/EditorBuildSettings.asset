@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/longJump/Scene/LongJump.unity
     guid: b94d162e0de514e4e92fb2b82bbc0c15
+  - enabled: 1
+    path: "Assets/Bogenschie\xDFen/Bogenschie\xDFen.unity"
+    guid: 02e02f037e124c34a90d49458bb3f1aa
   m_configObjects: {}

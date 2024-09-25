@@ -966,7 +966,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a0cd2f03a2c25740bd7d3806f86565c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: Schwimmen
+  sceneToLoad: "Bogenschie\xDFen"
 --- !u!114 &903909926
 MonoBehaviour:
   m_ObjectHideFlags: 0
