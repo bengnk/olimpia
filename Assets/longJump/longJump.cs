@@ -145,7 +145,7 @@ public class LongJump3D : MonoBehaviour
     {
         if (currentSpeed < maxSpeed)
         {
-            // Normale Beschleunigung bis 15 km/h
+            // Normale Beschleunigung
             currentSpeed = Mathf.Min(currentSpeed + acceleration, maxSpeed);
 
             // Reduzierte Beschleunigung
@@ -177,25 +177,25 @@ public class LongJump3D : MonoBehaviour
             float currentTime = Time.time;
             float elapsedTime = currentTime - startTime;
 
-            // Setze die Startposition für den Sprung
+            // Startpositiond des Sprungs
             jumpStartPosition = transform.position;
 
-            // Berechne die Sprungkraft basierend auf der aktuellen Geschwindigkeit
+            // Berechnung der Sprungkraft basierend auf der aktuellen Geschwindigkeit
             float jumpSpeed = Mathf.Clamp(currentSpeed, 0, maxSpeed);
 
-            // Prüfen, ob die Leertaste innerhalb des Sprungzeitfensters gedrückt wurde
+            // Prüfen, ob Sprung Perfekt ist
             if (perfectJumpOff)
             {
-                Jump(jumpSpeed/ 1.1f);  // Perfekter Sprung
+                Jump(jumpSpeed/1.1f);
                 Debug.Log("Perfect");
             }
             else
             {
-                Jump(jumpSpeed / 1.5f);  // Nicht perfekter Sprung, halbe Kraft
+                Jump(jumpSpeed / 1.5f);
             }
             
-            hasJumped = true;  // Spieler hat gesprungen
-            currentSpeed = 0;  // Stoppe die horizontale Bewegung
+            hasJumped = true;  // Spieler ist gesprungen
+            currentSpeed = 0;
             canBuildSpeed = false; // Verhindere das weitere Aufbauen der Geschwindigkeit
         }
     }
@@ -212,7 +212,7 @@ public class LongJump3D : MonoBehaviour
         {
 
             GameObject jumpOffObject = GameObject.FindWithTag("JumpOff");
-            // Berechne die Sprungweite
+            // Berechnnung der Sprungweite
             jumpDistance = Vector3.Distance(jumpOffObject.transform.position, transform.position);
             jumpDistance = jumpDistance/5;
             Debug.Log("Sprungweite: " + jumpDistance);
@@ -220,11 +220,10 @@ public class LongJump3D : MonoBehaviour
             lastSpeed = jumpDistance/1.75f;
 
             isSlowingDown = true;
-            // Nach dem Landen, setze den Sprung zurück
-            hasJumped = true;           // Spieler kann wieder springen
+            hasJumped = true;           // Spieler kann nicht erneut springen
             startTime = Time.time;       // Setze die Startzeit für den nächsten Anlauf zurück
-            currentSpeed = 0f;           // Geschwindigkeit zurücksetzen
-            canBuildSpeed = false;        // Erlaube den Aufbau der Geschwindigkeit wieder
+            currentSpeed = 0f;
+            canBuildSpeed = false;        // kein erneuter Geschwindigkeitsaufbau
 
         }
     }
