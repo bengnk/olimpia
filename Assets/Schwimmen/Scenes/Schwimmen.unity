@@ -741,7 +741,7 @@ MonoBehaviour:
   initialMoveAmount: 0.5
   waterDeceleration: 0.05
   minSpeed: 1
-  maxSpeed: 2
+  maxSpeed: 3
   jumpForce: 2
   timerText: {fileID: 807933432}
 --- !u!95 &207735024
@@ -943,7 +943,7 @@ MonoBehaviour:
   initialMoveAmount: 0.5
   waterDeceleration: 0.05
   minSpeed: 1
-  maxSpeed: 2
+  maxSpeed: 3
   jumpForce: 2
   timerText: {fileID: 807933432}
 --- !u!95 &267325616
@@ -3138,7 +3138,7 @@ MonoBehaviour:
   initialMoveAmount: 0.5
   waterDeceleration: 0.05
   minSpeed: 1
-  maxSpeed: 2
+  maxSpeed: 3
   jumpForce: 2
   timerText: {fileID: 807933432}
 --- !u!95 &762780433
@@ -7198,7 +7198,7 @@ MonoBehaviour:
   initialMoveAmount: 0.5
   waterDeceleration: 0.05
   minSpeed: 1
-  maxSpeed: 2
+  maxSpeed: 3
   jumpForce: 2
   timerText: {fileID: 807933432}
 --- !u!95 &2122038836
@@ -7376,7 +7376,7 @@ MonoBehaviour:
   initialMoveAmount: 0.5
   waterDeceleration: 0.05
   minSpeed: 1
-  maxSpeed: 2
+  maxSpeed: 3
   jumpForce: 2
   timerText: {fileID: 807933432}
 --- !u!95 &2141342521
