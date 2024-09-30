@@ -27,11 +27,31 @@ public class ArrowShoot : MonoBehaviour
     // Länge des Raycast zur Kollisionserkennung
     public float raycastLength = 0.5f;
 
+    // Windparameter
+    private Vector3 windDirection;
+    public float windStrength; // Zufällige Windstärke in m/s
+    private float windStrengthKmh; // Windstärke in km/h
+
+    // Statusvariable zur Vermeidung mehrfacher Kollisionsergebnisse
+    private bool hasHit = false;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         boxCollider = GetComponent<BoxCollider>();
         rb.isKinematic = true; // Kinematischer Rigidbody, damit keine unberechenbare Physik aktiv ist
+
+        // Zufällige Windrichtung generieren
+        windDirection = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)).normalized;
+
+        // Zufällige Windstärke generieren (zwischen 0 und 15 km/h umgerechnet in m/s)
+        windStrengthKmh = Random.Range(0, 16); // Zufällige Windstärke in km/h, nur ganze Zahlen
+        windStrength = windStrengthKmh / 3.6f;   // Umwandlung von km/h in m/s
+
+        // Himmelsrichtung bestimmen und anzeigen
+        string windDirectionName = GetWindDirectionName(windDirection);
+        Debug.Log("Windrichtung: " + windDirectionName);
+        Debug.Log("Windstärke: " + windStrengthKmh + " km/h");
     }
 
     void Update()
@@ -55,7 +75,7 @@ public class ArrowShoot : MonoBehaviour
         if (isShooting)
         {
             MoveArrow();
-            CheckCollision();
+            CheckCollision(); // Kollision überprüfen, wenn der Pfeil in Bewegung ist
         }
     }
 
@@ -63,20 +83,26 @@ public class ArrowShoot : MonoBehaviour
     {
         direction = (targetPosition - transform.position).normalized; // Richtung zum Ziel berechnen
         isShooting = true;
+        hasHit = false; // Reset für die Kollisionserkennung
     }
 
     void MoveArrow()
     {
-        // Manuelle Bewegung des Pfeils in gerader Linie zum Ziel
-        transform.position += direction * speed * Time.deltaTime;
+        // Beeinflusse den Pfeil durch die Windrichtung
+        Vector3 windInfluence = windDirection * windStrength * Time.deltaTime;
+
+        // Manuelle Bewegung des Pfeils in gerader Linie zum Ziel + Windbeeinflussung
+        transform.position += (direction * speed * Time.deltaTime) + windInfluence;
     }
 
     void CheckCollision()
     {
         // Überprüfe Kollision mit einem Raycast in Richtung des Pfeils
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, direction, out hit, raycastLength))
+        if (!hasHit && Physics.Raycast(transform.position, direction, out hit, raycastLength))
         {
+            hasHit = true; // Setze den Status, um mehrere Treffer zu vermeiden
+
             // Sobald eine Kollision erkannt wird, stoppen wir den Pfeil
             isShooting = false;
             rb.isKinematic = true; // Den Pfeil anhalten
@@ -106,5 +132,24 @@ public class ArrowShoot : MonoBehaviour
             // Bewege den Pfeil an die exakte Position des Aufschlags, um ein Durchdringen zu verhindern
             transform.position = hit.point;
         }
+    }
+
+    // Funktion zur Umwandlung der Windrichtung in eine Himmelsrichtung
+    string GetWindDirectionName(Vector3 direction)
+    {
+        float angle = Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg;
+
+        if (angle < 0) angle += 360;
+
+        if (angle >= 337.5f || angle < 22.5f) return "Osten";
+        else if (angle >= 22.5f && angle < 67.5f) return "Nordosten";
+        else if (angle >= 67.5f && angle < 112.5f) return "Norden";
+        else if (angle >= 112.5f && angle < 157.5f) return "Nordwesten";
+        else if (angle >= 157.5f && angle < 202.5f) return "Westen";
+        else if (angle >= 202.5f && angle < 247.5f) return "Südwesten";
+        else if (angle >= 247.5f && angle < 292.5f) return "Süden";
+        else if (angle >= 292.5f && angle < 337.5f) return "Südosten";
+
+        return "Unbekannt";
     }
 }
