@@ -2,53 +2,50 @@ using UnityEngine;
 
 public class ArrowShoot : MonoBehaviour
 {
-    public float speed = 20f; // Geschwindigkeit des Pfeils
+    public float speed = 20f;
     private bool isShooting = false;
     private Vector3 targetPosition;
     private Vector3 direction;
 
-    public Rigidbody rb; // Rigidbody des Pfeils
-    public BoxCollider boxCollider; // BoxCollider des Pfeils
+    public Rigidbody rb;
+    public BoxCollider boxCollider;
 
-    // Referenzen für die Ziel-Ringe
     public Collider white;
     public Collider black;
     public Collider blue;
     public Collider red;
     public Collider yellow;
 
-    // Punkte für die jeweiligen Ringe
     private int whiteScore = 1;
     private int blackScore = 3;
     private int blueScore = 5;
     private int redScore = 7;
     private int yellowScore = 10;
 
-    // Länge des Raycast zur Kollisionserkennung
     public float raycastLength = 0.5f;
 
-    // Windparameter
     private Vector3 windDirection;
-    public float windStrength; // Zufällige Windstärke in m/s
-    private float windStrengthKmh; // Windstärke in km/h
+    public float windStrength;
+    private float windStrengthKmh;
 
-    // Statusvariable zur Vermeidung mehrfacher Kollisionsergebnisse
     private bool hasHit = false;
+
+    // Neue Variablen für Durchgänge und Punkte
+    private int currentRound = 1; // Aktuelle Runde (1 bis 3)
+    private int totalScore = 0;   // Gesamtpunkte
+
+    private const int maxRounds = 3; // Maximale Anzahl der Durchgänge
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         boxCollider = GetComponent<BoxCollider>();
-        rb.isKinematic = true; // Kinematischer Rigidbody, damit keine unberechenbare Physik aktiv ist
+        rb.isKinematic = true;
 
-        // Zufällige Windrichtung generieren
         windDirection = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)).normalized;
+        windStrengthKmh = Random.Range(0, 11);
+        windStrength = windStrengthKmh / 3.6f;
 
-        // Zufällige Windstärke generieren (zwischen 0 und 15 km/h umgerechnet in m/s)
-        windStrengthKmh = Random.Range(0, 16); // Zufällige Windstärke in km/h, nur ganze Zahlen
-        windStrength = windStrengthKmh / 3.6f;   // Umwandlung von km/h in m/s
-
-        // Himmelsrichtung bestimmen und anzeigen
         string windDirectionName = GetWindDirectionName(windDirection);
         Debug.Log("Windrichtung: " + windDirectionName);
         Debug.Log("Windstärke: " + windStrengthKmh + " km/h");
@@ -56,85 +53,100 @@ public class ArrowShoot : MonoBehaviour
 
     void Update()
     {
-        // Berechne das Ziel basierend auf dem Mauszeiger
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-
-        if (Physics.Raycast(ray, out hit))
+        if (currentRound <= maxRounds) // Nur schießen, wenn es noch nicht mehr als 3 Runden sind
         {
-            targetPosition = hit.point;
-        }
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
 
-        // Überprüfen, ob die linke Maustaste gedrückt wurde und noch nicht geschossen wird
-        if (Input.GetMouseButtonDown(0) && !isShooting)
-        {
-            StartShooting();
-        }
+            if (Physics.Raycast(ray, out hit))
+            {
+                targetPosition = hit.point;
+            }
 
-        // Wenn geschossen wird, bewege den Pfeil
-        if (isShooting)
-        {
-            MoveArrow();
-            CheckCollision(); // Kollision überprüfen, wenn der Pfeil in Bewegung ist
+            if (Input.GetMouseButtonDown(0) && !isShooting)
+            {
+                StartShooting();
+            }
+
+            if (isShooting)
+            {
+                MoveArrow();
+                CheckCollision();
+            }
         }
     }
 
     void StartShooting()
     {
-        direction = (targetPosition - transform.position).normalized; // Richtung zum Ziel berechnen
+        direction = (targetPosition - transform.position).normalized;
         isShooting = true;
-        hasHit = false; // Reset für die Kollisionserkennung
+        hasHit = false;
     }
 
     void MoveArrow()
     {
-        // Beeinflusse den Pfeil durch die Windrichtung
         Vector3 windInfluence = windDirection * windStrength * Time.deltaTime;
-
-        // Manuelle Bewegung des Pfeils in gerader Linie zum Ziel + Windbeeinflussung
         transform.position += (direction * speed * Time.deltaTime) + windInfluence;
     }
 
     void CheckCollision()
     {
-        // Überprüfe Kollision mit einem Raycast in Richtung des Pfeils
         RaycastHit hit;
         if (!hasHit && Physics.Raycast(transform.position, direction, out hit, raycastLength))
         {
-            hasHit = true; // Setze den Status, um mehrere Treffer zu vermeiden
-
-            // Sobald eine Kollision erkannt wird, stoppen wir den Pfeil
+            hasHit = true;
             isShooting = false;
-            rb.isKinematic = true; // Den Pfeil anhalten
+            rb.isKinematic = true;
 
-            // Punkte je nach getroffenem Ring anzeigen
+            int roundScore = 0;
+
             if (hit.collider.CompareTag("whiteCircle"))
             {
-                Debug.Log("Punkte: " + whiteScore);
+                roundScore = whiteScore;
             }
             else if (hit.collider.CompareTag("blackCircle"))
             {
-                Debug.Log("Punkte: " + blackScore);
+                roundScore = blackScore;
             }
             else if (hit.collider.CompareTag("blueCircle"))
             {
-                Debug.Log("Punkte: " + blueScore);
+                roundScore = blueScore;
             }
             else if (hit.collider.CompareTag("redCircle"))
             {
-                Debug.Log("Punkte: " + redScore);
+                roundScore = redScore;
             }
             else if (hit.collider.CompareTag("yellowCircle"))
             {
-                Debug.Log("Punkte: " + yellowScore);
+                roundScore = yellowScore;
             }
 
-            // Bewege den Pfeil an die exakte Position des Aufschlags, um ein Durchdringen zu verhindern
+            totalScore += roundScore; // Addiere die Punkte zur Gesamtpunktzahl
+            Debug.Log("Punkte für Runde " + currentRound + ": " + roundScore);
+            Debug.Log("Gesamtpunkte: " + totalScore);
+
             transform.position = hit.point;
+
+            // Nächste Runde starten oder beenden, wenn die maximale Anzahl erreicht ist
+            currentRound++;
+            if (currentRound > maxRounds)
+            {
+                Debug.Log("Spiel beendet! Gesamtpunktzahl: " + totalScore);
+            }
+            else
+            {
+                ResetArrow();
+            }
         }
     }
 
-    // Funktion zur Umwandlung der Windrichtung in eine Himmelsrichtung
+    void ResetArrow()
+    {
+        // Setze den Pfeil an die Startposition zurück und setze das Kinematic-Flag zurück
+        transform.position = new Vector3(0, 1, 0); // Beispielhafte Startposition
+        rb.isKinematic = true; // Pfeil in der Startposition kinematisch setzen
+    }
+
     string GetWindDirectionName(Vector3 direction)
     {
         float angle = Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg;
