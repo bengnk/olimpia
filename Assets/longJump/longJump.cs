@@ -27,12 +27,15 @@ public class LongJump3D : MonoBehaviour
     float maxHeight = 0;
 
     private Animator animator;
+    private CameraFollow camera;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         startTime = Time.time;
         lastKeyTime = Time.time;
+
+        camera = Camera.main.GetComponent<CameraFollow>();
 
         // Berechne die Beschleunigung pro Klick so, dass nach 10 Klicks die maximale Geschwindigkeit erreicht wird
         acceleration = maxSpeed / clicksToMaxSpeed;
@@ -77,22 +80,14 @@ public class LongJump3D : MonoBehaviour
         }
 
         if (isSlowingDown)
-        {
-            // Reduziere die Geschwindigkeit
-            float extremeRapidDeceleration = 1.4f;
-            animator.speed = 0.75f;
-            lastSpeed -= extremeRapidDeceleration * Time.deltaTime;
-            lastSpeed = Mathf.Max(0, lastSpeed);
+        {   
+            maxSpeed = 0;
+            
+            currentSpeed = 10f;
+            animator.speed = 0.5f;
+            transform.Translate(Vector3.forward * currentSpeed * Time.deltaTime);
 
-            Vector3 movement = transform.forward * lastSpeed * Time.fixedDeltaTime;
-            rb.MovePosition(rb.position + movement);
-
-            // Wenn die Geschwindigkeit 0 erreicht, beende das Abbremsen
-            if (lastSpeed <= 0.25f)
-            {
-                isSlowingDown = false;
-                animator.SetBool("Stand", true);
-            }
+            
         }
     }
 
@@ -196,7 +191,6 @@ public class LongJump3D : MonoBehaviour
             
             hasJumped = true;  // Spieler ist gesprungen
             currentSpeed = 0;
-            canBuildSpeed = false; // Verhindere das weitere Aufbauen der Geschwindigkeit
         }
     }
 
@@ -218,12 +212,14 @@ public class LongJump3D : MonoBehaviour
             Debug.Log("Sprungweite: " + jumpDistance);
 
             lastSpeed = jumpDistance/1.75f;
+    
 
             isSlowingDown = true;
-            hasJumped = true;           // Spieler kann nicht erneut springen
             startTime = Time.time;       // Setze die Startzeit für den nächsten Anlauf zurück
             currentSpeed = 0f;
             canBuildSpeed = false;        // kein erneuter Geschwindigkeitsaufbau
+
+            camera.StopFollowingPlayer(); // Kamera fixieren
 
         }
     }
