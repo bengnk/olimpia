@@ -26,23 +26,28 @@ public class SchwimmerController3D : MonoBehaviour
     public float jumpForwardSpeed = 5f;
     private Rigidbody rb;
     private bool isJumping = false;
-
-    private float timerStartTime = 0f;
-    private bool timerRunning = false;
     private bool hasTouchedWater = false;
-    private float elapsedTime = 0f;
-    public Text timerText;
 
     private Animator animator;
+
+    public GameManager gameManager; // Referenz zum GameManager für die Zeitmessung
+    public int swimmerID; // Eindeutige ID für jeden Schwimmer (muss im Inspector gesetzt werden)
 
     // Kamera-Verfolgung
     public Transform cameraTransform; // Referenz zur Kamera
     public Vector3 cameraOffset = new Vector3(0, 5, -10); // Kameraoffset
     public float cameraFollowSpeed = 5f; // Verfolgungsgeschwindigkeit der Kamera
 
-    void Start(){
+    private bool canJump = false; // Variable, um zu prüfen, ob der Spieler springen darf
+
+    // Hier die End-Canvas-Referenz hinzufügen
+    public GameObject endCanvas;
+
+    void Start()
+    {
         rb = GetComponent<Rigidbody>();
-        if (rb == null) {
+        if (rb == null)
+        {
             rb = gameObject.AddComponent<Rigidbody>();
         }
         rb.useGravity = true;
@@ -50,22 +55,36 @@ public class SchwimmerController3D : MonoBehaviour
         currentSpeed = 0;
 
         animator = GetComponent<Animator>();
+
+        // Alle Buttons zu Beginn deaktivieren
+        button1.gameObject.SetActive(false);
+        button2.gameObject.SetActive(false);
+        specialButton.gameObject.SetActive(false);
+
+        // End-Canvas zu Beginn deaktivieren
+        if (endCanvas != null)
+        {
+            endCanvas.SetActive(false);
+        }
     }
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && !isJumping && !hasTouchedWater)
+        // Prüfen, ob der GameManager das "Go!"-Signal gegeben hat
+        if (gameManager != null && gameManager.isGoTime && !canJump)
+        {
+            canJump = true; // Spieler darf jetzt springen
+        }
+
+        // Bereits bei "Go!" soll das Springen erlaubt sein
+        if (Input.GetMouseButtonDown(0) && canJump && !isJumping && !hasTouchedWater)
         {
             animator.SetBool("jump", true);
             StartJump();
-            StartTimer();
         }
+
         afterJump();
         AdjustSwimAnimationSpeed();
-        if (timerRunning)
-        {
-            UpdateTimerUI();
-        }
     }
 
     private void StartJump()
@@ -73,32 +92,18 @@ public class SchwimmerController3D : MonoBehaviour
         isJumping = true;
         rb.velocity = new Vector3(0, jumpForce, jumpForwardSpeed);
         currentSpeed = jumpForwardSpeed;
+
+        // Timer für den Schwimmer im GameManager starten
+        gameManager.StartTimer(swimmerID);
+
+        // Buttons anzeigen, sobald der Spieler springt
+        button1.gameObject.SetActive(true);
+        button2.gameObject.SetActive(true);
+        specialButton.gameObject.SetActive(true);
     }
 
-    private void StartTimer()
+    void afterJump()
     {
-        timerStartTime = Time.time;
-        timerRunning = true;
-    }
-
-    private void UpdateTimerUI()
-    {
-        float timeSinceStart = Time.time - timerStartTime;
-        timerText.text = "Zeit: " + timeSinceStart.ToString("F2") + " Sekunden";
-    }
-
-    private void StopTimer()
-    {
-        if (timerRunning)
-        {
-            elapsedTime = Time.time - timerStartTime;
-            timerRunning = false;
-            timerText.text = "Endzeit: " + elapsedTime.ToString("F2") + " Sekunden";
-            Debug.Log("Zeit gestoppt: " + elapsedTime + " Sekunden.");
-        }
-    }
-
-    void afterJump(){
         if (currentSpeed > 0)
         {
             transform.position += transform.forward * currentSpeed * Time.deltaTime;
@@ -132,7 +137,19 @@ public class SchwimmerController3D : MonoBehaviour
             goalReached = true;
             currentSpeed = 0;
             animator.SetBool("stop", true);
-            StopTimer();
+
+            // Timer für den Schwimmer im GameManager stoppen
+            gameManager.StopTimer(swimmerID);
+
+            // Wenn der gesteuerte Schwimmer (ID 4) das Ziel erreicht
+            if (swimmerID == 4)
+            {
+                // Blende das End-Canvas ein
+                if (endCanvas != null)
+                {
+                    endCanvas.SetActive(true);
+                }
+            }
         }
     }
 
@@ -185,18 +202,30 @@ public class SchwimmerController3D : MonoBehaviour
 
     private void MoveButtonToRandomPosition(RectTransform buttonToMove, RectTransform otherButton)
     {
-        Vector2 canvasSize = canvasRectTransform.sizeDelta;
+        Vector2 canvasSize = canvasRectTransform.sizeDelta; // Größe des Canvas
         Vector2 newPosition;
         float distanceToOtherButton;
+
+        // Bestimme die vertikalen Begrenzungen des unteren 3/4 des Canvas
+        float minY = -(canvasSize.y / 2) * 0.75f; // Untere Grenze des Canvas (unteres 3/4)
+        float maxY = 0;                           // Obere Grenze des unteren 3/4 (Mitte des Canvas)
+
+        // Bestimme die horizontalen Begrenzungen des Canvas
+        float minX = -(canvasSize.x / 2) + buttonToMove.rect.width / 2;  // Linke Grenze (mit Berücksichtigung der Button-Breite)
+        float maxX = (canvasSize.x / 2) - buttonToMove.rect.width / 2;   // Rechte Grenze (mit Berücksichtigung der Button-Breite)
+
         do
         {
-            newPosition = new Vector2(Random.Range(buttonToMove.rect.width, canvasSize.x - buttonToMove.rect.width),
-                                      Random.Range(buttonToMove.rect.height, canvasSize.y - buttonToMove.rect.height));
+            // Generiere eine zufällige Position innerhalb der horizontalen und vertikalen Begrenzungen
+            newPosition = new Vector2(Random.Range(minX, maxX), Random.Range(minY, maxY));
+
+            // Berechne den Abstand zum anderen Button
             distanceToOtherButton = Vector2.Distance(newPosition, otherButton.anchoredPosition);
         }
         while (distanceToOtherButton < minDistanceBetweenButtons);
 
-        buttonToMove.anchoredPosition = newPosition - (canvasSize / 2);
+        // Setze die neue Position für den Button relativ zum Canvas
+        buttonToMove.anchoredPosition = newPosition;
     }
 
     private void IncreaseButtonSize(RectTransform button)
