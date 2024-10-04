@@ -22,7 +22,7 @@ public class LongJump3D : MonoBehaviour
     private float acceleration;                
     private bool foul = false;
     private bool perfectJumpOff = false;
-    float lastSpeed;
+    private bool spaceClicked = false;
     bool isSlowingDown = false;
     float jumpDistance;
     float maxHeight = 0;
@@ -160,7 +160,7 @@ public class LongJump3D : MonoBehaviour
 
     private void CheckJump()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && spaceClicked == false)
         {
             animator.SetBool("Start", false);
             animator.SetBool("Jump", true);
@@ -172,16 +172,14 @@ public class LongJump3D : MonoBehaviour
 
             if (perfectJumpOff)
             {
-                Jump(jumpSpeed / 1.1f);
+                Jump(jumpSpeed / 8f);
                 Debug.Log("Perfect");
             }
             else
             {
-                Jump(jumpSpeed / 1.5f);
+                Jump(jumpSpeed / 10f);
             }
-
-            hasJumped = true;
-            currentSpeed = 0;
+            spaceClicked = true;
         }
     }
 
@@ -192,19 +190,12 @@ public class LongJump3D : MonoBehaviour
 
    void OnCollisionEnter(Collision collision)
     {
-        if (hasJumped && collision.gameObject.CompareTag("Ground"))
-        {
-            GameObject jumpOffObject = GameObject.FindWithTag("JumpOff");
+        Results(collision);
+    }
 
-            // Berechnung der Sprungweite
-            jumpDistance = Vector3.Distance(jumpOffObject.transform.position, transform.position) / 5;
-            if (foul)
-            {
-                jumpDistance = 0;
-            }
-            Debug.Log("Sprungweite: " + jumpDistance);
-
-            lastSpeed = jumpDistance / 1.75f;
+    private void Results(Collision collision = null) {
+        if (collision==null) { // wenn nicht gesprungen wurde
+            jumpDistance = 0;
             isSlowingDown = true;
             startTime = Time.time;
             currentSpeed = 0f;
@@ -222,6 +213,44 @@ public class LongJump3D : MonoBehaviour
                 }
             }
         }
+
+        if (spaceClicked && collision.gameObject.CompareTag("Ground")) // wenn gesprungen wurde
+        {
+            GameObject jumpOffObject = GameObject.FindWithTag("JumpOff");
+            animator.SetBool("Landing", true);
+            animator.SetBool("Jump", false);
+
+            // Berechnung der Sprungweite
+            jumpDistance = Vector3.Distance(jumpOffObject.transform.position, transform.position) / 5;
+            if (foul)
+            {
+                jumpDistance = 0;
+            }
+            Debug.Log("Sprungweite: " + jumpDistance);
+
+            isSlowingDown = true;
+            startTime = Time.time;
+            currentSpeed = 0f;
+            canBuildSpeed = false;
+            camera.StopFollowingPlayer();
+
+            // Übergibt die Sprungweite und die Gegnerergebnisse an das JumpResultDisplay-Skript
+            JumpResultDisplay jumpResultDisplay = FindObjectOfType<JumpResultDisplay>();
+            if (jumpResultDisplay != null)
+            {
+                LongJump longJump = FindObjectOfType<LongJump>();  // Gegnerergebnisse holen
+                if (longJump != null)
+                {
+                    jumpResultDisplay.ShowJumpResults(jumpDistance, longJump.GetResults());  // Ergebnisse anzeigen
+                }
+            }
+            
+        } else if (spaceClicked && collision.gameObject.CompareTag("Before")) {
+            spaceClicked = false;
+            currentSpeed = 5f;
+            animator.SetBool("Jump", false);
+        }
+        
     }
 
 
@@ -253,6 +282,10 @@ public class LongJump3D : MonoBehaviour
         if (other.CompareTag("JumpOff"))
         {
             perfectJumpOff = true;
+        }
+        
+        if (other.CompareTag("Finish")){
+            Results();
         }
     }
 
