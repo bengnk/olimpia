@@ -15,8 +15,6 @@ public class CrosshairController : MonoBehaviour
     void Start()
     {
         Cursor.visible = false; // Cursor ausblenden
-        // Entferne die Zeile, die den Cursor im Zentrum sperrt
-        // Cursor.lockState = CursorLockMode.Locked; 
 
         // Initialisiere die letzte Mausposition
         lastMousePosition = Input.mousePosition;
