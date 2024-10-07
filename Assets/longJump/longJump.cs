@@ -172,12 +172,12 @@ public class LongJump3D : MonoBehaviour
 
             if (perfectJumpOff)
             {
-                Jump(jumpSpeed / 8f);
+                Jump(jumpSpeed / 100f);
                 Debug.Log("Perfect");
             }
             else
             {
-                Jump(jumpSpeed / 10f);
+                Jump(jumpSpeed / 150f);
             }
             spaceClicked = true;
         }
