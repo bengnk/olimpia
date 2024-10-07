@@ -35,8 +35,12 @@ public class Player2Movement : MonoBehaviour
     // UI Text for countdown (optional, if you want to display it for Player 2)
     public Text countdownText;
 
+    private Animator animator;
+    private int counter = 0;
+
     void Start()
     {
+        animator = GetComponent<Animator>();  // Animator initialisieren
         HideAllElements();
         // Initialize countdown text to show starting countdown value (if using a countdown UI for Player 2)
         if (countdownText != null)
@@ -71,7 +75,6 @@ public class Player2Movement : MonoBehaviour
                     ShowRandomElement(); // Show the first random element
                 }
             }
-
             MoveSquare();
             CheckInput();
         }
@@ -102,7 +105,13 @@ public class Player2Movement : MonoBehaviour
     void MoveSquare()
     {
         if (isMoving)
-        {
+        {   
+            counter += 1;
+            if (counter == 1) {
+                animator.SetBool("crouched", true);
+                animator.speed = 0.5f;
+            }
+            
             transform.Translate(Vector3.forward * speedP2 * Time.deltaTime);
             speedP2 *= 0.9999f; // Gradually decelerate during the race
         }
