@@ -39,8 +39,12 @@ public class player1Script: MonoBehaviour
     // Flag to prevent input
     private bool canInput = true;
 
+    private Animator animator;
+    private int counter = 0;
+
     void Start()
     {
+        animator = GetComponent<Animator>(); 
         Player2Movement = player2.GetComponent<Player2Movement>();
         HideAllElements();
         // Do not show random element at the start
@@ -129,6 +133,14 @@ public class player1Script: MonoBehaviour
     {
         if (isMoving)
         {
+            counter += 1;
+            if (counter == 1) {
+                animator.SetBool("crouched", true);
+                animator.speed = 0.25f;
+            } else {
+                UpdateAnimationSpeed();
+            }
+
             transform.Translate(Vector3.forward * speedP1 * Time.deltaTime);
             speedP1 *= 0.9999f; // Gradually decelerate during the race
         }
@@ -290,5 +302,13 @@ public class player1Script: MonoBehaviour
             yield return null;
         }
         isMoving = false; // Stop moving after deceleration
+         animator.SetBool("cheering", true);
+        animator.speed = 1.0f;
+    }
+
+    private void UpdateAnimationSpeed()
+    {
+        // Adjust the animation speed dynamically, with a slower scaling factor
+        animator.speed = Mathf.Clamp(speedP1 / 20f, 0.25f, 1.5f);  // Speed between 0.5 and 1.5
     }
 }

@@ -276,9 +276,10 @@ public class Player2Movement : MonoBehaviour
             yield return null;
         }
         isMoving = false; // Stop moving after deceleration
-        animator.SetBool("Stand", true);
+        animator.SetBool("cheering", true);
+        animator.speed = 1.0f;
     }
-    
+
     private void UpdateAnimationSpeed()
     {
         // Adjust the animation speed dynamically, with a slower scaling factor
