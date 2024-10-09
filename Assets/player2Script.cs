@@ -111,6 +111,8 @@ public class Player2Movement : MonoBehaviour
                 animator.SetBool("crouched", true);
                 animator.speed = 0.5f;
             }
+
+            UpdateAnimationSpeed();
             
             transform.Translate(Vector3.forward * speedP2 * Time.deltaTime);
             speedP2 *= 0.9999f; // Gradually decelerate during the race
@@ -274,5 +276,11 @@ public class Player2Movement : MonoBehaviour
             yield return null;
         }
         isMoving = false; // Stop moving after deceleration
+        animator.SetBool("Stand", true);
+    }
+
+    private void UpdateAnimationSpeed()
+    {
+        animator.speed = Mathf.Clamp(speedP2 / 20f, 0.5f, 1.5f);  // Speed between 0.5 and 1.5
     }
 }
