@@ -888,7 +888,7 @@ MonoBehaviour:
   sElement: {fileID: 848292521}
   aElement: {fileID: 1025292730}
   dElement: {fileID: 598044819}
-  player2: {fileID: 0}
+  player2: {fileID: 806438001}
   runTimerText: {fileID: 348403990}
   countdownText: {fileID: 1864354921}
   decelerationTime: 1.5
