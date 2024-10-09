@@ -12,6 +12,9 @@ public class CameraControllerWithBreathing : MonoBehaviour
     private Vector3 currentRotation;  // Für glatte Mausbewegung
     private Vector3 targetRotation;   // Zielrotation für die Verzögerung
 
+    private float breathAmplitudeIncreaseRate = 0.5f; // Zuwachsrate für die Atmung
+    private float currentBreathAmplitude = 0f; // Aktuelle Atmungsamplitude
+
     void Start()
     {
         // Cursor ausblenden und sperren, damit die Maus nur die Kamera steuert
@@ -29,6 +32,18 @@ public class CameraControllerWithBreathing : MonoBehaviour
     {
         HandleMouseLook();
         ApplyBreathingEffect();
+
+        // Überprüfen, ob die linke Maustaste gedrückt wird
+        if (Input.GetMouseButton(0)) // 0 = linke Maustaste
+        {
+            // Erhöhe kontinuierlich die Atmungsamplitude
+            currentBreathAmplitude += breathAmplitudeIncreaseRate * Time.deltaTime;
+        }
+        else
+        {
+            // Senke die Atmungsamplitude zurück auf 0
+            currentBreathAmplitude = Mathf.Lerp(currentBreathAmplitude, 0f, rotationSmoothing);
+        }
     }
 
     void HandleMouseLook()
@@ -55,8 +70,8 @@ public class CameraControllerWithBreathing : MonoBehaviour
     void ApplyBreathingEffect()
     {
         // Simuliere die Atmung durch eine sinusförmige Veränderung der X- und Y-Position
-        float breathOffsetY = Mathf.Sin(Time.time * breathSpeed) * breathAmplitude;  // Auf/Ab (Y-Achse)
-        float breathOffsetX = Mathf.Cos(Time.time * breathSpeed * 0.5f) * (breathAmplitude / 2);  // Leichtes Wanken (X-Achse)
+        float breathOffsetY = Mathf.Sin(Time.time * breathSpeed) * currentBreathAmplitude;  // Auf/Ab (Y-Achse)
+        float breathOffsetX = Mathf.Cos(Time.time * breathSpeed * 0.5f) * (currentBreathAmplitude / 2);  // Leichtes Wanken (X-Achse)
 
         // Aktualisiere die Position der Kamera mit dem Atmungseffekt (X und Y beeinflusst)
         transform.localPosition = new Vector3(
