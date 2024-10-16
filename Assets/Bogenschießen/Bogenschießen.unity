@@ -472,7 +472,7 @@ Transform:
   m_GameObject: {fileID: 323434363}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.13036706, z: -0, w: 0.9914658}
-  m_LocalPosition: {x: 2.63, y: -1.5, z: -0.46}
+  m_LocalPosition: {x: 2.27, y: -1.5, z: 0.9}
   m_LocalScale: {x: 3.3333333, y: 3.333333, z: 3.3333333}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -496,6 +496,11 @@ MonoBehaviour:
   playerBody: {fileID: 1228307114}
   breathAmplitude: 1.25
   breathSpeed: 4
+--- !u!1 &412804164 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4813313846987458936, guid: ea141e99ea32bcf499487f7724a73f21, type: 3}
+  m_PrefabInstance: {fileID: 8330059282454044637}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &600405995
 GameObject:
   m_ObjectHideFlags: 0
@@ -1181,7 +1186,7 @@ Transform:
   m_GameObject: {fileID: 1228307110}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.503, y: 1.853, z: 3.148}
+  m_LocalPosition: {x: 1.503, y: 1.853, z: 3.114}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1193,6 +1198,26 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4293345400945886973, guid: ea141e99ea32bcf499487f7724a73f21, type: 3}
   m_PrefabInstance: {fileID: 8330059282454044637}
   m_PrefabAsset: {fileID: 0}
+--- !u!95 &1425225118 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 6106717885964305355, guid: ea141e99ea32bcf499487f7724a73f21, type: 3}
+  m_PrefabInstance: {fileID: 8330059282454044637}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1425225121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 412804164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 912d380fc3caa2645beb855de8483978, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bowWireAnimator: {fileID: 1425225118}
+  arrow: {fileID: 412804164}
+  resetDelay: 0.2
 --- !u!1 &1447448138
 GameObject:
   m_ObjectHideFlags: 0
@@ -1529,7 +1554,7 @@ Transform:
   m_GameObject: {fileID: 1712771707}
   serializedVersion: 2
   m_LocalRotation: {x: -0.013332834, y: 0.1205724, z: -0.010613769, w: 0.9925583}
-  m_LocalPosition: {x: -0.167, y: -0.594, z: 3.365}
+  m_LocalPosition: {x: -0.09, y: -0.59, z: 3.68}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1720,6 +1745,7 @@ GameObject:
   - component: {fileID: 2636859891854099901}
   - component: {fileID: 879210777260584347}
   - component: {fileID: 1563633948}
+  - component: {fileID: 4077561930369629714}
   m_Layer: 0
   m_Name: bow_wire1
   m_TagString: Untagged
@@ -1727,6 +1753,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &4077561930369629714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4077561930369629713}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7c97c28addd9784e806b6c2115b08ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 1563633948}
 --- !u!1001 &8330059282454044637
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1803,11 +1842,18 @@ PrefabInstance:
       propertyPath: m_IsKinematic
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6106717885964305355, guid: ea141e99ea32bcf499487f7724a73f21, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5457465959766143431, guid: ea141e99ea32bcf499487f7724a73f21, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4813313846987458936, guid: ea141e99ea32bcf499487f7724a73f21, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1425225121}
   m_SourcePrefab: {fileID: 100100000, guid: ea141e99ea32bcf499487f7724a73f21, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
