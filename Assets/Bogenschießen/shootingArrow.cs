@@ -11,10 +11,11 @@ public class ArrowShoot : MonoBehaviour
 
     private GameObject currentArrow; // Aktueller Pfeil
     private bool isShooting = false; // Status, ob der Pfeil geschossen wird
-
     private bool hasCollided = false; // Zusätzlicher Status, um Doppelanzeigen zu verhindern
     private Vector3 targetPosition;  // Zielposition des Pfeils
     private float travelledDistance = 0f; // Zurückgelegte Distanz
+    private float chargeTime = 0f;    // Zeit, die die Maustaste gedrückt wird
+    private bool isCharging = false;   // Status, ob die Maustaste gedrückt wird
 
     // Punkte für die jeweiligen Ringe
     private int whiteScore = 1;
@@ -29,10 +30,22 @@ public class ArrowShoot : MonoBehaviour
 
     void Update()
     {
-        // Überprüfe, ob die linke Maustaste losgelassen wurde und noch Pfeile übrig sind
-        if (Input.GetMouseButtonUp(0) && arrowCount < maxArrows)
+        // Überprüfe, ob die linke Maustaste gedrückt ist
+        if (Input.GetMouseButton(0))
         {
-            ShootArrow();
+            chargeTime += Time.deltaTime; // Zeit erhöhen, solange die Taste gedrückt ist
+            isCharging = true; // Status auf Laden setzen
+        }
+        else if (Input.GetMouseButtonUp(0))
+        {
+            // Wenn die Maustaste losgelassen wird
+            if (chargeTime >= 3.5f && arrowCount < maxArrows) // Überprüfe, ob die Zeit >= 3,5 Sekunden ist
+            {
+                ShootArrow(); // Pfeil abschießen
+            }
+            // Setze die Ladezeit und den Status zurück
+            chargeTime = 0f; // Reset der Ladezeit
+            isCharging = false; // Status zurücksetzen
         }
 
         // Bewege den Pfeil, falls er aktiv ist
@@ -159,37 +172,33 @@ public class ArrowShoot : MonoBehaviour
         isShooting = false;
         hasCollided = true;
 
-        Debug.Log("Pfeil hat das Ziel erreicht oder die maximale Distanz erreicht!");
-
-        // Die folgende Zeile wurde entfernt, um zu verhindern, dass der Pfeil zerstört wird
-        // Destroy(currentArrow, 5f);
+        Debug.Log("Pfeil hat das Ziel erreicht oder die maximale Distanz erreicht!");        
     }
 
-void EndRound()
-{
-    Debug.Log("Runde beendet! Gesamtpunkte: " + totalScore);
-
-    // Generiere zufällige Punktzahl für den Gegner zwischen 23 und 30
-    int enemyScore = Random.Range(23, 31); // Gegnerpunkte zwischen 23 und 30
-    Debug.Log("Gegner-Punkte: " + enemyScore);
-
-    // Überprüfe, wer gewonnen hat
-    if (totalScore > enemyScore)
+    void EndRound()
     {
-        Debug.Log("Du hast gewonnen!");
-    }
-    else if (totalScore < enemyScore)
-    {
-        Debug.Log("Du hast verloren!");
-    }
-    else
-    {
-        Debug.Log("Unentschieden!");
-    }
+        Debug.Log("Runde beendet! Gesamtpunkte: " + totalScore);
 
-    // Zurücksetzen der Punktzahlen für die nächste Runde
-    totalScore = 0;
-    arrowCount = 0; // Zurücksetzen der geschossenen Pfeile
-}
+        // Generiere zufällige Punktzahl für den Gegner zwischen 23 und 30
+        int enemyScore = Random.Range(23, 31); // Gegnerpunkte zwischen 23 und 30
+        Debug.Log("Gegner-Punkte: " + enemyScore);
 
+        // Überprüfe, wer gewonnen hat
+        if (totalScore > enemyScore)
+        {
+            Debug.Log("Du hast gewonnen!");
+        }
+        else if (totalScore < enemyScore)
+        {
+            Debug.Log("Du hast verloren!");
+        }
+        else
+        {
+            Debug.Log("Unentschieden!");
+        }
+
+        // Zurücksetzen der Punktzahlen für die nächste Runde
+        totalScore = 0;
+        arrowCount = 0; // Zurücksetzen der geschossenen Pfeile
+    }
 }
