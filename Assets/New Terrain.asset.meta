@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 288b8b57f5d2db24893f11e5b2bfe6fa
+=======
+guid: 2da32e65a8e983b4d988da4f42538bca
+>>>>>>> michalBranch
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 15600000

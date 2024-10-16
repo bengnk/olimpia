@@ -4,10 +4,15 @@
 TagManager:
   serializedVersion: 2
   tags:
+<<<<<<< HEAD
   - JumpOff
   - Ground
   - Foul
   - Before
+=======
+  - Ground
+  - Wall
+>>>>>>> michalBranch
   layers:
   - Default
   - TransparentFX
