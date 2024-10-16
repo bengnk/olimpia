@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: "Assets/Bogenschie\xDFen/Bogenschie\xDFen.unity"
     guid: 02e02f037e124c34a90d49458bb3f1aa
+  - enabled: 1
+    path: Assets/Schwimmen/Scenes/Schwimmen.unity
+    guid: 8d0d761122ebe0947a9af43d42efd0bc
   m_configObjects: {}

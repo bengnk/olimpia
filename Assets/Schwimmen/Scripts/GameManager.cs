@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;  // Für den Szenenwechsel
 
 public class GameManager : MonoBehaviour
 {
@@ -16,10 +17,17 @@ public class GameManager : MonoBehaviour
 
     private float raceStartTime;  // Zeit, zu der das Rennen startet
 
-    // Referenzen für das Start- und End-Canvas
+    // Gesamtzahl der Schwimmer
+    public int totalSwimmers = 4;  // Anzahl der Schwimmer (Anzahl kann im Inspector eingestellt werden)
+
+    // Referenzen für das Start-, End- und Countdown-Canvas
     public GameObject startCanvas;  // Das Canvas, das zu Beginn angezeigt wird
     public GameObject endCanvas;    // Das Canvas, das nach dem Ende des Rennens angezeigt wird
     public GameObject countdownCanvas; // Das Canvas, das den Countdown enthält
+
+    // Buttons für das End-Canvas
+    public Button restartButton;  // Button für das Neustarten des Spiels
+    public Button mainMenuButton;  // Button für das Zurückkehren ins Hauptmenü
 
     void Start()
     {
@@ -44,6 +52,10 @@ public class GameManager : MonoBehaviour
 
         // Hinweis anzeigen: Drücke Leertaste zum Starten
         countdownText.text = "Drücke Leertaste zum Starten";
+
+        // Buttons-Events zuweisen
+        restartButton.onClick.AddListener(RestartRace);
+        mainMenuButton.onClick.AddListener(GoToMainMenu);
     }
 
     void Update()
@@ -136,19 +148,12 @@ public class GameManager : MonoBehaviour
             DisplayResults();
             Debug.Log("Schwimmer " + swimmerID + " hat das Ziel in " + endTime + " Sekunden erreicht.");
 
-            // Wenn das Ziel erreicht ist, blende das Start-Canvas aus und das End-Canvas ein
-            if (startCanvas != null)
+            // Überprüfe, ob alle Schwimmer das Ziel erreicht haben
+            if (swimmerTimes.Count == totalSwimmers)
             {
-                startCanvas.SetActive(false);  // Start-Canvas ausblenden
+                // Wenn alle Schwimmer im Ziel sind, blende das End-Canvas ein
+                ShowEndCanvas();
             }
-
-            if (endCanvas != null)
-            {
-                endCanvas.SetActive(true);  // End-Canvas einblenden
-            }
-
-            // Das Rennen ist vorbei, daher die Rennzeit nicht mehr aktualisieren
-            raceOngoing = false;
         }
     }
 
@@ -164,7 +169,37 @@ public class GameManager : MonoBehaviour
         resultsText.text = "";  // Setze den Text zurück
         foreach (var entry in swimmerTimes)
         {
-            resultsText.text += entry.Value.ToString("F2") + " Sekunden";
+            resultsText.text += entry.Value.ToString("F2") + " Sekunden\n";
         }
+    }
+
+    // Funktion zum Zeigen des End-Canvas
+    private void ShowEndCanvas()
+    {
+        if (startCanvas != null)
+        {
+            startCanvas.SetActive(false);  // Start-Canvas ausblenden
+        }
+
+        if (endCanvas != null)
+        {
+            endCanvas.SetActive(true);  // End-Canvas einblenden
+        }
+
+        raceOngoing = false;  // Das Rennen ist jetzt offiziell beendet
+    }
+
+    // Funktion zum Neustarten des Spiels
+    public void RestartRace()
+    {
+        Time.timeScale = 1f;  // Zeit wieder auf normale Geschwindigkeit setzen
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);  // Aktuelle Szene neu laden
+    }
+
+    // Funktion zum Hauptmenü zurückkehren
+    public void GoToMainMenu()
+    {
+        Time.timeScale = 1f;  // Zeit wieder auf normale Geschwindigkeit setzen
+        SceneManager.LoadScene("Menü");  // Hauptmenü-Szene laden (stelle sicher, dass sie im Build enthalten ist)
     }
 }
