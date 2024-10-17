@@ -1,5 +1,13 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/IVT_LowPoly_Weapon/Animation/Main Camera Anim.controller.meta
 guid: d2a80a5beeeef194aaefd34f8b66cd0a
+========
+<<<<<<< HEAD
+guid: 288b8b57f5d2db24893f11e5b2bfe6fa
+=======
+guid: 2da32e65a8e983b4d988da4f42538bca
+>>>>>>> michalBranch
+>>>>>>>> 48ec2cf0a6204ee20f9ed56f271b40560b474516:Assets/Sprint/New Terrain.asset.meta
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 9100000
