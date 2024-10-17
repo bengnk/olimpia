@@ -169,7 +169,7 @@ public class GameManager : MonoBehaviour
         resultsText.text = "";  // Setze den Text zurück
         foreach (var entry in swimmerTimes)
         {
-            resultsText.text += entry.Value.ToString("F2") + " Sekunden\n";
+            resultsText.text += entry.Value.ToString("F2") + " s";
         }
     }
 

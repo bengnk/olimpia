@@ -45,11 +45,16 @@ public class player1Script: MonoBehaviour
     private Animator animator;
     private int counter = 0;
 
+    public GameObject countdownBackground;
+
     void Start()
     {
         animator = GetComponent<Animator>(); 
         Player2Movement = player2.GetComponent<Player2Movement>();
         raceManager = FindObjectOfType<RaceManager>(); // Find RaceManager in the scene
+        Color tempColor = runTimerText.color;
+        tempColor.a = 0f; // Setzt den Alpha-Wert auf 0 (vollständig transparent)
+        runTimerText.color = tempColor;
         HideAllElements();
 
         if (countdownText != null)
@@ -120,6 +125,10 @@ public class player1Script: MonoBehaviour
         if (countdownText != null)
         {
             countdownText.text = ""; 
+            Color tempColor = runTimerText.color;
+            tempColor.a = 1f; // Setzt den Alpha-Wert auf 0 (vollständig transparent)
+            runTimerText.color = tempColor;
+    
         }
     }
 
