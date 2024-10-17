@@ -9,10 +9,10 @@ public class Player2Movement : MonoBehaviour
     private bool isMoving = false;
 
     // Timer variables
-    public float countdownTime = 5f;  // Fixed to 5 seconds
+    public float countdownTime = 5f;
     private bool countdownFinished = false;
     private bool timerStarted = false;
-    private float runTimer = 0f;  // Timer for run duration
+    private float runTimer = 0f;
 
     // UI references for Up, Down, Left, Right elements
     public Image upElement;
@@ -20,29 +20,27 @@ public class Player2Movement : MonoBehaviour
     public Image leftElement;
     public Image rightElement;
 
-    private Image currentElement; // Keep track of the currently displayed element
-    private string currentKey; // Store the currently active key
+    private Image currentElement;
+    private string currentKey;
 
-    // Deceleration settings
-    public float decelerationTime = 1.5f; // Time to decelerate to zero after finish
-    public bool isFinishedP2 = false; // Track if the race is finished
+    // Countdown Text UI
+    public Text countdownText;  // UI Text for countdown
 
-    // Flag to prevent input
+    public float decelerationTime = 1.5f;
+    public bool isFinishedP2 = false;
     private bool canInput = true;
 
     private string previousKey = "";
-
-    // UI Text for countdown (optional, if you want to display it for Player 2)
-    public Text countdownText;
-
+    private RaceManager raceManager;
     private Animator animator;
     private int counter = 0;
 
     void Start()
     {
-        animator = GetComponent<Animator>();  // Animator initialisieren
+        animator = GetComponent<Animator>();
+        raceManager = FindObjectOfType<RaceManager>(); // Find RaceManager in the scene
         HideAllElements();
-        // Initialize countdown text to show starting countdown value (if using a countdown UI for Player 2)
+
         if (countdownText != null)
         {
             countdownText.text = countdownTime.ToString();
@@ -57,24 +55,22 @@ public class Player2Movement : MonoBehaviour
         }
         else
         {
-            // Start the run timer if it hasn't started yet
             if (!timerStarted)
             {
                 timerStarted = true;
-                runTimer = 0f; // Reset run timer
+                runTimer = 0f;
             }
 
-            // Increment the run timer only if the race is not finished
             if (!isFinishedP2)
             {
                 runTimer += Time.deltaTime;
 
-                // Only show random elements after countdown is finished
                 if (currentElement == null)
                 {
-                    ShowRandomElement(); // Show the first random element
+                    ShowRandomElement();
                 }
             }
+
             MoveSquare();
             CheckInput();
         }
@@ -85,7 +81,6 @@ public class Player2Movement : MonoBehaviour
         countdownTime -= Time.deltaTime;
         if (countdownTime > 0)
         {
-            // Update countdown UI Text for Player 2 (optional)
             if (countdownText != null)
             {
                 countdownText.text = Mathf.Ceil(countdownTime).ToString();
@@ -96,16 +91,16 @@ public class Player2Movement : MonoBehaviour
             countdownFinished = true;
             if (countdownText != null)
             {
-                countdownText.text = ""; // Clear the countdown text after it's done
+                countdownText.text = "";
             }
-            ShowRandomElement(); // Show random elements after countdown finishes
+            ShowRandomElement();
         }
     }
 
     void MoveSquare()
     {
         if (isMoving)
-        {   
+        {
             counter += 1;
             if (counter == 1) {
                 animator.SetBool("crouched", true);
@@ -115,7 +110,7 @@ public class Player2Movement : MonoBehaviour
             }
 
             transform.Translate(Vector3.forward * speedP2 * Time.deltaTime);
-            speedP2 *= 0.9999f; // Gradually decelerate during the race
+            speedP2 *= 0.9999f;
         }
     }
 
@@ -152,7 +147,7 @@ public class Player2Movement : MonoBehaviour
 
         if (currentElement != null)
         {
-            currentElement.color = new Color(1, 1, 1, 1); // Set opacity to 1 (visible)
+            currentElement.color = new Color(1, 1, 1, 1);
         }
     }
 
@@ -170,7 +165,7 @@ public class Player2Movement : MonoBehaviour
 
     private void HideAllElements()
     {
-        upElement.color = new Color(1, 1, 1, 0); // Set opacity to 0 (invisible)
+        upElement.color = new Color(1, 1, 1, 0);
         downElement.color = new Color(1, 1, 1, 0);
         leftElement.color = new Color(1, 1, 1, 0);
         rightElement.color = new Color(1, 1, 1, 0);
@@ -178,7 +173,7 @@ public class Player2Movement : MonoBehaviour
 
     private void CheckInput()
     {
-        if (canInput) // Allow input only if canInput is true
+        if (canInput)
         {
             if (Input.GetKeyDown(KeyCode.UpArrow) && currentKey == "UpArrow")
             {
@@ -198,11 +193,10 @@ public class Player2Movement : MonoBehaviour
             }
             else if (Input.anyKeyDown)
             {
-                // Check if the pressed key is one of the arrow keys
-                if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow) || 
+                if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow) ||
                     Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow))
                 {
-                    if (currentKey != GetPressedKey()) // If it's a valid key but wrong one
+                    if (currentKey != GetPressedKey())
                     {
                         LoseMomentum();
                     }
@@ -211,29 +205,33 @@ public class Player2Movement : MonoBehaviour
         }
     }
 
-
     private string GetPressedKey()
     {
         if (Input.GetKeyDown(KeyCode.UpArrow)) return "UpArrow";
         if (Input.GetKeyDown(KeyCode.DownArrow)) return "DownArrow";
         if (Input.GetKeyDown(KeyCode.LeftArrow)) return "LeftArrow";
         if (Input.GetKeyDown(KeyCode.RightArrow)) return "RightArrow";
-        return ""; // Return an empty string if none of the expected keys are pressed
+        return "";
     }
 
     private void GainMomentum()
     {
-        IncreaseSpeedP2(); // Apply momentum to the cube
+        IncreaseSpeedP2();
         HideCurrentElement();
-        ShowRandomElement(); // Show the next random element
+        ShowRandomElement();
+    }
+
+    private void LoseMomentum()
+    {
+        speedP2 *= 0.5f;
     }
 
     private void HideCurrentElement()
     {
         if (currentElement != null)
         {
-            currentElement.color = new Color(1, 1, 1, 0); // Set opacity to 0 (invisible)
-            currentElement = null; // Clear current element
+            currentElement.color = new Color(1, 1, 1, 0);
+            currentElement = null;
         }
     }
 
@@ -243,19 +241,14 @@ public class Player2Movement : MonoBehaviour
         isMoving = true;
     }
 
-    public void LoseMomentum()
-    {
-        speedP2 *= 0.5f; // Reduce speed by 50%
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Finish") && !isFinishedP2)
         {
-            isFinishedP2 = true; // Mark the race as finished
-            canInput = false; // Disable input for Player 2
-            Debug.Log("Player 2 finished! Time: " + runTimer.ToString("F2") + "s"); // Log Player 2's finish time
-            StartDeceleration(); // Start the deceleration process
+            isFinishedP2 = true;
+            canInput = false;
+            raceManager.PlayerFinished(2, runTimer);
+            StartDeceleration();
         }
     }
 
@@ -272,17 +265,16 @@ public class Player2Movement : MonoBehaviour
         while (speedP2 > 0)
         {
             speedP2 -= decelerationRate * Time.deltaTime;
-            if (speedP2 < 0) speedP2 = 0; // Ensure speed doesn't go negative
+            if (speedP2 < 0) speedP2 = 0;
             yield return null;
         }
-        isMoving = false; // Stop moving after deceleration
+        isMoving = false;
         animator.SetBool("cheering", true);
         animator.speed = 1.0f;
     }
 
     private void UpdateAnimationSpeed()
     {
-        // Adjust the animation speed dynamically, with a slower scaling factor
-        animator.speed = Mathf.Clamp(speedP2 / 20f, 0.25f, 1.5f);  // Speed between 0.5 and 1.5
+        animator.speed = Mathf.Clamp(speedP2 / 20f, 0.25f, 1.5f);
     }
 }

@@ -20,7 +20,7 @@ public class player1Script: MonoBehaviour
     public Image aElement;
     public Image dElement;
 
-    //  Player 2 reference to check if hes finished
+    // Player 2 reference to check if he has finished
     public GameObject player2;
     private Player2Movement Player2Movement;
 
@@ -39,6 +39,9 @@ public class player1Script: MonoBehaviour
     // Flag to prevent input
     private bool canInput = true;
 
+    // Reference to Race Manager
+    private RaceManager raceManager;
+
     private Animator animator;
     private int counter = 0;
 
@@ -46,11 +49,9 @@ public class player1Script: MonoBehaviour
     {
         animator = GetComponent<Animator>(); 
         Player2Movement = player2.GetComponent<Player2Movement>();
+        raceManager = FindObjectOfType<RaceManager>(); // Find RaceManager in the scene
         HideAllElements();
-        // Do not show random element at the start
-        // ShowRandomElement(); // Removed to delay showing elements until countdown finishes
 
-        // Initialize countdown text to show starting countdown value
         if (countdownText != null)
         {
             countdownText.text = countdownTime.ToString();
@@ -65,25 +66,21 @@ public class player1Script: MonoBehaviour
         }
         else
         {
-            // Start the run timer if it hasn't started yet
             if (!timerStarted)
             {
                 timerStarted = true;
                 runTimer = 0f; // Reset run timer
             }
 
-            // Increment the run timer only if the race is not finished
             if (!isFinished || !Player2Movement.isFinishedP2)
             {
                 runTimer += Time.deltaTime;
 
-                // Update run timer UI text
                 if (runTimerText != null)
                 {
                     runTimerText.text = runTimer.ToString("F2") + "s"; // Show total seconds
                 }
 
-                // Only show random elements after countdown is finished
                 if (currentElement == null)
                 {
                     ShowRandomElement(); // Show the first random element
@@ -100,7 +97,6 @@ public class player1Script: MonoBehaviour
         countdownTime -= Time.deltaTime;
         if (countdownTime > 0)
         {
-            // Update UI Text with remaining countdown time
             if (countdownText != null)
             {
                 countdownText.text = Mathf.Ceil(countdownTime).ToString();
@@ -108,24 +104,22 @@ public class player1Script: MonoBehaviour
         }
         else
         {
-            // Countdown finished, show "GO!" for a brief moment
             if (countdownText != null)
             {
                 countdownText.text = "GO!";
             }
             countdownFinished = true;
 
-            // Wait for 1 second before clearing the countdown text
             StartCoroutine(ClearCountdownText());
         }
     }
 
     private IEnumerator ClearCountdownText()
     {
-        yield return new WaitForSeconds(1f); // Wait for 1 second
+        yield return new WaitForSeconds(1f); 
         if (countdownText != null)
         {
-            countdownText.text = ""; // Clear the countdown text
+            countdownText.text = ""; 
         }
     }
 
@@ -142,7 +136,7 @@ public class player1Script: MonoBehaviour
             }
 
             transform.Translate(Vector3.forward * speedP1 * Time.deltaTime);
-            speedP1 *= 0.9999f; // Gradually decelerate during the race
+            speedP1 *= 0.9999f; 
         }
     }
 
@@ -151,10 +145,10 @@ public class player1Script: MonoBehaviour
         int randomIndex;
         do
         {
-            randomIndex = Random.Range(0, 4); // Generate a new random index
-        } while (GetKeyFromIndex(randomIndex) == previousKey); // Repeat if it matches the previous key
+            randomIndex = Random.Range(0, 4); 
+        } while (GetKeyFromIndex(randomIndex) == previousKey);
 
-        previousKey = GetKeyFromIndex(randomIndex); // Update the previous key
+        previousKey = GetKeyFromIndex(randomIndex); 
         HideAllElements();
 
         switch (randomIndex)
@@ -179,7 +173,7 @@ public class player1Script: MonoBehaviour
 
         if (currentElement != null)
         {
-            currentElement.color = new Color(1, 1, 1, 1); // Set opacity to 1 (visible)
+            currentElement.color = new Color(1, 1, 1, 1);
         }
     }
 
@@ -197,7 +191,7 @@ public class player1Script: MonoBehaviour
 
     private void HideAllElements()
     {
-        wElement.color = new Color(1, 1, 1, 0); // Set opacity to 0 (invisible)
+        wElement.color = new Color(1, 1, 1, 0);
         sElement.color = new Color(1, 1, 1, 0);
         aElement.color = new Color(1, 1, 1, 0);
         dElement.color = new Color(1, 1, 1, 0);
@@ -205,9 +199,8 @@ public class player1Script: MonoBehaviour
 
     private void CheckInput()
     {
-        if (canInput) // Allow input only if canInput is true
+        if (canInput)
         {
-            // Check if the correct key is pressed
             if (Input.GetKeyDown(KeyCode.W) && currentKey == "W")
             {
                 GainMomentum();
@@ -224,47 +217,44 @@ public class player1Script: MonoBehaviour
             {
                 GainMomentum();
             }
-            // Check for any wrong key press among the relevant keys only
             else if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S) ||
                     Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D))
             {
-                if (currentKey != GetPressedKey()) // Wrong key pressed among WASD
+                if (currentKey != GetPressedKey())
                 {
-                    LoseMomentum(); // Call LoseMomentum() only if the wrong WASD key is pressed
+                    LoseMomentum();
                 }
             }
         }
     }
 
-    // Helper function to get the currently pressed WASD key as a string
     private string GetPressedKey()
     {
         if (Input.GetKeyDown(KeyCode.W)) return "W";
         if (Input.GetKeyDown(KeyCode.S)) return "S";
         if (Input.GetKeyDown(KeyCode.A)) return "A";
         if (Input.GetKeyDown(KeyCode.D)) return "D";
-        return ""; // Return empty string if none of the relevant keys are pressed
+        return "";
     }
-
 
     private void GainMomentum()
     {
-        IncreaseSpeedP1(); // Apply momentum to the cube
+        IncreaseSpeedP1();
         HideCurrentElement();
-        ShowRandomElement(); // Show the next random element
+        ShowRandomElement();
     }
 
     private void LoseMomentum()
     {
-        speedP1 *= 0.5f; // Reduce speed by 50%
+        speedP1 *= 0.5f;
     }
 
     private void HideCurrentElement()
     {
         if (currentElement != null)
         {
-            currentElement.color = new Color(1, 1, 1, 0); // Set opacity to 0 (invisible)
-            currentElement = null; // Clear current element
+            currentElement.color = new Color(1, 1, 1, 0);
+            currentElement = null;
         }
     }
 
@@ -278,10 +268,10 @@ public class player1Script: MonoBehaviour
     {
         if (other.CompareTag("Finish") && !isFinished)
         {
-            isFinished = true; // Mark the race as finished
-            canInput = false; // Disable input for Player 1
-            Debug.Log("Player 1 finished! Time: " + runTimer.ToString("F2") + "s"); // Log Player 2's finish time
-            StartDeceleration(); // Start the deceleration process
+            isFinished = true;
+            canInput = false;
+            raceManager.PlayerFinished(1, runTimer);
+            StartDeceleration();
         }
     }
 
@@ -298,17 +288,16 @@ public class player1Script: MonoBehaviour
         while (speedP1 > 0)
         {
             speedP1 -= decelerationRate * Time.deltaTime;
-            if (speedP1 < 0) speedP1 = 0; // Ensure speed doesn't go negative
+            if (speedP1 < 0) speedP1 = 0;
             yield return null;
         }
-        isMoving = false; // Stop moving after deceleration
-         animator.SetBool("cheering", true);
+        isMoving = false;
+        animator.SetBool("cheering", true);
         animator.speed = 1.0f;
     }
 
     private void UpdateAnimationSpeed()
     {
-        // Adjust the animation speed dynamically, with a slower scaling factor
-        animator.speed = Mathf.Clamp(speedP1 / 20f, 0.25f, 1.5f);  // Speed between 0.5 and 1.5
+        animator.speed = Mathf.Clamp(speedP1 / 20f, 0.25f, 1.5f);
     }
 }
