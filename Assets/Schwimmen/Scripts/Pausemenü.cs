@@ -35,6 +35,9 @@ public class PauseManager : MonoBehaviour
     {
         isPaused = true;
         Time.timeScale = 0f;  // Spiel pausieren (Zeit einfrieren)
+        // **Cursor sichtbar und freigegeben machen**
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         if (pauseCanvas != null)
         {
             pauseCanvas.SetActive(true);  // Pause-Canvas anzeigen
@@ -43,6 +46,11 @@ public class PauseManager : MonoBehaviour
 
     public void ResumeGame()
     {
+        if (SceneManager.GetActiveScene().name == "Bogenschießen")
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
         isPaused = false;
         Time.timeScale = 1f;  // Spiel fortsetzen (Zeit normal weiterlaufen lassen)
         if (pauseCanvas != null)
@@ -55,6 +63,7 @@ public class PauseManager : MonoBehaviour
     {
         // Hier könntest du den Hauptmenü-Screen laden, z. B.:
         SceneManager.LoadScene("Menü");  // Lade die Hauptmenü-Szene
+        Time.timeScale = 1f;
         Debug.Log("Zurück zum Hauptmenü");
     }
 }

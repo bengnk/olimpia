@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.UI; // Für UI-Komponenten wie Canvas und Text
+using UnityEngine.SceneManagement; // Für das Laden von Szenen
 
 public class ArrowShoot : MonoBehaviour
 {
@@ -16,6 +18,7 @@ public class ArrowShoot : MonoBehaviour
     private float travelledDistance = 0f; // Zurückgelegte Distanz
     private float chargeTime = 0f;    // Zeit, die die Maustaste gedrückt wird
     private bool isCharging = false;   // Status, ob die Maustaste gedrückt wird
+    private bool roundEnded = false;   // Status, ob die Runde beendet ist
 
     // Punkte für die jeweiligen Ringe
     private int whiteScore = 1;
@@ -28,8 +31,20 @@ public class ArrowShoot : MonoBehaviour
     private int arrowCount = 0;      // Zählt die Anzahl der geschossenen Pfeile
     private int maxArrows = 3;       // Maximale Anzahl der Pfeile
 
+    public ScoreDisplay scoreDisplay; // Referenz auf das ScoreDisplay-Skript
+
+    void Start()
+    {
+        // Stelle sicher, dass der Cursor zu Beginn des Spiels gesperrt und ausgeblendet ist
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
     void Update()
     {
+        // Wenn die Runde beendet ist, keine Eingaben mehr zulassen
+        if (roundEnded) return;
+
         // Überprüfe, ob die linke Maustaste gedrückt ist
         if (Input.GetMouseButton(0))
         {
@@ -179,6 +194,19 @@ public class ArrowShoot : MonoBehaviour
     {
         Debug.Log("Runde beendet! Gesamtpunkte: " + totalScore);
 
+        // Zeige die Punktzahl auf dem Canvas an
+        scoreDisplay.ShowScore(totalScore);
+
+        // Setze den Status, dass die Runde beendet ist, um weitere Eingaben zu verhindern
+        roundEnded = true;
+
+        // **Spiele anhalten**
+        Time.timeScale = 0; // Das Spiel pausieren
+
+        // **Cursor sichtbar und freigegeben machen**
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
         // Generiere zufällige Punktzahl für den Gegner zwischen 23 und 30
         int enemyScore = Random.Range(23, 31); // Gegnerpunkte zwischen 23 und 30
         Debug.Log("Gegner-Punkte: " + enemyScore);
@@ -197,8 +225,39 @@ public class ArrowShoot : MonoBehaviour
             Debug.Log("Unentschieden!");
         }
 
-        // Zurücksetzen der Punktzahlen für die nächste Runde
+        // Punkte und Pfeilanzahl für die nächste Runde zurücksetzen (falls benötigt)
         totalScore = 0;
-        arrowCount = 0; // Zurücksetzen der geschossenen Pfeile
+        arrowCount = 0;
+    }
+
+    // Methode zum Fortsetzen des Spiels (wenn du später den Button drückst)
+    public void ResumeGame()
+    {
+        Time.timeScale = 1; // Spiel fortsetzen
+        roundEnded = false; // Runde zurücksetzen, damit das Spiel weitergeht
+        // Stelle sicher, dass der Cursor zu Beginn des Spiels gesperrt und ausgeblendet ist
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    
+    }
+
+    // Methode zum Neustart des Spiels
+    public void RestartGame()
+    {
+        Time.timeScale = 1; // Spielzeit zurücksetzen
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Lädt die aktuelle Szene neu
+        // Stelle sicher, dass der Cursor zu Beginn des Spiels gesperrt und ausgeblendet ist
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+       
+    }
+
+    // Methode zum Zurückgehen ins Hauptmenü
+    public void LoadMainMenu()
+    {
+        Time.timeScale = 1; // Spielzeit zurücksetzen
+        SceneManager.LoadScene("Menü"); // Lädt die Hauptmenü-Szene (stelle sicher, dass die Szene korrekt benannt ist)
+
+        
     }
 }

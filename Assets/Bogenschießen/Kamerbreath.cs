@@ -17,8 +17,7 @@ public class CameraControllerWithBreathing : MonoBehaviour
 
     void Start()
     {
-        // Cursor ausblenden und sperren, damit die Maus nur die Kamera steuert
-        Cursor.lockState = CursorLockMode.Locked;
+        
 
         // Speichere die ursprüngliche Position der Kamera
         originalCameraPosition = transform.localPosition;

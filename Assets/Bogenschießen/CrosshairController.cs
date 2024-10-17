@@ -14,7 +14,7 @@ public class CrosshairController : MonoBehaviour
 
     void Start()
     {
-        Cursor.visible = false; // Cursor ausblenden
+        
 
         // Initialisiere die letzte Mausposition
         lastMousePosition = Input.mousePosition;
