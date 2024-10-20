@@ -7,6 +7,7 @@ public class player1Script: MonoBehaviour
     public float speedP1 = 0f;
     public float acceleration = 1.5f;
     private bool isMoving = false;
+    private bool singleplayer = false;
 
     // Timer variables
     public float countdownTime = 5f; // Fixed to 5 seconds
@@ -47,6 +48,9 @@ public class player1Script: MonoBehaviour
 
     public GameObject countdownBackground;
 
+    public Camera player1Camera;
+    public Camera player2Camera;
+
     void Start()
     {
         animator = GetComponent<Animator>(); 
@@ -65,6 +69,14 @@ public class player1Script: MonoBehaviour
 
     void Update()
     {
+        if(singleplayer) {
+            player1Camera.enabled = false;
+            player2Camera.rect = new Rect(0f, 0f, 1f, 1f);
+        } else {
+            player1Camera.enabled = true;
+            player2Camera.rect = new Rect(0.5f, 0f, 0.5f, 1f);
+        }
+
         if (!countdownFinished)
         {
             HandleCountdown();
@@ -92,8 +104,26 @@ public class player1Script: MonoBehaviour
                 }
             }
 
-            MoveSquare();
-            CheckInput();
+            if(!singleplayer) {
+                MoveSquare();
+                CheckInput();
+            } else {
+                MoveSquare();
+                float randomValue = Random.Range(0f, 1f);
+
+                if(canInput) {
+                    // 80% chance to gain momentum
+                    if (randomValue <= 0.8f)
+                    {
+                        GainMomentum();
+                    }
+                    // 20% chance to lose momentum
+                    else
+                    {
+                        LoseMomentum();
+                    }
+                }
+            } 
         }
     }
 
