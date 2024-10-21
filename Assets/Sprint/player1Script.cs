@@ -107,6 +107,7 @@ public class player1Script: MonoBehaviour
             if(!singleplayer) {
                 MoveSquare();
                 CheckInput();
+                HideAllElements();
             } else {
                 MoveSquare();
                 float randomValue = Random.Range(0f, 1f);
