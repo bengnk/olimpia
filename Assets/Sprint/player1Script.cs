@@ -7,7 +7,7 @@ public class player1Script: MonoBehaviour
     public float speedP1 = 0f;
     public float acceleration = 1.5f;
     private bool isMoving = false;
-    private bool singleplayer = false;
+    private bool singleplayer = true;
 
     // Timer variables
     public float countdownTime = 5f; // Fixed to 5 seconds
