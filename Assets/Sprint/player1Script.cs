@@ -7,13 +7,14 @@ public class player1Script: MonoBehaviour
     public float speedP1 = 0f;
     public float acceleration = 1.5f;
     private bool isMoving = false;
-    private bool singleplayer = false;
+    private bool singleplayer = SingleplayerVarHolder.singleplayer;
 
     // Timer variables
     public float countdownTime = 5f; // Fixed to 5 seconds
     private bool countdownFinished = false;
     private bool timerStarted = false;
     private float runTimer = 0f; // Timer for run duration
+    private bool startKeyPressed = false;
 
     // UI references for W, S, A, D elements
     public Image wElement;
@@ -32,6 +33,7 @@ public class player1Script: MonoBehaviour
     // UI Text for run timer and countdown
     public Text runTimerText;  // Reference to the UI Text element for run timer
     public Text countdownText;  // Reference to the UI Text element for countdown
+    public Text pressSpaceKey;
 
     // Deceleration settings
     public float decelerationTime = 1.5f; // Time to decelerate to zero after finish
@@ -63,12 +65,13 @@ public class player1Script: MonoBehaviour
 
         if (countdownText != null)
         {
-            countdownText.text = countdownTime.ToString();
+            countdownText.color = new Color(1, 1, 1, 0);
+            countdownBackground.SetActive(false);
         }
     }
 
     void Update()
-    {
+    {   
         if(singleplayer) {
             player1Camera.enabled = false;
             player2Camera.rect = new Rect(0f, 0f, 1f, 1f);
@@ -77,8 +80,18 @@ public class player1Script: MonoBehaviour
             player2Camera.rect = new Rect(0.5f, 0f, 0.5f, 1f);
         }
 
-        if (!countdownFinished)
+        if(Input.GetKeyDown(KeyCode.Space)) {
+            startKeyPressed = true;
+        }
+
+        if(!startKeyPressed) {
+            pressSpaceKey.color = new Color(1, 1, 1, 1);
+        }
+        else if(!countdownFinished)
         {
+            pressSpaceKey.color = new Color(1, 1, 1, 0);
+            countdownText.color = new Color(1, 1, 1, 1);
+            countdownBackground.SetActive(true);
             HandleCountdown();
         }
         else
@@ -114,7 +127,7 @@ public class player1Script: MonoBehaviour
 
                 if(canInput) {
                     // 80% chance to gain momentum
-                    if (randomValue <= 0.8f)
+                    if (randomValue <= 0.85f)
                     {
                         GainMomentum();
                     }

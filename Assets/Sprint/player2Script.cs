@@ -13,6 +13,7 @@ public class Player2Movement : MonoBehaviour
     private bool countdownFinished = false;
     private bool timerStarted = false;
     private float runTimer = 0f;
+    private bool startKeyPressed = false;
 
     // UI references for Up, Down, Left, Right elements
     public Image upElement;
@@ -25,6 +26,8 @@ public class Player2Movement : MonoBehaviour
 
     // Countdown Text UI
     public Text countdownText;  // UI Text for countdown
+    public Text pressSpaceKey;
+
 
     public float decelerationTime = 1.5f;
     public bool isFinishedP2 = false;
@@ -49,8 +52,16 @@ public class Player2Movement : MonoBehaviour
 
     void Update()
     {
-        if (!countdownFinished)
+        if(Input.GetKeyDown(KeyCode.Space)) {
+            startKeyPressed = true;
+        }
+
+        if(!startKeyPressed) {
+            pressSpaceKey.color = new Color(1, 1, 1, 1);
+        }
+        else if(!countdownFinished)
         {
+            pressSpaceKey.color = new Color(1, 1, 1, 1);
             HandleCountdown();
         }
         else
