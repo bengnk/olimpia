@@ -7,7 +7,7 @@ public class player1Script: MonoBehaviour
     public float speedP1 = 0f;
     public float acceleration = 1.5f;
     private bool isMoving = false;
-    private bool singleplayer = true;
+    private bool singleplayer = false;
 
     // Timer variables
     public float countdownTime = 5f; // Fixed to 5 seconds
@@ -107,9 +107,9 @@ public class player1Script: MonoBehaviour
             if(!singleplayer) {
                 MoveSquare();
                 CheckInput();
-                HideAllElements();
             } else {
                 MoveSquare();
+                HideAllElements();
                 float randomValue = Random.Range(0f, 1f);
 
                 if(canInput) {
@@ -279,9 +279,11 @@ public class player1Script: MonoBehaviour
 
     private void GainMomentum()
     {
+        if(!singleplayer) {
+            HideCurrentElement();
+            ShowRandomElement();
+        }
         IncreaseSpeedP1();
-        HideCurrentElement();
-        ShowRandomElement();
     }
 
     private void LoseMomentum()
