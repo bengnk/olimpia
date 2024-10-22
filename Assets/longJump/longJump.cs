@@ -9,7 +9,9 @@ public class LongJump3D : MonoBehaviour
     public float deceleration = 0.5f;          
     public float jumpForce = 10f;              
     public float perfectTimingWindow = 0.5f;   
-    public float timingRange = 2f;             
+    public float timingRange = 2f;
+
+    private string score;             
 
     private Rigidbody rb;                      
     private bool hasJumped = false;            
@@ -35,6 +37,10 @@ public class LongJump3D : MonoBehaviour
     public Canvas resultsCanvas;         // Das Canvas für die Sprungergebnisse
     public Text jumpDistanceText;        // Der Text, der die Sprungweite anzeigt
 
+    private bool started = false;
+    public Text TutorialText;
+    public Image TutorialTextBackgroud;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -55,51 +61,62 @@ public class LongJump3D : MonoBehaviour
 
     void Update()
     {
-        float minSpeed = 0.1f;   
-        float maxSpeed = 30f;    
-        float minAnimationSpeed = 0.5f; 
-        float maxAnimationSpeed = 1.2f; 
-
-        if (currentSpeed > 0f)
-        {
-            float animationSpeed = Mathf.Lerp(minAnimationSpeed, maxAnimationSpeed, Mathf.InverseLerp(minSpeed, maxSpeed, currentSpeed));
-            animator.SetBool("Start", true);
-            animator.SetBool("Stand", false);
-            animator.speed = animationSpeed;
+        if(Input.GetKeyUp(KeyCode.Space)) {
+            started = true;
+            TutorialText.color = new Color(1, 1, 1, 0);
+            TutorialTextBackgroud.color = new Color(1, 1, 1, 0);
         }
 
-        if (!hasJumped)
-        {
-            HandleInput();
-            Move();
-            CheckJump();
-        }
+        if(started) {
+            float minSpeed = 0.1f;   
+            float maxSpeed = 30f;    
+            float minAnimationSpeed = 0.5f; 
+            float maxAnimationSpeed = 1.2f; 
 
-        float height = CalculateCurrentHeight();
-        
-        if (height > maxHeight)
-        {
-            maxHeight = height;
-        }
+            if (currentSpeed > 0f)
+            {
+                float animationSpeed = Mathf.Lerp(minAnimationSpeed, maxAnimationSpeed, Mathf.InverseLerp(minSpeed, maxSpeed, currentSpeed));
+                animator.SetBool("Start", true);
+                animator.SetBool("Stand", false);
+                animator.speed = animationSpeed;
+            }
 
-        if (hasJumped && height > 0f && height < 1f && maxHeight > 1f) 
-        {
-            animator.SetBool("Landing", true);
-            animator.SetBool("Jump", false);
-        }
+            if (!hasJumped)
+            {
+                HandleInput();
+                Move();
+                CheckJump();
+            }
 
-        if (isSlowingDown)
-        {   
-            maxSpeed = 0;
-            currentSpeed = 10f;
-            animator.speed = 0.5f;
-            transform.Translate(Vector3.forward * currentSpeed * Time.deltaTime);
+            float height = CalculateCurrentHeight();
+
+            if (height > maxHeight)
+            {
+                maxHeight = height;
+            }
+
+            if (hasJumped && height > 0f && height < 1f && maxHeight > 1f) 
+            {
+                animator.SetBool("Landing", true);
+                animator.SetBool("Jump", false);
+            }
+
+            if (isSlowingDown)
+            {   
+                maxSpeed = 0;
+                currentSpeed = 10f;
+                animator.speed = 0.5f;
+                transform.Translate(Vector3.forward * currentSpeed * Time.deltaTime);
+            }
+        } else {
+            TutorialText.color = new Color(0.5f, 0.5f, 0.5f, 1f);
+            TutorialTextBackgroud.color = new Color(1f, 1f, 1f, 1f);
         }
     }
 
     private void HandleInput()
     {
-        if (canBuildSpeed)
+        if (canBuildSpeed && started)
         {
             if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
@@ -161,7 +178,7 @@ public class LongJump3D : MonoBehaviour
 
     private void CheckJump()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && spaceClicked == false)
+        if (Input.GetKeyDown(KeyCode.Space) && spaceClicked == false && started)
         {
             animator.SetBool("Start", false);
             animator.SetBool("Jump", true);
@@ -210,7 +227,8 @@ public class LongJump3D : MonoBehaviour
                 LongJump longJump = FindObjectOfType<LongJump>();  // Gegnerergebnisse holen
                 if (longJump != null)
                 {
-                    jumpResultDisplay.ShowJumpResults(jumpDistance, longJump.GetResults());  // Ergebnisse anzeigen
+                    score = jumpDistance.ToString("F2");
+                    jumpResultDisplay.ShowJumpResults(score, longJump.GetResults());  // Ergebnisse anzeigen
                 }
             }
         }
@@ -225,10 +243,10 @@ public class LongJump3D : MonoBehaviour
                 jumpDistance = Vector3.Distance(jumpOffObject.transform.position, transform.position) / 5;
                 if (foul)
                 {
-                    jumpDistance = 0;
+                    score = "Foul";
                 }
             
-                Debug.Log("Sprungweite: " + jumpDistance);
+                Debug.Log("Sprungweite: " + score);
                 countLanding++;
             }
             
@@ -246,7 +264,7 @@ public class LongJump3D : MonoBehaviour
                 LongJump longJump = FindObjectOfType<LongJump>();  // Gegnerergebnisse holen
                 if (longJump != null)
                 {
-                    jumpResultDisplay.ShowJumpResults(jumpDistance, longJump.GetResults());  // Ergebnisse anzeigen
+                    jumpResultDisplay.ShowJumpResults(score, longJump.GetResults());  // Ergebnisse anzeigen
                 }
             }
             
@@ -265,7 +283,7 @@ public class LongJump3D : MonoBehaviour
         if (resultsCanvas != null)
         {
             // Sprungweite im Text anzeigen
-            jumpDistanceText.text = "Sprungweite: " + jumpDistance.ToString("F2") + " m";
+            jumpDistanceText.text = "Sprungweite: " + score + " m";
             resultsCanvas.gameObject.SetActive(true);
         }
     }

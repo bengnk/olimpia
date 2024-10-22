@@ -29,12 +29,16 @@ public class JumpResultDisplay : MonoBehaviour
     }
 
     // Zeige die Sprungweite des Spielers und die Sprungweiten der Gegner an
-    public void ShowJumpResults(float playerDistance, List<string> opponentResults)
+    public void ShowJumpResults(string playerDistance, List<string> opponentResults)
     {
         if (resultsCanvas != null)
         {
-            // Zeige die Sprungweite des Spielers an
-            playerJumpText.text = playerDistance.ToString("F2") + " m";
+            if(playerDistance == "Foul") {
+                playerJumpText.text = playerDistance;
+            } else {
+                playerJumpText.text = playerDistance + " m";
+            }
+            
 
             // Zeige die Ergebnisse der Gegner in den entsprechenden Textfeldern an
             for (int i = 0; i < opponentResults.Count && i < opponentResultTexts.Length; i++)
