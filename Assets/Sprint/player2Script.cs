@@ -9,7 +9,7 @@ public class Player2Movement : MonoBehaviour
     private bool isMoving = false;
 
     // Timer variables
-    public float countdownTime = 5f;
+    public float countdownTime = 3f;
     private bool countdownFinished = false;
     private bool timerStarted = false;
     private float runTimer = 0f;
@@ -57,11 +57,10 @@ public class Player2Movement : MonoBehaviour
         }
 
         if(!startKeyPressed) {
-            pressSpaceKey.color = new Color(1, 1, 1, 1);
+            
         }
         else if(!countdownFinished)
         {
-            pressSpaceKey.color = new Color(1, 1, 1, 1);
             HandleCountdown();
         }
         else
