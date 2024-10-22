@@ -90,8 +90,10 @@ public class player1Script: MonoBehaviour
             sprintSoundtrack.Stop();
         }
 
-        if(startCountdown && !countdownSound.isPlaying && !countdownFinished) {
+        if(startCountdown && !countdownSound.isPlaying && !countdownFinished && !raceManager.isPaused) {
             countdownSound.Play();
+        } else if(raceManager.isPaused){
+            countdownSound.Pause();
         }
 
         if(singleplayer) {

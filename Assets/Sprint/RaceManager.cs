@@ -26,7 +26,7 @@ public class RaceManager : MonoBehaviour
     public Button mainMenuButton2;
     public Button restartButton;
 
-    private bool isPaused = false;  // Status, ob das Spiel pausiert ist oder nicht
+    public bool isPaused = false;  // Status, ob das Spiel pausiert ist oder nicht
 
     void Start()
     {
