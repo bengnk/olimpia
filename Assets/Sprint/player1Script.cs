@@ -9,8 +9,15 @@ public class player1Script: MonoBehaviour
     private bool isMoving = false;
     private bool singleplayer = SingleplayerVarHolder.singleplayer;
 
+    public AudioSource sprintSoundtrack;
+    public AudioSource countdownSound;
+    public AudioSource finishSound;
+
+    private bool soundtrackOn = false;
+    private bool startCountdown = false;
+
     // Timer variables
-    public float countdownTime = 5f; // Fixed to 5 seconds
+    public float countdownTime = 3f; // Fixed to 5 seconds
     private bool countdownFinished = false;
     private bool timerStarted = false;
     private float runTimer = 0f; // Timer for run duration
@@ -55,6 +62,7 @@ public class player1Script: MonoBehaviour
 
     void Start()
     {
+        soundtrackOn = true;
         animator = GetComponent<Animator>(); 
         Player2Movement = player2.GetComponent<Player2Movement>();
         raceManager = FindObjectOfType<RaceManager>(); // Find RaceManager in the scene
@@ -72,6 +80,20 @@ public class player1Script: MonoBehaviour
 
     void Update()
     {   
+        if(isFinished && Player2Movement.isFinishedP2 && !finishSound.isPlaying) {
+            finishSound.Play();
+        }
+
+        if(soundtrackOn && !sprintSoundtrack.isPlaying) {
+            sprintSoundtrack.Play();
+        } else if(!soundtrackOn && sprintSoundtrack.isPlaying){
+            sprintSoundtrack.Stop();
+        }
+
+        if(startCountdown && !countdownSound.isPlaying && !countdownFinished) {
+            countdownSound.Play();
+        }
+
         if(singleplayer) {
             player1Camera.enabled = false;
             player2Camera.rect = new Rect(0f, 0f, 1f, 1f);
@@ -82,6 +104,7 @@ public class player1Script: MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.Space)) {
             startKeyPressed = true;
+            startCountdown = true;
         }
 
         if(!startKeyPressed) {
@@ -126,12 +149,12 @@ public class player1Script: MonoBehaviour
                 float randomValue = Random.Range(0f, 1f);
 
                 if(canInput) {
-                    // 80% chance to gain momentum
+                    // 85% chance to gain momentum
                     if (randomValue <= 0.85f)
                     {
                         GainMomentum();
                     }
-                    // 20% chance to lose momentum
+                    // 15% chance to lose momentum
                     else
                     {
                         LoseMomentum();

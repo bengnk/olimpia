@@ -10,6 +10,7 @@ public class SceneSwitcher : MonoBehaviour
     // Hole den Button und weise ihm den Listener zu
     void Start()
     {
+
         // Der Button ist an demselben GameObject
         Button button = GetComponent<Button>();
 
