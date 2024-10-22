@@ -244,6 +244,8 @@ public class LongJump3D : MonoBehaviour
                 if (foul)
                 {
                     score = "Foul";
+                } else {
+                    score = jumpDistance.ToString("F2");
                 }
             
                 Debug.Log("Sprungweite: " + score);
@@ -264,7 +266,6 @@ public class LongJump3D : MonoBehaviour
                 LongJump longJump = FindObjectOfType<LongJump>();  // Gegnerergebnisse holen
                 if (longJump != null)
                 {
-                    score = jumpDistance.ToString("F2");
                     jumpResultDisplay.ShowJumpResults(score, longJump.GetResults());  // Ergebnisse anzeigen
                 }
             }
