@@ -9,10 +9,12 @@ public class GameManager : MonoBehaviour
     public Text resultsText;  // UI-Text zum Anzeigen der Ergebnisse
     public Text countdownText;  // UI-Text zum Anzeigen des Countdowns oder der laufenden Zeit
 
+    public Image timerBackground;
+
     private Dictionary<int, float> swimmerTimes = new Dictionary<int, float>();  // Speichert die Endzeiten der Schwimmer
     private Dictionary<int, float> swimmerStartTimes = new Dictionary<int, float>(); // Speichert die Startzeiten der Schwimmer
     public bool isGoTime = false; // Signalisiert, wann das Rennen startet
-    private bool gameStarted = false; // Signalisiert, ob das Spiel gestartet wurde
+    public bool gameStarted = false; // Signalisiert, ob das Spiel gestartet wurde
     private bool raceOngoing = false; // Signalisiert, ob das Rennen läuft
 
     private float raceStartTime;  // Zeit, zu der das Rennen startet
@@ -31,6 +33,8 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        timerBackground.color = new Color(0, 0, 0, 0);
+        
         // Starte mit dem Start-Canvas und deaktiviere das End- und Countdown-Canvas
         if (startCanvas != null)
         {
@@ -51,7 +55,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0f;
 
         // Hinweis anzeigen: Drücke Leertaste zum Starten
-        countdownText.text = "Drücke Leertaste zum Starten";
+        countdownText.text = "";
 
         // Buttons-Events zuweisen
         restartButton.onClick.AddListener(RestartRace);
@@ -64,6 +68,7 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && !gameStarted)
         {
             StartGame();
+            timerBackground.color = new Color(0f, 0f, 0f, 0.5f);
         }
 
         // Wenn das Rennen läuft, aktualisiere die Rennzeit im Textfeld
@@ -125,7 +130,7 @@ public class GameManager : MonoBehaviour
     private void UpdateRaceTime()
     {
         float currentTime = Time.time - raceStartTime;  // Berechne die aktuelle Rennzeit
-        countdownText.text = currentTime.ToString("F2") + " Sekunden";  // Zeige die Zeit im Textfeld an
+        countdownText.text = currentTime.ToString("F2") + "s";  // Zeige die Zeit im Textfeld an
     }
 
     // Methode, die von jedem Schwimmer aufgerufen wird, wenn er abspringt

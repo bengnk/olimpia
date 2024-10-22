@@ -657,6 +657,150 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 135038457}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &136952801
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 136952804}
+  - component: {fileID: 136952803}
+  - component: {fileID: 136952802}
+  m_Layer: 0
+  m_Name: SoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!82 &136952802
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136952801}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 37a429968e15ccc4b9a0aee9d1171577, type: 2}
+  m_audioClip: {fileID: 8300000, guid: 40701502f08b16841b4853f7da74c3ea, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &136952803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136952801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d3a79be4f03b3845a7ac284e4178767, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countdownSound: {fileID: 136952802}
+  pauseScript: {fileID: 871836904}
+  gameManager: {fileID: 871836902}
+--- !u!4 &136952804
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136952801}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.68687415, y: -0.15844798, z: 0.14462239, w: 0.6943937}
+  m_LocalPosition: {x: 4.21, y: 13.07, z: 4.42}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &142007627
 GameObject:
   m_ObjectHideFlags: 0
@@ -1010,7 +1154,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resultsText: {fileID: 1975217160}
   countdownText: {fileID: 2052526216}
+  timerBackground: {fileID: 1831542318}
   isGoTime: 0
+  gameStarted: 0
   totalSwimmers: 4
   startCanvas: {fileID: 142007627}
   endCanvas: {fileID: 2117259064}
@@ -1234,7 +1380,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resultsText: {fileID: 865188257}
   countdownText: {fileID: 2052526216}
+  timerBackground: {fileID: 1831542318}
   isGoTime: 0
+  gameStarted: 0
   totalSwimmers: 4
   startCanvas: {fileID: 142007627}
   endCanvas: {fileID: 2117259064}
@@ -3913,7 +4061,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resultsText: {fileID: 1171290010}
   countdownText: {fileID: 2052526216}
+  timerBackground: {fileID: 1831542318}
   isGoTime: 0
+  gameStarted: 0
   totalSwimmers: 4
   startCanvas: {fileID: 142007627}
   endCanvas: {fileID: 2117259064}
@@ -4632,7 +4782,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resultsText: {fileID: 1408575427}
   countdownText: {fileID: 2052526216}
+  timerBackground: {fileID: 1831542318}
   isGoTime: 0
+  gameStarted: 0
   totalSwimmers: 4
   startCanvas: {fileID: 142007627}
   endCanvas: {fileID: 2117259064}
@@ -4652,6 +4804,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseCanvas: {fileID: 2072257481}
+  isPaused: 0
 --- !u!1 &909946346
 GameObject:
   m_ObjectHideFlags: 0
@@ -10064,7 +10217,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resultsText: {fileID: 392435752}
   countdownText: {fileID: 2052526216}
+  timerBackground: {fileID: 1831542318}
   isGoTime: 0
+  gameStarted: 0
   totalSwimmers: 4
   startCanvas: {fileID: 142007627}
   endCanvas: {fileID: 2117259064}
@@ -10267,7 +10422,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resultsText: {fileID: 1294332681}
   countdownText: {fileID: 2052526216}
+  timerBackground: {fileID: 1831542318}
   isGoTime: 0
+  gameStarted: 0
   totalSwimmers: 4
   startCanvas: {fileID: 142007627}
   endCanvas: {fileID: 2117259064}
@@ -10467,6 +10624,7 @@ MeshFilter:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 136952804}
   - {fileID: 705507995}
   - {fileID: 1851806910}
   - {fileID: 1465880678}

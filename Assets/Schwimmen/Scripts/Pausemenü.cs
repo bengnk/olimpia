@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement; // Falls du eine Szene laden willst
 public class PauseManager : MonoBehaviour
 {
     public GameObject pauseCanvas;  // Referenz zum Pause-Canvas
-    private bool isPaused = false;  // Status des Spiels
+    public bool isPaused = false;  // Status des Spiels
 
     void Start()
     {
