@@ -3,8 +3,12 @@ using UnityEngine.UI;
 
 public class ScoreDisplay : MonoBehaviour
 {
-    public Canvas scoreCanvas;   // Das Canvas, das die Punkte anzeigt
-    public Text scoreText;       // Das Text-Element, das die Punktzahl anzeigt
+    public Canvas scoreCanvas;     // Das Canvas, das die Punkte anzeigt
+    public Text playerScoreText;   // Das Text-Element, das die Punktzahl des Spielers anzeigt
+
+    [SerializeField]               // Erzwingt die Anzeige im Inspector
+    private Text[] enemyScoreTexts; // Ein Array von Text-Elementen für die Punktzahlen der Gegner (4 Gegner)
+    
     private bool isScoreShown = false;
 
     void Start()
@@ -13,13 +17,19 @@ public class ScoreDisplay : MonoBehaviour
         scoreCanvas.gameObject.SetActive(false);
     }
 
-    // Methode zum Anzeigen der Punktzahl
-    public void ShowScore(int totalScore)
+    // Methode zum Anzeigen der Punktzahlen des Spielers und der Gegner
+    public void ShowScore(int playerScore, int[] enemyScores)
     {
         if (!isScoreShown)
         {
-            // Setze den Text auf die aktuelle Punktzahl
-            scoreText.text = "Gesamtpunkte: " + totalScore.ToString();
+            // Setze den Text auf die aktuelle Punktzahl des Spielers
+            playerScoreText.text = playerScore.ToString();
+
+            // Setze die Punktzahlen der Gegner in die entsprechenden Text-Elemente
+            for (int i = 0; i < enemyScores.Length; i++)
+            {
+                enemyScoreTexts[i].text = enemyScores[i].ToString();
+            }
 
             // Zeige das Canvas an
             scoreCanvas.gameObject.SetActive(true);

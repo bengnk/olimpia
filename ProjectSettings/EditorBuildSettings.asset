@@ -26,4 +26,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/SprintModusauswahl/SprintModusauswahl.unity
     guid: 2c69b98c2bf227c4785b232232814df3
+  - enabled: 1
+    path: Assets/Startbildschirm/Einstellungen.unity
+    guid: 76858aa096327d24aa434db72e9dadb9
   m_configObjects: {}
