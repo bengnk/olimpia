@@ -119,7 +119,7 @@ public class player1Script: MonoBehaviour
         else if(!countdownFinished)
         {
             pressSpaceKey.color = new Color(1f, 1f, 1f, 0f);
-             pressSpaceKeyBackground.color = new Color(1, 1, 1, 0);
+            pressSpaceKeyBackground.color = new Color(1, 1, 1, 0);
             countdownText.color = new Color(1, 1, 1, 1);
             countdownBackground.SetActive(true);
             HandleCountdown();
