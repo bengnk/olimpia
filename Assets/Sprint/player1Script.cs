@@ -60,6 +60,8 @@ public class player1Script: MonoBehaviour
     public Camera player1Camera;
     public Camera player2Camera;
 
+    private bool finishSoundPlayed = false;
+
     void Start()
     {
         soundtrackOn = true;
@@ -80,8 +82,9 @@ public class player1Script: MonoBehaviour
 
     void Update()
     {   
-        if(isFinished && Player2Movement.isFinishedP2 && !finishSound.isPlaying) {
+        if(isFinished && Player2Movement.isFinishedP2 && !finishSound.isPlaying && finishSoundPlayed == false) {
             finishSound.Play();
+            finishSoundPlayed = true;
         }
 
         if(soundtrackOn && !sprintSoundtrack.isPlaying) {
