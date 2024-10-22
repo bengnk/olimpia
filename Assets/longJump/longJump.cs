@@ -11,6 +11,9 @@ public class LongJump3D : MonoBehaviour
     public float perfectTimingWindow = 0.5f;   
     public float timingRange = 2f;
 
+    public AudioSource jumpSoundtrack;
+    private bool soundtrackOn = false;
+
     private string score;             
 
     private Rigidbody rb;                      
@@ -43,6 +46,7 @@ public class LongJump3D : MonoBehaviour
 
     void Start()
     {
+        soundtrackOn = true;
         rb = GetComponent<Rigidbody>();
         startTime = Time.time;
         lastKeyTime = Time.time;
@@ -65,6 +69,12 @@ public class LongJump3D : MonoBehaviour
             started = true;
             TutorialText.color = new Color(1, 1, 1, 0);
             TutorialTextBackgroud.color = new Color(1, 1, 1, 0);
+        }
+
+        if(soundtrackOn && !jumpSoundtrack.isPlaying) {
+            jumpSoundtrack.Play();
+        } else if(!soundtrackOn && jumpSoundtrack.isPlaying){
+            jumpSoundtrack.Stop();
         }
 
         if(started) {

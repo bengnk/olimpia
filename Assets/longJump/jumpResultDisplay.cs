@@ -15,6 +15,9 @@ public class JumpResultDisplay : MonoBehaviour
     public Button restartButton;  // Der Button für das Neustarten
     public Button mainMenuButton;  // Der Button für das Hauptmenü
 
+    public AudioSource finishSound;
+    private bool finishSoundPlayed = false;
+
     void Start()
     {
         // Stelle sicher, dass das Canvas zu Beginn nicht sichtbar ist
@@ -55,6 +58,10 @@ public class JumpResultDisplay : MonoBehaviour
     private void DisplayCanvas()
     {
         resultsCanvas.gameObject.SetActive(true);
+        if(!finishSoundPlayed) {
+            finishSoundPlayed = true;
+            finishSound.Play();
+        }
     }
 
     // Methode für den Neustart des Spiels
