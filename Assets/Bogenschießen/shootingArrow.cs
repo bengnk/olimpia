@@ -191,44 +191,46 @@ public class ArrowShoot : MonoBehaviour
     }
 
     void EndRound()
+{
+    Debug.Log(totalScore);
+
+    // Generiere zufällige Punktzahlen für 4 Gegner zwischen 23 und 30
+    int[] enemyScores = new int[4];
+    for (int i = 0; i < 4; i++)
     {
-        Debug.Log("Runde beendet! Gesamtpunkte: " + totalScore);
-
-        // Zeige die Punktzahl auf dem Canvas an
-        scoreDisplay.ShowScore(totalScore);
-
-        // Setze den Status, dass die Runde beendet ist, um weitere Eingaben zu verhindern
-        roundEnded = true;
-
-        // **Spiele anhalten**
-        Time.timeScale = 0; // Das Spiel pausieren
-
-        // **Cursor sichtbar und freigegeben machen**
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-
-        // Generiere zufällige Punktzahl für den Gegner zwischen 23 und 30
-        int enemyScore = Random.Range(23, 31); // Gegnerpunkte zwischen 23 und 30
-        Debug.Log("Gegner-Punkte: " + enemyScore);
-
-        // Überprüfe, wer gewonnen hat
-        if (totalScore > enemyScore)
-        {
-            Debug.Log("Du hast gewonnen!");
-        }
-        else if (totalScore < enemyScore)
-        {
-            Debug.Log("Du hast verloren!");
-        }
-        else
-        {
-            Debug.Log("Unentschieden!");
-        }
-
-        // Punkte und Pfeilanzahl für die nächste Runde zurücksetzen (falls benötigt)
-        totalScore = 0;
-        arrowCount = 0;
+        enemyScores[i] = Random.Range(23, 31); // Gegnerpunkte zwischen 23 und 30
+        Debug.Log(enemyScores[i]);
     }
+
+    // Zeige die Punktzahl auf dem Canvas an, sowohl Spieler- als auch Gegnerpunkte
+    scoreDisplay.ShowScore(totalScore, enemyScores);
+
+    // Überprüfe, wer gewonnen hat
+    int highestEnemyScore = Mathf.Max(enemyScores);
+    if (totalScore > highestEnemyScore)
+    {
+        Debug.Log("Du hast gewonnen!");
+    }
+    else if (totalScore < highestEnemyScore)
+    {
+        Debug.Log("Du hast verloren!");
+    }
+    else
+    {
+        Debug.Log("Unentschieden!");
+    }
+
+    // Punkte und Pfeilanzahl für die nächste Runde zurücksetzen (falls benötigt)
+    totalScore = 0;
+    arrowCount = 0;
+
+    // Spiele anhalten
+    Time.timeScale = 0; // Das Spiel pausieren
+
+    // Cursor sichtbar und freigegeben machen
+    Cursor.lockState = CursorLockMode.None;
+    Cursor.visible = true;
+}
 
     // Methode zum Fortsetzen des Spiels (wenn du später den Button drückst)
     public void ResumeGame()
