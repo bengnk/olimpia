@@ -965,7 +965,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a0cd2f03a2c25740bd7d3806f86565c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: Sprint
+  sceneToLoad: SprintModusauswahl
 --- !u!114 &891004209
 MonoBehaviour:
   m_ObjectHideFlags: 0

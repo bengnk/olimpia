@@ -2402,7 +2402,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0.0003891, y: 0.1618}
-  m_SizeDelta: {x: 417.9, y: 49.676}
+  m_SizeDelta: {x: 1000, y: 320}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &490613814
 MonoBehaviour:
@@ -7647,7 +7647,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 417.8984, y: 144.6415}
+  m_SizeDelta: {x: 1000, y: 6000}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1504883789
 MonoBehaviour:
@@ -7682,7 +7682,10 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Press Space to Start
+  m_Text: "Dr\xFCcken Sie abwechselnd auf die blauen und gr\xFCnen Quadrate, um an
+    Geschwindigkeit zu gewinnen. Dr\xFCcken Sie nicht auf die falschen Quadrate,
+    da Sie dadurch an Geschwindigkeit verlieren.\n\nDr\xFCcken Sie die Leertaste
+    um zu starten"
 --- !u!222 &1504883790
 CanvasRenderer:
   m_ObjectHideFlags: 0

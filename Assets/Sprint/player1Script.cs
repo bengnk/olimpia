@@ -41,6 +41,7 @@ public class player1Script: MonoBehaviour
     public Text runTimerText;  // Reference to the UI Text element for run timer
     public Text countdownText;  // Reference to the UI Text element for countdown
     public Text pressSpaceKey;
+    public Image pressSpaceKeyBackground;
 
     // Deceleration settings
     public float decelerationTime = 1.5f; // Time to decelerate to zero after finish
@@ -113,11 +114,12 @@ public class player1Script: MonoBehaviour
         }
 
         if(!startKeyPressed) {
-            pressSpaceKey.color = new Color(1, 1, 1, 1);
+            pressSpaceKey.color = new Color(0.5f, 0.5f, 0.5f, 1f);
         }
         else if(!countdownFinished)
         {
-            pressSpaceKey.color = new Color(1, 1, 1, 0);
+            pressSpaceKey.color = new Color(1f, 1f, 1f, 0f);
+             pressSpaceKeyBackground.color = new Color(1, 1, 1, 0);
             countdownText.color = new Color(1, 1, 1, 1);
             countdownBackground.SetActive(true);
             HandleCountdown();

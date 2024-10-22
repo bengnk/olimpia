@@ -36,7 +36,7 @@ public class SoundtrackManager : MonoBehaviour
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         // List the scenes where the soundtrack should play
-        if (scene.name == "Start" || scene.name == "Menü" || scene.name == "SprintModusauswahl")
+        if (scene.name == "Start" || scene.name == "Menü" || scene.name == "SprintModusauswahl" || scene.name == "Einstellungen")
         {
             if (!audioSource.isPlaying)
             {
