@@ -26,6 +26,7 @@ public class LongJump3D : MonoBehaviour
     bool isSlowingDown = false;
     float jumpDistance;
     float maxHeight = 0;
+    int countLanding = 0;
 
     private Animator animator;
     private CameraFollow camera;
@@ -220,13 +221,17 @@ public class LongJump3D : MonoBehaviour
             animator.SetBool("Landing", true);
             animator.SetBool("Jump", false);
 
-            // Berechnung der Sprungweite
-            jumpDistance = Vector3.Distance(jumpOffObject.transform.position, transform.position) / 5;
-            if (foul)
-            {
-                jumpDistance = 0;
+            if (countLanding == 0) {// Berechnung der Sprungweite
+                jumpDistance = Vector3.Distance(jumpOffObject.transform.position, transform.position) / 5;
+                if (foul)
+                {
+                    jumpDistance = 0;
+                }
+            
+                Debug.Log("Sprungweite: " + jumpDistance);
+                countLanding++;
             }
-            Debug.Log("Sprungweite: " + jumpDistance);
+            
 
             isSlowingDown = true;
             startTime = Time.time;
