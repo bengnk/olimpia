@@ -163,12 +163,38 @@ public class ArrowShoot : MonoBehaviour
     }
 
     Vector3 GetTargetPositionFromScreenCenter()
+
     {
+
+        // Erzeuge einen Ray aus der Mitte des Bildschirms
+
         Ray ray = mainCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
+
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit)) return hit.point;
-        return ray.GetPoint(maxDistance);
-    }
+
+
+
+        // Wenn der Ray auf ein Objekt trifft, wird die Trefferposition verwendet
+
+        if (Physics.Raycast(ray, out hit))
+
+        {
+
+            return hit.point;
+
+        }
+
+        else
+
+        {
+
+            // Wenn der Ray nichts trifft, wird eine Position in der Ferne genommen
+
+            return ray.GetPoint(maxDistance);
+
+        }
+
+    }
 
     void HandleArrowHit()
     {
