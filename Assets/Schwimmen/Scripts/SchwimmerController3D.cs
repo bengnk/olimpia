@@ -241,25 +241,31 @@ public class SchwimmerController3D : MonoBehaviour
         button.localScale = new Vector3(1f, 1f, 1f);
     }
 
-    private void HandleSpecialButton()
+   private void HandleSpecialButton()
+{
+    if (!isSpecialButtonActive)
     {
-        if (!isSpecialButtonActive && Random.value < specialButtonAppearanceChance * Time.deltaTime)
+        // Wenn der Special-Button nicht aktiv ist, ihn neu positionieren und aktivieren
+        MoveButtonToRandomPosition(specialButton, button1);
+        AdjustButtonProperties(specialButton); // Größe zurücksetzen
+        specialButton.gameObject.SetActive(true);
+        isSpecialButtonActive = true;
+        specialButtonTimer = specialButtonDuration; // Startet den Timer für 2 Sekunden
+    }
+    else
+    {
+        // Countdown, während der Special-Button aktiv ist
+        specialButtonTimer -= Time.deltaTime;
+        if (specialButtonTimer <= 0f)
         {
-            MoveButtonToRandomPosition(specialButton, button1);
-            specialButton.gameObject.SetActive(true);
-            isSpecialButtonActive = true;
-            specialButtonTimer = specialButtonDuration;
-        }
-        else if (isSpecialButtonActive)
-        {
-            specialButtonTimer -= Time.deltaTime;
-            if (specialButtonTimer <= 0f)
-            {
-                specialButton.gameObject.SetActive(false);
-                isSpecialButtonActive = false;
-            }
+            // Nach Ablauf des Timers den Button deaktivieren und den Zyklus neu starten
+            specialButton.gameObject.SetActive(false);
+            isSpecialButtonActive = false;
         }
     }
+}
+
+
 
     private void AdjustSwimAnimationSpeed()
     {

@@ -687,7 +687,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 24300002, guid: 37a429968e15ccc4b9a0aee9d1171577, type: 2}
   m_audioClip: {fileID: 8300000, guid: 40701502f08b16841b4853f7da74c3ea, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.03
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -3515,7 +3515,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.08496928, g: 1, b: 0, a: 1}
+  m_Color: {r: 0.0897397, g: 0.8396226, b: 0.019802418, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4681,8 +4681,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initialMoveAmount: 1.5
   waterDeceleration: 0.25
-  sizeIncreaseRate: 0.1
-  maxButtonSize: 3
+  sizeIncreaseRate: 0.75
+  maxButtonSize: 10
   minDistanceBetweenButtons: 100
   button1: {fileID: 674795579}
   button2: {fileID: 614836132}
@@ -8680,15 +8680,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 6d3b8a85f660f2e48b6528ff4888156f, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
