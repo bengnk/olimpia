@@ -7,6 +7,12 @@ public class ShotCooldownBar : MonoBehaviour
     public float cooldownTime = 3.5f; // Zeit, die die Bar zum Füllen braucht
     private float currentCooldown = 0f;
     private bool isCharging = false;
+    public AudioSource arrowSoundtrack;
+
+    void Start()
+    {
+        arrowSoundtrack.Play();
+    }
 
     void Update()
     {
