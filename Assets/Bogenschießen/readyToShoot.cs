@@ -1,9 +1,11 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro; // Namespace für Text Mesh Pro
 
 public class ShotCooldownBar : MonoBehaviour
 {
     public Slider cooldownSlider; // Referenz zur Slider-Komponente
+    public TextMeshProUGUI readyText; // Referenz zum Text Mesh Pro Text-Objekt für "ready"
     public float cooldownTime = 3.5f; // Zeit, die die Bar zum Füllen braucht
     private float currentCooldown = 0f;
     private bool isCharging = false;
@@ -12,6 +14,11 @@ public class ShotCooldownBar : MonoBehaviour
     void Start()
     {
         arrowSoundtrack.Play();
+    }
+
+    void Start()
+    {
+        readyText.gameObject.SetActive(false); // Stelle sicher, dass der Text am Anfang unsichtbar ist
     }
 
     void Update()
@@ -26,7 +33,8 @@ public class ShotCooldownBar : MonoBehaviour
             // Überprüfe, ob die Ladezeit abgeschlossen ist
             if (currentCooldown >= cooldownTime)
             {
-                currentCooldown = cooldownTime; // Stelle sicher, dass der Wert nicht über 1 hinausgeht
+                currentCooldown = cooldownTime; // Stelle sicher, dass der Wert nicht über die maximale Zeit hinausgeht
+                readyText.gameObject.SetActive(true); // Zeige den "ready"-Text an
                 Debug.Log("Schuss bereit!"); // An dieser Stelle kann der Schuss abgegeben werden
             }
         }
@@ -36,6 +44,7 @@ public class ShotCooldownBar : MonoBehaviour
             isCharging = false;
             currentCooldown = 0f; // Reset der Ladezeit
             cooldownSlider.value = 0f; // Setzt den Slider-Wert auf 0
+            readyText.gameObject.SetActive(false); // Verberge den "ready"-Text
         }
     }
 }
