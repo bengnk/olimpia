@@ -11,14 +11,11 @@ public class ShotCooldownBar : MonoBehaviour
     private bool isCharging = false;
     public AudioSource arrowSoundtrack;
 
-    void Start()
-    {
-        arrowSoundtrack.Play();
-    }
 
     void Start()
     {
         readyText.gameObject.SetActive(false); // Stelle sicher, dass der Text am Anfang unsichtbar ist
+        arrowSoundtrack.Play();
     }
 
     void Update()
