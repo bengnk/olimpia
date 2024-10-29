@@ -152,7 +152,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 762780431}
-  - {fileID: 2141342519}
   - {fileID: 2122038834}
   - {fileID: 207735022}
   - {fileID: 267325614}
@@ -1494,90 +1493,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 279678869}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1001 &355721391
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 11655552}
-    m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: 741103ee4eaf0494a958cf38363bfbd1, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 741103ee4eaf0494a958cf38363bfbd1, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 741103ee4eaf0494a958cf38363bfbd1, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 741103ee4eaf0494a958cf38363bfbd1, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 6.34
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 741103ee4eaf0494a958cf38363bfbd1, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.177
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 741103ee4eaf0494a958cf38363bfbd1, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -1.293
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 741103ee4eaf0494a958cf38363bfbd1, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 741103ee4eaf0494a958cf38363bfbd1, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 741103ee4eaf0494a958cf38363bfbd1, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 741103ee4eaf0494a958cf38363bfbd1, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 741103ee4eaf0494a958cf38363bfbd1, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 741103ee4eaf0494a958cf38363bfbd1, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 741103ee4eaf0494a958cf38363bfbd1, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: 741103ee4eaf0494a958cf38363bfbd1, type: 3}
-      propertyPath: m_Name
-      value: Standexpo (2)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 741103ee4eaf0494a958cf38363bfbd1, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2141342523}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 741103ee4eaf0494a958cf38363bfbd1, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2141342522}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 741103ee4eaf0494a958cf38363bfbd1, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2141342521}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 741103ee4eaf0494a958cf38363bfbd1, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2141342520}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 741103ee4eaf0494a958cf38363bfbd1, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2141342524}
-  m_SourcePrefab: {fileID: 100100000, guid: 741103ee4eaf0494a958cf38363bfbd1, type: 3}
 --- !u!1 &356112336
 GameObject:
   m_ObjectHideFlags: 0
@@ -2010,6 +1925,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Standexpo
       objectReference: {fileID: 0}
+    - target: {fileID: 6148737315974723067, guid: 741103ee4eaf0494a958cf38363bfbd1, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: dfb29f7efcc21ea4a9b4a08c38683af9, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2550,7 +2469,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0.0003891, y: 0.1618}
-  m_SizeDelta: {x: 1000, y: 320}
+  m_SizeDelta: {x: 1000, y: 450}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &490613814
 MonoBehaviour:
@@ -2691,6 +2610,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Standexpo (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 6148737315974723067, guid: 741103ee4eaf0494a958cf38363bfbd1, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 2df18a15ffc16a94bb16ae9f69769a29, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7835,10 +7758,11 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Dr\xFCcken Sie abwechselnd auf die blauen und gr\xFCnen Quadrate, um an
-    Geschwindigkeit zu gewinnen. Dr\xFCcken Sie nicht auf die falschen Quadrate,
-    da Sie dadurch an Geschwindigkeit verlieren.\n\nDr\xFCcken Sie die Leertaste
-    um zu starten"
+  m_Text: "Nach Ablauf des Countdowns klicken Sie auf eine beliebige Stelle auf dem
+    Bildschirm, um abzuspringen. Anschlie\xDFend tippen Sie abwechselnd auf die blauen
+    und gr\xFCnen Quadrate, um an Geschwindigkeit zu gewinnen. Achten Sie darauf,
+    nur die richtigen Quadrate zu treffen \u2013 ein falscher Klick verringert Ihre
+    Geschwindigkeit.\n\nDr\xFCcken Sie die Leertaste um zu starten"
 --- !u!222 &1504883790
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -9270,6 +9194,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Standexpo (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 6148737315974723067, guid: 741103ee4eaf0494a958cf38363bfbd1, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 6e8268feb74472a4ea69da2817138834, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -10290,6 +10218,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Standexpo (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 6148737315974723067, guid: 741103ee4eaf0494a958cf38363bfbd1, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 0f5028ff6162d1349addbfb3eb0f72e4, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -10310,127 +10242,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 207735027}
   m_SourcePrefab: {fileID: 100100000, guid: 741103ee4eaf0494a958cf38363bfbd1, type: 3}
---- !u!1 &2141342518 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 741103ee4eaf0494a958cf38363bfbd1, type: 3}
-  m_PrefabInstance: {fileID: 355721391}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &2141342519 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 741103ee4eaf0494a958cf38363bfbd1, type: 3}
-  m_PrefabInstance: {fileID: 355721391}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2141342520
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2141342518}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4765b7345ea0e8b4b83baf41ded0b7cc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  initialMoveAmount: 0.5
-  waterDeceleration: 0.05
-  minSpeed: 1
-  maxSpeed: 3
-  jumpForce: 2
-  gameManager: {fileID: 2141342524}
-  swimmerID: 6
---- !u!95 &2141342521
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2141342518}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: feb8ef596ffac0146988d26476cef928, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
---- !u!65 &2141342522
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2141342518}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.6, y: 2, z: 0.2}
-  m_Center: {x: 0, y: 1, z: 0}
---- !u!54 &2141342523
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2141342518}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!114 &2141342524
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2141342518}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f73b87e3f7c3b04ca145b097014b7e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  resultsText: {fileID: 1294332681}
-  countdownText: {fileID: 2052526216}
-  timerBackground: {fileID: 1831542318}
-  isGoTime: 0
-  gameStarted: 0
-  totalSwimmers: 4
-  startCanvas: {fileID: 142007627}
-  endCanvas: {fileID: 2117259064}
-  countdownCanvas: {fileID: 657295260}
-  restartButton: {fileID: 1440937149}
-  mainMenuButton: {fileID: 1414601446}
 --- !u!1001 &2144111965
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10495,6 +10306,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Standexpo (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 6148737315974723067, guid: 741103ee4eaf0494a958cf38363bfbd1, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 0f5028ff6162d1349addbfb3eb0f72e4, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

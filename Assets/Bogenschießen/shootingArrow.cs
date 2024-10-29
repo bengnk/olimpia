@@ -1,4 +1,4 @@
-using TMPro; // Notwendig für TextMeshPro
+ using TMPro; // Notwendig für TextMeshPro
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
