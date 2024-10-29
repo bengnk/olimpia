@@ -38,7 +38,6 @@ public class SchwimmerController3D : MonoBehaviour
     public Vector3 cameraOffset = new Vector3(0, 5, -10);
     public float cameraFollowSpeed = 5f;
 
-    private bool canJump = false; // Prüft, ob der Spieler springen darf
     private bool timerStarted = false; // Prüft, ob die Zeitmessung gestartet wurde
 
     public GameObject endCanvas;
@@ -68,15 +67,15 @@ public class SchwimmerController3D : MonoBehaviour
 
     void Update()
     {
-        // Timer nur einmal starten, nachdem der Start-Countdown abgelaufen ist
+        // Starte den Timer für den Schwimmer, wenn das Rennen beginnt und der Timer noch nicht gestartet wurde
         if (gameManager != null && gameManager.isGoTime && !timerStarted)
         {
             gameManager.StartTimer(swimmerID); // Zeitmessung starten
-            canJump = true;
-            timerStarted = true; // Timer wurde gestartet, um Doppelstart zu verhindern
+            timerStarted = true; // Verhindert mehrfaches Starten des Timers
         }
 
-        if (Input.GetMouseButtonDown(0) && canJump && !isJumping && !hasTouchedWater)
+        // Startsprung erlauben, sobald das Rennen beginnt
+        if (Input.GetMouseButtonDown(0) && gameManager.isGoTime && !isJumping && !hasTouchedWater)
         {
             animator.SetBool("jump", true);
             StartJump();
@@ -92,6 +91,7 @@ public class SchwimmerController3D : MonoBehaviour
         rb.velocity = new Vector3(0, jumpForce, jumpForwardSpeed);
         currentSpeed = jumpForwardSpeed;
 
+        // Buttons anzeigen, sobald der Spieler springt
         button1.gameObject.SetActive(true);
         button2.gameObject.SetActive(true);
         specialButton.gameObject.SetActive(true);
@@ -133,6 +133,7 @@ public class SchwimmerController3D : MonoBehaviour
             currentSpeed = 0;
             animator.SetBool("stop", true);
 
+            // Timer für den Schwimmer im GameManager stoppen
             gameManager.StopTimer(swimmerID);
 
             if (swimmerID == 4 && endCanvas != null)
@@ -223,7 +224,7 @@ public class SchwimmerController3D : MonoBehaviour
         button.localScale = new Vector3(1f, 1f, 1f);
     }
 
-   private void HandleSpecialButton()
+    private void HandleSpecialButton()
     {
         if (!isSpecialButtonActive)
         {

@@ -97,10 +97,10 @@ public class GameManager : MonoBehaviour
         }
 
         countdownText.text = "Go!";
-        isGoTime = true;
+        
 
         yield return new WaitForSeconds(1);
-
+        isGoTime = true;
         raceStartTime = Time.time;  // Startzeit des Rennens festlegen
         raceOngoing = true;
     }

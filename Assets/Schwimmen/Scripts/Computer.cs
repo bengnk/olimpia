@@ -19,6 +19,8 @@ public class SchwimmerController3D_Auto : MonoBehaviour
     public GameManager gameManager;  // Referenz zum GameManager für die Zeitmessung
     public int swimmerID;  // Eindeutige ID für jeden Schwimmer (muss im Inspector gesetzt werden)
 
+    private bool timerStarted = false; // Flag, um zu prüfen, ob der Timer bereits gestartet wurde
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -32,7 +34,7 @@ public class SchwimmerController3D_Auto : MonoBehaviour
 
         animator = GetComponent<Animator>();
 
-        // Startet den automatischen Sprung nach einer zufälligen Zeit
+        // Starte den automatischen Sprung nach einer zufälligen Zeit, wenn das Rennen gestartet ist
         StartCoroutine(AutoJump());
     }
 
@@ -40,6 +42,15 @@ public class SchwimmerController3D_Auto : MonoBehaviour
     {
         afterJump();
         AdjustSwimAnimationSpeed();
+    
+    if (gameManager.isGoTime){
+                if (!timerStarted)
+        {
+            gameManager.StartTimer(swimmerID);
+            timerStarted = true; // Verhindert mehrfaches Starten des Timers
+        }
+            }
+
     }
 
     private IEnumerator AutoJump()
@@ -48,9 +59,9 @@ public class SchwimmerController3D_Auto : MonoBehaviour
         {
             // Warte eine zufällige Zeit zwischen 1 und 3 Sekunden, bevor der nächste Sprung erfolgt
             yield return new WaitForSeconds(Random.Range(1f, 3f));
-
-            // Starte den Sprung, wenn der Schwimmer nicht bereits springt und das Wasser nicht berührt hat
-            if (!isJumping && !hasTouchedWater && gameManager.isGoTime)  // Nur springen, wenn das Rennen begonnen hat
+    	    
+            // Nur springen und Timer starten, wenn das Rennen begonnen hat
+            if (!isJumping && !hasTouchedWater && gameManager.isGoTime)
             {
                 animator.SetBool("jump", true);
                 StartJump();
@@ -64,8 +75,8 @@ public class SchwimmerController3D_Auto : MonoBehaviour
         currentSpeed = Random.Range(minSpeed, maxSpeed);  // Zufällige Geschwindigkeit festlegen
         rb.velocity = new Vector3(0, jumpForce, currentSpeed);
 
-        // Timer für den Computer-Schwimmer im GameManager starten
-        gameManager.StartTimer(swimmerID);
+        // Timer für den Gegner-Schwimmer im GameManager starten, aber nur einmal
+        
     }
 
     void afterJump()
@@ -114,7 +125,7 @@ public class SchwimmerController3D_Auto : MonoBehaviour
             currentSpeed = 0;
             animator.SetBool("stop", true);
 
-            // Timer für den Computer-Schwimmer im GameManager stoppen
+            // Timer für den Gegner-Schwimmer im GameManager stoppen
             gameManager.StopTimer(swimmerID);
         }
     }

@@ -4619,7 +4619,7 @@ MonoBehaviour:
   gameManager: {fileID: 871836902}
   swimmerID: 4
   cameraTransform: {fileID: 963194228}
-  cameraOffset: {x: 0, y: 3, z: -3}
+  cameraOffset: {x: 0, y: 3, z: -3.5}
   cameraFollowSpeed: 5
   endCanvas: {fileID: 2117259064}
 --- !u!95 &871836898
