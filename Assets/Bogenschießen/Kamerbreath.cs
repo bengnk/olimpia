@@ -12,8 +12,9 @@ public class CameraControllerWithBreathing : MonoBehaviour
     private Vector3 currentRotation;  // Für glatte Mausbewegung
     private Vector3 targetRotation;   // Zielrotation für die Verzögerung
 
-    private float breathAmplitudeIncreaseRate = 0.5f; // Zuwachsrate für die Atmung
+    private float breathAmplitudeIncreaseRate = 0.2f; // Zuwachsrate für die Atmung
     private float currentBreathAmplitude = 0f; // Aktuelle Atmungsamplitude
+    private float maxBreathAmplitude = 0.8f;
 
     void Start()
     {
@@ -28,22 +29,20 @@ public class CameraControllerWithBreathing : MonoBehaviour
     }
 
     void Update()
-    {
-        HandleMouseLook();
-        ApplyBreathingEffect();
+{
+    HandleMouseLook();
+    ApplyBreathingEffect();
 
-        // Überprüfen, ob die linke Maustaste gedrückt wird
-        if (Input.GetMouseButton(0)) // 0 = linke Maustaste
-        {
-            // Erhöhe kontinuierlich die Atmungsamplitude
-            currentBreathAmplitude += breathAmplitudeIncreaseRate * Time.deltaTime;
-        }
-        else
-        {
-            // Senke die Atmungsamplitude zurück auf 0
-            currentBreathAmplitude = Mathf.Lerp(currentBreathAmplitude, 0f, rotationSmoothing);
-        }
+    // Erhöhe kontinuierlich die Atmungsamplitude, solange der Mausbutton gedrückt ist
+    if (Input.GetMouseButton(0) && currentBreathAmplitude <= maxBreathAmplitude)
+    {
+        currentBreathAmplitude += breathAmplitudeIncreaseRate * Time.deltaTime;
     }
+
+    // Senke die Atmungsamplitude zurück auf 0
+    currentBreathAmplitude = Mathf.Lerp(currentBreathAmplitude, 0f, rotationSmoothing);
+}
+
 
     void HandleMouseLook()
     {

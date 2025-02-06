@@ -1,16 +1,19 @@
- using TMPro; // Notwendig für TextMeshPro
+using TMPro; // Notwendig für TextMeshPro
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Collections;
+
 
 public class ArrowShoot : MonoBehaviour
 {
     // Vorherige Variablen
     public Transform shootPoint;
     public GameObject arrowPrefab;
-    public float shootSpeed = 10f;
-    public float maxDistance = 10f;
+    public float shootSpeed = 5f;
+    public float maxDistance = 1f;
     public Camera mainCamera;
+    public Camera scoreCamera; // Neue Kamera für das Ergebnis
     public float raycastLength = 0.25f;
 
     private GameObject currentArrow;
@@ -37,11 +40,14 @@ public class ArrowShoot : MonoBehaviour
     // Neue Variable für TextMeshPro-Anzeige
     public TextMeshProUGUI displayNumber;
 
-    void Start()
-    {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-    }
+ void Start()
+{
+    Cursor.lockState = CursorLockMode.Locked;
+    Cursor.visible = false;
+
+    // Sicherstellen, dass die scoreCamera zu Beginn des Spiels deaktiviert ist
+    scoreCamera.gameObject.SetActive(false);
+}
 
     void Update()
     {
@@ -149,13 +155,17 @@ public class ArrowShoot : MonoBehaviour
     }
 
     void DisplayScore(int score)
-    {
-        displayNumber.text = $"Punkte: {score}";
-        displayNumber.gameObject.SetActive(true);
+{
+    displayNumber.text = $"Punkte: {score}";
+    displayNumber.gameObject.SetActive(true);
+    
+    // Kamera wird nach der Anzeige des aktuellen Punktestands aktiviert
+    StartCoroutine(ShowScoreCamera());
 
-        // Punkte nach kurzer Zeit ausblenden
-        Invoke(nameof(HideScore), 2f);
-    }
+    // Punkte nach kurzer Zeit ausblenden
+    Invoke(nameof(HideScore), 2f);
+}
+
 
     void HideScore()
     {
@@ -163,38 +173,22 @@ public class ArrowShoot : MonoBehaviour
     }
 
     Vector3 GetTargetPositionFromScreenCenter()
-
     {
-
         // Erzeuge einen Ray aus der Mitte des Bildschirms
-
         Ray ray = mainCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
-
         RaycastHit hit;
 
-
-
         // Wenn der Ray auf ein Objekt trifft, wird die Trefferposition verwendet
-
         if (Physics.Raycast(ray, out hit))
-
         {
-
             return hit.point;
-
         }
-
         else
-
         {
-
             // Wenn der Ray nichts trifft, wird eine Position in der Ferne genommen
-
             return ray.GetPoint(maxDistance);
-
-        }
-
-    }
+        }
+    }
 
     void HandleArrowHit()
     {
@@ -249,6 +243,15 @@ public class ArrowShoot : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
+
+    // Coroutine, um die scoreCamera für eine bestimmte Zeit zu aktivieren
+       IEnumerator ShowScoreCamera()
+    {
+        scoreCamera.gameObject.SetActive(true);
+        yield return new WaitForSeconds(3f);
+        scoreCamera.gameObject.SetActive(false);
+    }
+
 
     public void ResumeGame()
     {
