@@ -145,9 +145,13 @@ public class SchwimmerController3D : MonoBehaviour
 
     void OnTriggerStay(Collider other)
     {
+        bool turn = true;
         if (other.CompareTag("Wand"))
         {
-            transform.Rotate(0, 180, 0);
+            if (turn){
+                transform.Rotate(0, 180, 0);
+                turn = false;
+            }
             ResetSpeed();
             currentSpeed = initialMoveAmount;
         }
@@ -211,11 +215,12 @@ public class SchwimmerController3D : MonoBehaviour
         buttonToMove.anchoredPosition = newPosition;
     }
 
-    private void IncreaseButtonSize(RectTransform button)
+     private void IncreaseButtonSize(RectTransform button)
     {
         if (button.gameObject.activeSelf && button.localScale.x < maxButtonSize)
         {
-            button.localScale += new Vector3(sizeIncreaseRate * Time.deltaTime, sizeIncreaseRate * Time.deltaTime, 0);
+            float newSize = Mathf.Min(button.localScale.x + sizeIncreaseRate * Time.deltaTime, maxButtonSize);
+            button.localScale = new Vector3(newSize, newSize, 0);
         }
     }
 
@@ -230,7 +235,7 @@ public class SchwimmerController3D : MonoBehaviour
         {
             MoveButtonToRandomPosition(specialButton, button1);
             AdjustButtonProperties(specialButton);
-            specialButton.gameObject.SetActive(true);
+            
             isSpecialButtonActive = true;
             specialButtonTimer = specialButtonDuration;
         }
