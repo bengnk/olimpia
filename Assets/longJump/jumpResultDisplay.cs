@@ -9,7 +9,8 @@ public class JumpResultDisplay : MonoBehaviour
     public Text playerJumpText;          // Der Text für die Sprungweite des Spielers
 
     // Array von 10 Texten für die Gegnerergebnisse
-    public Text[] opponentResultTexts = new Text[10];  // Referenzen für die 10 Textfelder
+    public Text[] opponentResultTexts = new Text[5];  // Referenzen für die 10 Textfelder
+    public Text[] playerTexts = new  Text[5];
 
     // Buttons für Neustart und Hauptmenü
     public Button restartButton;  // Der Button für das Neustarten
@@ -33,26 +34,83 @@ public class JumpResultDisplay : MonoBehaviour
 
     // Zeige die Sprungweite des Spielers und die Sprungweiten der Gegner an
     public void ShowJumpResults(string playerDistance, List<string> opponentResults)
+{
+    if (resultsCanvas != null)
     {
-        if (resultsCanvas != null)
+        List<float> allResults = new List<float>();
+        List<string> foulResults = new List<string>(); // Speichert Fouls separat
+
+        // Spieler-Sprungweite zur Liste hinzufügen
+        if (playerDistance == "0,00" || playerDistance == "Foul") 
         {
-            if(playerDistance == "Foul") {
-                playerJumpText.text = playerDistance;
-            } else {
-                playerJumpText.text = playerDistance + " m";
-            }
-            
-
-            // Zeige die Ergebnisse der Gegner in den entsprechenden Textfeldern an
-            for (int i = 0; i < opponentResults.Count && i < opponentResultTexts.Length; i++)
-            {
-                opponentResultTexts[i].text = opponentResults[i];
-            }
-
-            // Warte 5 Sekunden und blende dann das Canvas ein
-            Invoke("DisplayCanvas", 5f);
+            //playerJumpText.text = playerDistance;
+            foulResults.Add("Foul");
         }
+        else if (float.TryParse(playerDistance, out float playerScore))
+        {
+            allResults.Add(playerScore);
+            //playerJumpText.text = playerDistance + " m";
+        }
+
+        // Gegner-Sprungweiten verarbeiten
+        foreach (string opponent in opponentResults)
+        {
+
+            if (opponent == "Foul") 
+            {
+                foulResults.Add("Foul");
+            }
+            else if (float.TryParse(opponent, out float result))
+            {
+                allResults.Add(result);
+            }
+        }
+
+        // Ergebnisse nach Größe sortieren (höchster Wert zuerst)
+        allResults.Sort((a, b) => b.CompareTo(a));
+
+        // Ergebnisse in die UI eintragen
+        int index = 0;
+        int count = 0;
+        foreach (float result in allResults)
+        {
+            if (index < opponentResultTexts.Length)
+            {
+                if (float.TryParse(playerDistance, out float playerDistanceFloat) && result == playerDistanceFloat && count == 0) {
+                    opponentResultTexts[index].text = result.ToString("F2") + " m";
+                    playerTexts[index].text = "Du";
+                    count++; // damit nicht mehrfach Du angezeigt werden kann
+                } else {
+                    opponentResultTexts[index].text = result.ToString("F2") + " m";
+                    playerTexts[index].text = "Gegner " + index;
+                }
+                
+                index++;
+            }
+        }
+
+        // Foul-Ergebnisse hinten in die Liste eintragen
+        foreach (string foul in foulResults)
+        {
+            if (index < opponentResultTexts.Length)
+            {   
+                if (playerDistance == "Foul") {
+                    playerTexts[index].text = "Du";
+                    opponentResultTexts[index].text = "Foul";
+                } else {
+                    playerTexts[index].text = "Gegner " + index;
+                    opponentResultTexts[index].text = "Foul";
+                }
+                
+                index++;
+            }
+        }
+
+        // Nach 5 Sekunden das Canvas anzeigen
+        Invoke("DisplayCanvas", 5f);
     }
+}
+
 
     // Methode, um das Canvas anzuzeigen
     private void DisplayCanvas()
