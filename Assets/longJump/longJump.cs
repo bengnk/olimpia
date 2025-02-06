@@ -7,7 +7,7 @@ public class LongJump3D : MonoBehaviour
     public int clicksToMaxSpeed = 100;         
     public float rapidDeceleration = 2f;       
     public float deceleration = 0.5f;          
-    public float jumpForce = 10f;              
+    public float jumpForce = 6f;              
     public float perfectTimingWindow = 0.5f;   
     public float timingRange = 2f;
 
@@ -200,12 +200,12 @@ public class LongJump3D : MonoBehaviour
 
             if (perfectJumpOff)
             {
-                Jump(jumpSpeed / 100f);
+                Jump(jumpSpeed / 230f);
                 Debug.Log("Perfect");
             }
             else
             {
-                Jump(jumpSpeed / 150f);
+                Jump(jumpSpeed / 300f);
             }
             spaceClicked = true;
         }
@@ -213,7 +213,7 @@ public class LongJump3D : MonoBehaviour
 
     private void Jump(float speed)
     {
-        rb.velocity = new Vector3(0, jumpForce, speed);
+        rb.velocity = new Vector3(0, jumpForce/1.2f, speed);
     }
 
    void OnCollisionEnter(Collision collision)
