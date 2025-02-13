@@ -72,6 +72,7 @@ public class JumpResultDisplay : MonoBehaviour
         // Ergebnisse in die UI eintragen
         int index = 0;
         int count = 0;
+        int count2 = 0;
         foreach (float result in allResults)
         {
             if (index < opponentResultTexts.Length)
@@ -94,9 +95,10 @@ public class JumpResultDisplay : MonoBehaviour
         {
             if (index < opponentResultTexts.Length)
             {   
-                if (playerDistance == "Foul") {
+                if (playerDistance == "Foul" && count2 == 0) {
                     playerTexts[index].text = "Du";
                     opponentResultTexts[index].text = "Foul";
+                    count2++;
                 } else {
                     playerTexts[index].text = "Gegner " + index;
                     opponentResultTexts[index].text = "Foul";
