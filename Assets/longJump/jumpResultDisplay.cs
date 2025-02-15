@@ -73,6 +73,7 @@ public class JumpResultDisplay : MonoBehaviour
         int index = 0;
         int count = 0;
         int count2 = 0;
+        int tmp = 0;
         foreach (float result in allResults)
         {
             if (index < opponentResultTexts.Length)
@@ -82,8 +83,9 @@ public class JumpResultDisplay : MonoBehaviour
                     playerTexts[index].text = "Du";
                     count++; // damit nicht mehrfach Du angezeigt werden kann
                 } else {
+                    tmp++;
                     opponentResultTexts[index].text = result.ToString("F2") + " m";
-                    playerTexts[index].text = "Gegner " + index;
+                    playerTexts[index].text = "Gegner " + tmp;
                 }
                 
                 index++;

@@ -19,7 +19,7 @@ public class LongJump : MonoBehaviour
             }
             else
             {
-                double jumpResult = Mathf.Round(Random.Range(2.0f, 8.0f) * 100) / 100; // Zwei Nachkommastellen
+                double jumpResult = Mathf.Round(Random.Range(3.0f, 8.0f) * 100) / 100; // Zwei Nachkommastellen
                 results.Add(jumpResult.ToString());
             }
         }
