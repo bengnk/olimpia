@@ -27,6 +27,8 @@ public class RaceManager : MonoBehaviour
     public Button restartButton;
 
     public bool isPaused = false;  // Status, ob das Spiel pausiert ist oder nicht
+    
+    private bool singleplayer = SingleplayerVarHolder.singleplayer;
 
     void Start()
     {
@@ -85,17 +87,39 @@ public class RaceManager : MonoBehaviour
         resultCanvas.SetActive(true);
 
         // Zeige die Zeiten an
-        player1TimeText.text = "Player 1 Time: " + player1Time.ToString("F2") + "s";
-        player2TimeText.text = "Player 2 Time: " + player2Time.ToString("F2") + "s";
+        if (!singleplayer)
+        {
+            player1TimeText.text = "Player 1 Time: " + player1Time.ToString("F2") + "s";
+            player2TimeText.text = "Player 2 Time: " + player2Time.ToString("F2") + "s";
+        }
+        else
+        {
+            player1TimeText.text = "Bot Time: " + player1Time.ToString("F2") + "s";
+            player2TimeText.text = "Your Time: " + player2Time.ToString("F2") + "s";
+        }
 
         // Bestimme den Gewinner
         if (player1Time < player2Time)
         {
-            winnerText.text = "Player 1 Wins!";
+            if (!singleplayer)
+            {
+                winnerText.text = "Player 1 Wins!";
+            }
+            else
+            {
+                winnerText.text = "You Lose!";
+            }
         }
         else if (player2Time < player1Time)
         {
-            winnerText.text = "Player 2 Wins!";
+            if (!singleplayer)
+            {
+                winnerText.text = "Player 2 Wins!";
+            }
+            else
+            {
+                winnerText.text = "You Win!";
+            }
         }
         else
         {

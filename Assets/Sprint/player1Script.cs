@@ -39,6 +39,10 @@ public class player1Script: MonoBehaviour
 
     // UI Text for run timer and countdown
     public Text runTimerText;  // Reference to the UI Text element for run timer
+    public Text runTimerText1;
+    public Text runTimerText2;
+    public Image runTimerBackground1;
+    public Image runTimerBackground2;
     public Text countdownText;  // Reference to the UI Text element for countdown
     public Text pressSpaceKey;
     public Image pressSpaceKeyBackground;
@@ -78,6 +82,8 @@ public class player1Script: MonoBehaviour
         {
             countdownText.color = new Color(1, 1, 1, 0);
             countdownBackground.SetActive(false);
+            runTimerBackground1.color = new Color(1, 1, 1, 0);
+            runTimerBackground2.color = new Color(1, 1, 1, 0);
         }
     }
 
@@ -122,6 +128,8 @@ public class player1Script: MonoBehaviour
             pressSpaceKeyBackground.color = new Color(1, 1, 1, 0);
             countdownText.color = new Color(1, 1, 1, 1);
             countdownBackground.SetActive(true);
+            runTimerBackground1.color = new Color(1, 1, 1, 1);
+            runTimerBackground2.color = new Color(1, 1, 1, 1);
             HandleCountdown();
         }
         else
@@ -150,6 +158,67 @@ public class player1Script: MonoBehaviour
             if(!singleplayer) {
                 MoveSquare();
                 CheckInput();
+                if (!isFinished)
+                {
+                    runTimerText1.text = runTimerText.text;
+                    runTimerText1.color = runTimerText.color;
+                }
+                else
+                {
+                    RectTransform runTimerTextRect1 = runTimerText1.GetComponent<RectTransform>();
+                    
+                    // Set anchor to top-right
+                    runTimerTextRect1.anchorMin = new Vector2(0, 1);
+                    runTimerTextRect1.anchorMax = new Vector2(0, 1);
+
+                    // Set pivot to top-right (optional)
+                    runTimerTextRect1.pivot = new Vector2(0, 1);
+
+                    // Set position relative to the top-right corner
+                    runTimerTextRect1.anchoredPosition = new Vector2(50, -20); // Adjust as needed
+                    
+                    RectTransform runTimerBackground1Rect = runTimerBackground1.GetComponent<RectTransform>();
+                    // Set anchor to top-right
+                    runTimerBackground1Rect.anchorMin = new Vector2(0, 1);
+                    runTimerBackground1Rect.anchorMax = new Vector2(0, 1);
+
+                    // Set pivot to top-right (optional)
+                    runTimerBackground1Rect.pivot = new Vector2(0, 1);
+
+                    // Set position relative to the top-right corner
+                    runTimerBackground1Rect.anchoredPosition = new Vector2(0, -10); // Adjust as needed
+                }
+
+                if (!Player2Movement.isFinishedP2)
+                {
+                    runTimerText2.text = runTimerText.text;
+                    runTimerText2.color = runTimerText.color;
+                }
+                else
+                {
+                    RectTransform runTimerTextRect2 = runTimerText2.GetComponent<RectTransform>();
+                    
+                    // Set anchor to top-right
+                    runTimerTextRect2.anchorMin = new Vector2(1, 1);
+                    runTimerTextRect2.anchorMax = new Vector2(1, 1);
+
+                    // Set pivot to top-right (optional)
+                    runTimerTextRect2.pivot = new Vector2(1, 1);
+
+                    // Set position relative to the top-right corner
+                    runTimerTextRect2.anchoredPosition = new Vector2(-50, -20); // Adjust as needed
+                    
+                    RectTransform runTimerBackground2Rect = runTimerBackground2.GetComponent<RectTransform>();
+                    // Set anchor to top-right
+                    runTimerBackground2Rect.anchorMin = new Vector2(1, 1);
+                    runTimerBackground2Rect.anchorMax = new Vector2(1, 1);
+
+                    // Set pivot to top-right (optional)
+                    runTimerBackground2Rect.pivot = new Vector2(1, 1);
+
+                    // Set position relative to the top-right corner
+                    runTimerBackground2Rect.anchoredPosition = new Vector2(0, -10); // Adjust as needed
+                }
             } else {
                 MoveSquare();
                 HideAllElements();
