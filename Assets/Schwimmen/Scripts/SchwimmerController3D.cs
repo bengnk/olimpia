@@ -1,8 +1,12 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class SchwimmerController3D : MonoBehaviour
 {
+    // Alte Variablen (unverändert)
     public float initialMoveAmount = 0.5f;
     public float waterDeceleration = 0.05f;
     public float sizeIncreaseRate = 0.1f;
@@ -30,68 +34,124 @@ public class SchwimmerController3D : MonoBehaviour
 
     private Animator animator;
 
-    public GameManager gameManager; // Referenz zum GameManager für die Zeitmessung
-    public int swimmerID; // Eindeutige ID für jeden Schwimmer (muss im Inspector gesetzt werden)
+    public GameManager gameManager; // Referenz zum GameManager
+    public int swimmerID; // Eindeutige ID (z. B. 4 für den Spieler)
 
     // Kamera-Verfolgung
     public Transform cameraTransform;
     public Vector3 cameraOffset = new Vector3(0, 5, -10);
     public float cameraFollowSpeed = 5f;
 
-    private bool timerStarted = false; // Prüft, ob die Zeitmessung gestartet wurde
+    private bool timerStarted = false; // Damit der Timer nur einmal gestartet wird
 
     public GameObject endCanvas;
+
+    // Variablen für den Charge‑Sprung
+    public RectTransform jumpChargeBar; 
+    public Image backChargeBar; 
+    public Vector2 chargeBarLeftLimit;
+    public Vector2 chargeBarRightLimit;
+    public float chargeBarSpeed = 1f;
+    public float minJumpMultiplier = 3f;
+    public float maxJumpMultiplier = 6f;
+    private float currentCharge = 0f;
+    private float chargeDirection = 1f;
+    private bool isCharging = false;  // Aktiv während des Ladevorgangs
+
+    // Speichert die ausgewählte Sprungstärke
+    private bool jumpSelected = false;
+    private float storedJumpMultiplier = 0f;
+
+    public bool test = false;
+    public bool activation = false;
+
+    // Verhindert Mehrfachdrehungen an der Wand
+    private bool hasTurnedAtWall = false;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         if (rb == null)
-        {
             rb = gameObject.AddComponent<Rigidbody>();
-        }
         rb.useGravity = true;
         rb.isKinematic = false;
         currentSpeed = 0;
-
         animator = GetComponent<Animator>();
 
         button1.gameObject.SetActive(false);
         button2.gameObject.SetActive(false);
         specialButton.gameObject.SetActive(false);
-
         if (endCanvas != null)
-        {
             endCanvas.SetActive(false);
-        }
+        if (jumpChargeBar != null)
+            jumpChargeBar.gameObject.SetActive(false);
+            backChargeBar.gameObject.SetActive(false);
     }
 
     void Update()
     {
-        // Starte den Timer für den Schwimmer, wenn das Rennen beginnt und der Timer noch nicht gestartet wurde
-        if (gameManager != null && gameManager.isGoTime && !timerStarted)
+        // Charge‑Mechanismus (Startet den Countdown und wählt die Sprungstärke)
+        if (gameManager != null && gameManager.gameStarted && !gameManager.countdownStarted && !isJumping && !hasTouchedWater && !jumpSelected)
         {
-            gameManager.StartTimer(swimmerID); // Zeitmessung starten
-            timerStarted = true; // Verhindert mehrfaches Starten des Timers
+            if (!isCharging)
+            {
+                isCharging = true;
+                currentCharge = 0f;
+                chargeDirection = 1f;
+                if (jumpChargeBar != null)
+
+                    jumpChargeBar.gameObject.SetActive(true);
+                    backChargeBar.gameObject.SetActive(true);
+            }
+            currentCharge += chargeDirection * chargeBarSpeed * Time.deltaTime;
+            if (currentCharge >= 1f)
+            {
+                currentCharge = 1f;
+                chargeDirection = -1f;
+            }
+            else if (currentCharge <= 0f)
+            {
+                currentCharge = 0f;
+                chargeDirection = 1f;
+            }
+            if (jumpChargeBar != null)
+                jumpChargeBar.anchoredPosition = Vector2.Lerp(chargeBarLeftLimit, chargeBarRightLimit, currentCharge);
+            if (Input.GetMouseButtonDown(0))
+            {
+                storedJumpMultiplier = Mathf.Lerp(minJumpMultiplier, maxJumpMultiplier, currentCharge);
+                jumpSelected = true;
+                isCharging = false;
+                test = true;
+                if (jumpChargeBar != null)
+                    jumpChargeBar.gameObject.SetActive(false);
+                    backChargeBar.gameObject.SetActive(false);
+                if (gameManager != null && !gameManager.countdownStarted)
+                    gameManager.StartCountdown();
+            }
         }
 
-        // Startsprung erlauben, sobald das Rennen beginnt
-        if (Input.GetMouseButtonDown(0) && gameManager.isGoTime && !isJumping && !hasTouchedWater)
+        if (gameManager != null && gameManager.isGoTime && jumpSelected && !isJumping)
         {
-            animator.SetBool("jump", true);
-            StartJump();
+            activation = true;
+            PerformJump();
         }
 
         afterJump();
         AdjustSwimAnimationSpeed();
     }
 
-    private void StartJump()
+    private void PerformJump()
     {
+        // Starte den Timer genau beim Sprung – nur einmal
+       // if (gameManager != null && !timerStarted)
+       // {
+           // gameManager.StartTimer(swimmerID);
+         //   timerStarted = true;
+       // }
         isJumping = true;
-        rb.velocity = new Vector3(0, jumpForce, jumpForwardSpeed);
-        currentSpeed = jumpForwardSpeed;
-
-        // Buttons anzeigen, sobald der Spieler springt
+        rb.velocity = new Vector3(0, jumpForce * storedJumpMultiplier, jumpForwardSpeed * storedJumpMultiplier);
+        currentSpeed = jumpForwardSpeed * storedJumpMultiplier;
+        animator.SetBool("jump", true);
         button1.gameObject.SetActive(true);
         button2.gameObject.SetActive(true);
         specialButton.gameObject.SetActive(true);
@@ -108,11 +168,9 @@ public class SchwimmerController3D : MonoBehaviour
         {
             currentSpeed = 0;
         }
-
         IncreaseButtonSize(button1);
         IncreaseButtonSize(button2);
         IncreaseButtonSize(specialButton);
-
         HandleSpecialButton();
     }
 
@@ -132,14 +190,13 @@ public class SchwimmerController3D : MonoBehaviour
             goalReached = true;
             currentSpeed = 0;
             animator.SetBool("stop", true);
-
-            // Timer für den Schwimmer im GameManager stoppen
             gameManager.StopTimer(swimmerID);
-
             if (swimmerID == 4 && endCanvas != null)
-            {
                 endCanvas.SetActive(true);
-            }
+        }
+        else if (other.CompareTag("Wand"))
+        {
+            hasTurnedAtWall = false;
         }
     }
 
@@ -147,10 +204,20 @@ public class SchwimmerController3D : MonoBehaviour
     {
         if (other.CompareTag("Wand"))
         {
-            transform.Rotate(0, 180, 0);
+            if (!hasTurnedAtWall)
+            {
+                transform.Rotate(0, 180, 0);
+                hasTurnedAtWall = true;
+            }
             ResetSpeed();
             currentSpeed = initialMoveAmount;
         }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Wand"))
+            hasTurnedAtWall = false;
     }
 
     public void Button1Pressed()
@@ -195,19 +262,16 @@ public class SchwimmerController3D : MonoBehaviour
         Vector2 canvasSize = canvasRectTransform.sizeDelta;
         Vector2 newPosition;
         float distanceToOtherButton;
-
         float minY = -(canvasSize.y / 2) * 0.75f;
         float maxY = 0;
         float minX = -(canvasSize.x / 2) + buttonToMove.rect.width / 2;
         float maxX = (canvasSize.x / 2) - buttonToMove.rect.width / 2;
-
         do
         {
             newPosition = new Vector2(Random.Range(minX, maxX), Random.Range(minY, maxY));
             distanceToOtherButton = Vector2.Distance(newPosition, otherButton.anchoredPosition);
         }
         while (distanceToOtherButton < minDistanceBetweenButtons);
-
         buttonToMove.anchoredPosition = newPosition;
     }
 
@@ -215,7 +279,8 @@ public class SchwimmerController3D : MonoBehaviour
     {
         if (button.gameObject.activeSelf && button.localScale.x < maxButtonSize)
         {
-            button.localScale += new Vector3(sizeIncreaseRate * Time.deltaTime, sizeIncreaseRate * Time.deltaTime, 0);
+            float newSize = Mathf.Min(button.localScale.x + sizeIncreaseRate * Time.deltaTime, maxButtonSize);
+            button.localScale = new Vector3(newSize, newSize, 0);
         }
     }
 
@@ -224,26 +289,36 @@ public class SchwimmerController3D : MonoBehaviour
         button.localScale = new Vector3(1f, 1f, 1f);
     }
 
-    private void HandleSpecialButton()
+   private void HandleSpecialButton()
+{
+    // Der Special Button erscheint nur, wenn das Rennen gestartet wurde.
+    if (gameManager == null || !gameManager.isGoTime)
     {
-        if (!isSpecialButtonActive)
+        specialButton.gameObject.SetActive(false);
+        return;
+    }
+
+    if (!isSpecialButtonActive)
+    {
+        // Special Button aktivieren, positionieren und initialisieren
+        specialButton.gameObject.SetActive(true);
+        MoveButtonToRandomPosition(specialButton, button1);
+        AdjustButtonProperties(specialButton);
+        isSpecialButtonActive = true;
+        specialButtonTimer = specialButtonDuration;
+    }
+    else
+    {
+        specialButtonTimer -= Time.deltaTime;
+        if (specialButtonTimer <= 0f)
         {
-            MoveButtonToRandomPosition(specialButton, button1);
-            AdjustButtonProperties(specialButton);
-            specialButton.gameObject.SetActive(true);
-            isSpecialButtonActive = true;
-            specialButtonTimer = specialButtonDuration;
-        }
-        else
-        {
-            specialButtonTimer -= Time.deltaTime;
-            if (specialButtonTimer <= 0f)
-            {
-                specialButton.gameObject.SetActive(false);
-                isSpecialButtonActive = false;
-            }
+            specialButton.gameObject.SetActive(false);
+            isSpecialButtonActive = false;
         }
     }
+}
+
+
 
     private void AdjustSwimAnimationSpeed()
     {
