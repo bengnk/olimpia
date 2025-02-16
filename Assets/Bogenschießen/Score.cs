@@ -1,14 +1,14 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class ScoreDisplay : MonoBehaviour
 {
-    public Canvas scoreCanvas;     // Das Canvas, das die Punkte anzeigt
-    public Text playerScoreText;   // Das Text-Element, das die Punktzahl des Spielers anzeigt
+    public Canvas scoreCanvas;      // Das Canvas, das die Punktzahlen anzeigt
+    public Text playerScoreText;    // Das Text-Element für die Punktzahl des Spielers
+    public Text[] enemyScoreTexts;  // Ein Array von Text-Elementen für die Gegner-Punktzahlen
+    public Text[] enemyScore;       // Ein Array, das die Gegner-Punktzahlen anzeigt
 
-    [SerializeField]               // Erzwingt die Anzeige im Inspector
-    private Text[] enemyScoreTexts; // Ein Array von Text-Elementen für die Punktzahlen der Gegner (4 Gegner)
-    
     private bool isScoreShown = false;
 
     void Start()
@@ -22,19 +22,31 @@ public class ScoreDisplay : MonoBehaviour
     {
         if (!isScoreShown)
         {
-            // Setze den Text auf die aktuelle Punktzahl des Spielers
-            playerScoreText.text = playerScore.ToString();
+            // Setze den Spieler-Score immer separat
+            playerScoreText.text = $"{playerScore}";
 
-            // Setze die Punktzahlen der Gegner in die entsprechenden Text-Elemente
+            // Erstelle eine Liste für Gegner-Punkte und Namen
+            List<(int score, string name)> enemyScoreList = new List<(int, string)>();
+            string[] enemyNames = new string[] { "Robin Hood", "Legolas", "Katniss Everdeen", "Green Arrow" };
+
             for (int i = 0; i < enemyScores.Length; i++)
             {
-                enemyScoreTexts[i].text = enemyScores[i].ToString();
+                // Füge die Namen der berühmten Bogenschützen hinzu
+                enemyScoreList.Add((enemyScores[i], enemyNames[i]));
+            }
+
+            // Sortiere die Gegner-Punkte absteigend
+            enemyScoreList.Sort((a, b) => b.score.CompareTo(a.score));
+
+            // Weise die sortierten Gegner-Scores zu
+            for (int i = 0; i < enemyScoreTexts.Length && i < enemyScoreList.Count; i++)
+            {
+                enemyScoreTexts[i].text = enemyScoreList[i].name;
+                enemyScore[i].text = enemyScoreList[i].score.ToString();
             }
 
             // Zeige das Canvas an
             scoreCanvas.gameObject.SetActive(true);
-
-            // Markiere, dass die Punktzahl angezeigt wurde
             isScoreShown = true;
         }
     }
