@@ -13,28 +13,22 @@ public class SchwimmerController3D_Auto : MonoBehaviour
     private bool hasTouchedWater = false;
     public float jumpForce = 5f;
     private Rigidbody rb;
-
     private Animator animator;
 
-    public GameManager gameManager;  // Referenz zum GameManager für die Zeitmessung
-    public int swimmerID;  // Eindeutige ID für jeden Schwimmer (muss im Inspector gesetzt werden)
+    public GameManager gameManager;  // Referenz zum GameManager
+    public int swimmerID;  // Eindeutige ID für diesen Schwimmer
 
-    private bool timerStarted = false; // Flag, um zu prüfen, ob der Timer bereits gestartet wurde
+    private bool timerStarted = false; // Damit der Timer nur einmal gestartet wird
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         if (rb == null)
-        {
             rb = gameObject.AddComponent<Rigidbody>();
-        }
         rb.useGravity = true;
         rb.isKinematic = false;
         currentSpeed = 0;
-
         animator = GetComponent<Animator>();
-
-        // Starte den automatischen Sprung nach einer zufälligen Zeit, wenn das Rennen gestartet ist
         StartCoroutine(AutoJump());
     }
 
@@ -42,26 +36,15 @@ public class SchwimmerController3D_Auto : MonoBehaviour
     {
         afterJump();
         AdjustSwimAnimationSpeed();
-    
-    if (gameManager.isGoTime){
-                if (!timerStarted)
-        {
-            gameManager.StartTimer(swimmerID);
-            timerStarted = true; // Verhindert mehrfaches Starten des Timers
-        }
-            }
-
+        // Hier wird NICHT im Update der Timer gestartet – das erfolgt in StartJump()
     }
 
     private IEnumerator AutoJump()
     {
         while (true)
         {
-            // Warte eine zufällige Zeit zwischen 1 und 3 Sekunden, bevor der nächste Sprung erfolgt
             yield return new WaitForSeconds(Random.Range(1f, 3f));
-    	    
-            // Nur springen und Timer starten, wenn das Rennen begonnen hat
-            if (!isJumping && !hasTouchedWater && gameManager.isGoTime)
+            if (!isJumping && !hasTouchedWater && gameManager.activation)
             {
                 animator.SetBool("jump", true);
                 StartJump();
@@ -71,28 +54,28 @@ public class SchwimmerController3D_Auto : MonoBehaviour
 
     private void StartJump()
     {
+        // Timer nur einmal direkt beim Sprung
+       // if (gameManager != null && !timerStarted)
+      //  {
+       //     gameManager.StartTimer(swimmerID);
+      //      timerStarted = true;
+      //  }
         isJumping = true;
-        currentSpeed = Random.Range(minSpeed, maxSpeed);  // Zufällige Geschwindigkeit festlegen
+        currentSpeed = Random.Range(minSpeed, maxSpeed);
         rb.velocity = new Vector3(0, jumpForce, currentSpeed);
-
-        // Timer für den Gegner-Schwimmer im GameManager starten, aber nur einmal
-        
     }
 
     void afterJump()
     {
         if (currentSpeed > 0)
         {
-            // Schwimmer bewegen
             transform.position += transform.forward * currentSpeed * Time.deltaTime;
-
-            // Verlangsamen, aber nicht unter eine Mindestgeschwindigkeit fallen lassen
             float deceleration = hasTouchedWater ? waterDeceleration * Time.deltaTime : waterDeceleration * 5 * Time.deltaTime;
-            currentSpeed = Mathf.Max(currentSpeed - deceleration, 1f);  // Mindestgeschwindigkeit von 1
+            currentSpeed = Mathf.Max(currentSpeed - deceleration, 1f);
         }
         else
         {
-            currentSpeed = 0;  // Geschwindigkeit nicht unter 0 fallen lassen
+            currentSpeed = 0;
         }
     }
 
@@ -104,28 +87,21 @@ public class SchwimmerController3D_Auto : MonoBehaviour
             hasTouchedWater = true;
             rb.isKinematic = true;
             rb.useGravity = false;
-            rb.velocity = new Vector3(0, 0, currentSpeed);  // Setzt die Bewegung im Wasser fort
+            rb.velocity = new Vector3(0, 0, currentSpeed);
             animator.SetBool("jump", false);
         }
         else if (other.CompareTag("Wand"))
         {
-            // Stoppe die Bewegung, bevor du die Rotation durchführst
             currentSpeed = 0;
-            rb.velocity = Vector3.zero;  // Geschwindigkeit auf null setzen
-
-            // Drehe den Schwimmer um 180 Grad
+            rb.velocity = Vector3.zero;
             transform.Rotate(0, 180, 0);
-
-            // Setze die Geschwindigkeit auf den initialen Wert, um die Bewegung in die neue Richtung fortzusetzen
             currentSpeed = initialMoveAmount;
-            rb.velocity = transform.forward * currentSpeed;  // Setze neue Geschwindigkeit in Vorwärtsrichtung
+            rb.velocity = transform.forward * currentSpeed;
         }
         else if (other.CompareTag("Ende"))
         {
             currentSpeed = 0;
             animator.SetBool("stop", true);
-
-            // Timer für den Gegner-Schwimmer im GameManager stoppen
             gameManager.StopTimer(swimmerID);
         }
     }
