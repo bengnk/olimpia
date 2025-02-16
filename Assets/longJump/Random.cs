@@ -7,7 +7,7 @@ public class LongJump : MonoBehaviour
 
     void Start()
     {
-        int jumps = 5;  // Anzahl der Sprünge für Gegner
+        int jumps = 4;  // Anzahl der Sprünge für Gegner
 
         for (int i = 0; i < jumps; i++)
         {
@@ -19,8 +19,8 @@ public class LongJump : MonoBehaviour
             }
             else
             {
-                double jumpResult = Mathf.Round(Random.Range(2.0f, 10.0f) * 100) / 100; // Zwei Nachkommastellen
-                results.Add(jumpResult + " m");
+                double jumpResult = Mathf.Round(Random.Range(3.0f, 8.0f) * 100) / 100; // Zwei Nachkommastellen
+                results.Add(jumpResult.ToString());
             }
         }
 
