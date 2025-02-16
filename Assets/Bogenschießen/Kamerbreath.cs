@@ -17,16 +17,14 @@ public class CameraControllerWithBreathing : MonoBehaviour
     private float maxBreathAmplitude = 0.8f;
 
     void Start()
-    {
-        
+{
+    // Setze die Kamera lokal um zusätzliche 90° (relative zum Elternobjekt)
+    transform.localRotation = Quaternion.Euler(0, 45, 0);
 
-        // Speichere die ursprüngliche Position der Kamera
-        originalCameraPosition = transform.localPosition;
-
-        // Initialisiere die aktuelle und Zielrotation
-        currentRotation = transform.eulerAngles;
-        targetRotation = currentRotation;
-    }
+    // Optional: Speichere die Startrotation in deinen Variablen
+    currentRotation = transform.localEulerAngles;
+    targetRotation = currentRotation;
+}
 
     void Update()
 {
