@@ -17,7 +17,7 @@ public class SoundManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!countdownSound.isPlaying && !pauseScript.isPaused && !gameManager.isGoTime && gameManager.gameStarted) {
+        if(!countdownSound.isPlaying && !pauseScript.isPaused && gameManager.countdownStarted && !gameManager.isGoTime) {
             countdownSound.Play();
         } else if(pauseScript.isPaused){
             countdownSound.Pause();

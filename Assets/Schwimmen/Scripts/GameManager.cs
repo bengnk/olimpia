@@ -146,7 +146,7 @@ public class GameManager : MonoBehaviour
     // Ergebnisse sortieren und in zwei Spalten anzeigen:
     // Linke Spalte: "Bahn X" (wo X die Schwimmer-ID ist)
     // Rechte Spalte: Zeit in s, evtl. mit Medaillen und Kennzeichnung (Du)
-    private void DisplayResults()
+  private void DisplayResults()
     {
         var sortedResults = swimmerTimes.OrderBy(x => x.Value).ToList();
 
@@ -154,25 +154,19 @@ public class GameManager : MonoBehaviour
         {
             if (i < sortedResults.Count)
             {
-                // Medaillen für Top 3
-                string medal = "";
-                if (i == 0)
-                    medal = " (Gold)";
-                else if (i == 1)
-                    medal = " (Silber)";
-                else if (i == 2)
-                    medal = " (Bronze)";
-
-                // Linke Spalte: Zeigt direkt "Bahn [Schwimmer-ID]"
-                laneResultTexts[i].text = "Bahn " + sortedResults[i].Key.ToString();
+                
 
                 // Falls dieser Schwimmer dein eigener ist, wird das markiert
                 string playerMark = "";
                 if (sortedResults[i].Key == playerSwimmerID)
                     playerMark = " (Du)";
+                // Linke Spalte: Zeigt direkt "Bahn [Schwimmer-ID]"
+                laneResultTexts[i].text = "Bahn " + sortedResults[i].Key.ToString() + playerMark;
+
+                
 
                 // Rechte Spalte: Zeit + Medaillen + ggf. (Du)
-                timeResultTexts[i].text = sortedResults[i].Value.ToString("F2") + " s" + medal + playerMark;
+                timeResultTexts[i].text = sortedResults[i].Value.ToString("F2") + " s";
             }
             else
             {
