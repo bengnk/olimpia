@@ -6427,7 +6427,7 @@ MonoBehaviour:
   scoreCanvas: {fileID: 1533656060}
   playerScoreText: {fileID: 132711218}
   enemyScoreTexts:
-  - {fileID: 1225746546}
+  - {fileID: 43590409}
   - {fileID: 1735721262}
   - {fileID: 1582571090}
   - {fileID: 312557180}
