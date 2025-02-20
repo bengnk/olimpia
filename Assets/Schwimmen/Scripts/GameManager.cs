@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        timerBackground.color = new Color(0, 0, 0, 0);
+        
 
         if (startCanvas != null)
             startCanvas.SetActive(true);
@@ -64,7 +64,7 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && !gameStarted)
         {
             StartGame();
-            timerBackground.color = new Color(0f, 0f, 0f, 0.5f);
+            
         }
 
         if (raceOngoing)
@@ -94,6 +94,9 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator StartRace()
     {
+        timerBackground.gameObject.SetActive(true);
+
+
         int countdown = 3;
         while (countdown > 0)
         {
