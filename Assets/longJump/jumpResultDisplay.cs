@@ -97,7 +97,7 @@ public class JumpResultDisplay : MonoBehaviour
         {
             if (index < opponentResultTexts.Length)
             {   
-                if (playerDistance == "Foul" && count2 == 0) {
+                if ((playerDistance == "Foul" || playerDistance == "0,00") && count2 == 0) {
                     playerTexts[index].text = "Du";
                     opponentResultTexts[index].text = "Foul";
                     count2++;
