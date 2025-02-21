@@ -89,13 +89,13 @@ public class RaceManager : MonoBehaviour
         // Zeige die Zeiten an
         if (!singleplayer)
         {
-            player1TimeText.text = "Player 1 Time: " + player1Time.ToString("F2") + "s";
-            player2TimeText.text = "Player 2 Time: " + player2Time.ToString("F2") + "s";
+            player1TimeText.text = "Spieler 1 Zeit: " + player1Time.ToString("F2") + "s";
+            player2TimeText.text = "Spieler 2 Zeit: " + player2Time.ToString("F2") + "s";
         }
         else
         {
-            player1TimeText.text = "Bot Time: " + player1Time.ToString("F2") + "s";
-            player2TimeText.text = "Your Time: " + player2Time.ToString("F2") + "s";
+            player1TimeText.text = "Bot Zeit: " + player1Time.ToString("F2") + "s";
+            player2TimeText.text = "Deine Zeit: " + player2Time.ToString("F2") + "s";
         }
 
         // Bestimme den Gewinner
@@ -103,27 +103,27 @@ public class RaceManager : MonoBehaviour
         {
             if (!singleplayer)
             {
-                winnerText.text = "Player 1 Wins!";
+                winnerText.text = "Spieler 1 gewinnt!";
             }
             else
             {
-                winnerText.text = "You Lose!";
+                winnerText.text = "Du verlierst!";
             }
         }
         else if (player2Time < player1Time)
         {
             if (!singleplayer)
             {
-                winnerText.text = "Player 2 Wins!";
+                winnerText.text = "Spieler 2 gewinnt!";
             }
             else
             {
-                winnerText.text = "You Win!";
+                winnerText.text = "Du gewinnst!";
             }
         }
         else
         {
-            winnerText.text = "It's a Tie!";
+            winnerText.text = "Unentschieden!";
         }
     }
 
