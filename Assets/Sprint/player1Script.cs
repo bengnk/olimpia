@@ -175,7 +175,7 @@ public class player1Script: MonoBehaviour
                     runTimerTextRect1.pivot = new Vector2(0, 1);
 
                     // Set position relative to the top-right corner
-                    runTimerTextRect1.anchoredPosition = new Vector2(50, -20); // Adjust as needed
+                    runTimerTextRect1.anchoredPosition = new Vector2(50, -90); // Adjust as needed
                     
                     RectTransform runTimerBackground1Rect = runTimerBackground1.GetComponent<RectTransform>();
                     // Set anchor to top-right
@@ -206,7 +206,7 @@ public class player1Script: MonoBehaviour
                     runTimerTextRect2.pivot = new Vector2(1, 1);
 
                     // Set position relative to the top-right corner
-                    runTimerTextRect2.anchoredPosition = new Vector2(-50, -20); // Adjust as needed
+                    runTimerTextRect2.anchoredPosition = new Vector2(-50, -90); // Adjust as needed
                     
                     RectTransform runTimerBackground2Rect = runTimerBackground2.GetComponent<RectTransform>();
                     // Set anchor to top-right
