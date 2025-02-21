@@ -120,7 +120,7 @@ public class player1Script: MonoBehaviour
         }
 
         if(!startKeyPressed) {
-            pressSpaceKey.color = new Color(0.5f, 0.5f, 0.5f, 1f);
+            pressSpaceKey.color = new Color(1f, 1f, 1f, 1f);
         }
         else if(!countdownFinished)
         {
