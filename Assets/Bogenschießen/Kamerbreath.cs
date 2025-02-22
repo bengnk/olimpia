@@ -14,7 +14,7 @@ public class CameraControllerWithBreathing : MonoBehaviour
 
     private float breathAmplitudeIncreaseRate = 0.2f; // Zuwachsrate für die Atmung
     private float currentBreathAmplitude = 0f; // Aktuelle Atmungsamplitude
-    private float maxBreathAmplitude = 2f;
+    private float maxBreathAmplitude = 0.8f;
 
     void Start()
 {

@@ -6531,21 +6531,6 @@ MonoBehaviour:
   bowWireAnimator: {fileID: 1425225118}
   arrow: {fileID: 412804164}
   resetDelay: 0.2
---- !u!114 &1425225128
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 412804164}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72bb70654b15b964492ce806b6b1bc99, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scoreCanvas: {fileID: 1533656060}
-  scoreTexts: []
-  nameTexts: []
 --- !u!1 &1447448138
 GameObject:
   m_ObjectHideFlags: 0
@@ -10233,9 +10218,6 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4813313846987458936, guid: ea141e99ea32bcf499487f7724a73f21, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1425225128}
     - targetCorrespondingSourceObject: {fileID: 4813313846987458936, guid: ea141e99ea32bcf499487f7724a73f21, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1425225127}
