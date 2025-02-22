@@ -5,9 +5,8 @@ using System.Collections.Generic;
 public class ScoreDisplay : MonoBehaviour
 {
     public Canvas scoreCanvas;      // Das Canvas, das die Punktzahlen anzeigt
-    public Text playerScoreText;    // Das Text-Element für die Punktzahl des Spielers
-    public Text[] enemyScoreTexts;  // Ein Array von Text-Elementen für die Gegner-Punktzahlen
-    public Text[] enemyScore;       // Ein Array, das die Gegner-Punktzahlen anzeigt
+    public Text[] scoreTexts;       // Ein Array für alle Punktestand-Textobjekte (Spieler + Gegner)
+    public Text[] nameTexts;        // Ein Array für alle Namen (Spieler + Gegner)
 
     private bool isScoreShown = false;
 
@@ -22,27 +21,29 @@ public class ScoreDisplay : MonoBehaviour
     {
         if (!isScoreShown)
         {
-            // Setze den Spieler-Score immer separat
-            playerScoreText.text = $"{playerScore}";
+            // Erstelle eine Liste für Spieler- und Gegner-Punkte
+            List<(int score, string name)> scoreList = new List<(int, string)>
+            {
+                (playerScore, "Du") // Spieler hinzufügen
+            };
 
-            // Erstelle eine Liste für Gegner-Punkte und Namen
-            List<(int score, string name)> enemyScoreList = new List<(int, string)>();
+            // Namen der Gegner
             string[] enemyNames = new string[] { "Robin Hood", "Legolas", "Katniss Everdeen", "Green Arrow" };
 
+            // Füge Gegner-Scores hinzu
             for (int i = 0; i < enemyScores.Length; i++)
             {
-                // Füge die Namen der berühmten Bogenschützen hinzu
-                enemyScoreList.Add((enemyScores[i], enemyNames[i]));
+                scoreList.Add((enemyScores[i], enemyNames[i]));
             }
 
-            // Sortiere die Gegner-Punkte absteigend
-            enemyScoreList.Sort((a, b) => b.score.CompareTo(a.score));
+            // Sortiere alle Punkte absteigend
+            scoreList.Sort((a, b) => b.score.CompareTo(a.score));
 
-            // Weise die sortierten Gegner-Scores zu
-            for (int i = 0; i < enemyScoreTexts.Length && i < enemyScoreList.Count; i++)
+            // Aktualisiere die UI mit den sortierten Werten
+            for (int i = 0; i < scoreList.Count && i < scoreTexts.Length; i++)
             {
-                enemyScoreTexts[i].text = enemyScoreList[i].name;
-                enemyScore[i].text = enemyScoreList[i].score.ToString();
+                nameTexts[i].text = scoreList[i].name;
+                scoreTexts[i].text = scoreList[i].score.ToString();
             }
 
             // Zeige das Canvas an
@@ -51,7 +52,7 @@ public class ScoreDisplay : MonoBehaviour
         }
     }
 
-    // Methode, um das Canvas auszublenden, falls erforderlich
+    // Methode, um das Canvas auszublenden
     public void HideScore()
     {
         scoreCanvas.gameObject.SetActive(false);
