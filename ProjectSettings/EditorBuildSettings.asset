@@ -29,4 +29,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Startbildschirm/Einstellungen.unity
     guid: 76858aa096327d24aa434db72e9dadb9
+  - enabled: 1
+    path: "Assets/Bogenschie\xDFen/AuswahlBogenschie\xDFen.unity"
+    guid: 95b65ac4473b76f49b6d0e53e0621929
   m_configObjects: {}

@@ -264,9 +264,8 @@ public class ArrowShoot : MonoBehaviour
     public void RestartGame()
     {
         Time.timeScale = 1;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        SceneManager.LoadScene("AuswahlBogenschießen");
+        
     }
 
     public void LoadMainMenu()
