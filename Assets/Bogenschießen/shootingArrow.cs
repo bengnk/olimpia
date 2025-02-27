@@ -30,6 +30,7 @@ public class ArrowShoot : MonoBehaviour
     private int blueScore = 5;
     private int redScore = 7;
     private int yellowScore = 10;
+    private int highScore = 0;
 
     private int totalScore = 0;
     private int arrowCount = 0;
@@ -47,6 +48,8 @@ public class ArrowShoot : MonoBehaviour
 
     // Sicherstellen, dass die scoreCamera zu Beginn des Spiels deaktiviert ist
     scoreCamera.gameObject.SetActive(false);
+
+    highScore = PlayerPrefs.GetInt("HighScore", 0);
 }
 
     void Update()
@@ -205,6 +208,15 @@ public class ArrowShoot : MonoBehaviour
     void ShowScoreboard()
     {
         Debug.Log("Endpunktestand: " + totalScore);
+
+        if (totalScore > highScore)
+    {
+        highScore = totalScore;
+        PlayerPrefs.SetInt("HighScore", highScore);
+        PlayerPrefs.Save();
+        Debug.Log("Neuer Highscore: " + highScore);
+    }
+
 
         // Generiere zufällige Punktzahlen für 4 Gegner zwischen 23 und 30
         int[] enemyScores = new int[4];

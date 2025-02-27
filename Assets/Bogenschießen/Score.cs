@@ -7,6 +7,7 @@ public class ScoreDisplay : MonoBehaviour
     public Canvas scoreCanvas;      // Das Canvas, das die Punktzahlen anzeigt
     public Text[] scoreTexts;       // Ein Array für alle Punktestand-Textobjekte (Spieler + Gegner)
     public Text[] nameTexts;        // Ein Array für alle Namen (Spieler + Gegner)
+    public Text highscoreValue;     // Neues UI-Element für den Highscore
 
     private bool isScoreShown = false;
 
@@ -45,6 +46,10 @@ public class ScoreDisplay : MonoBehaviour
                 nameTexts[i].text = scoreList[i].name;
                 scoreTexts[i].text = scoreList[i].score.ToString();
             }
+
+            // Highscore aus PlayerPrefs holen und aktualisieren
+            int highscore = PlayerPrefs.GetInt("HighScore", 0);
+            highscoreValue.text = highscore.ToString();
 
             // Zeige das Canvas an
             scoreCanvas.gameObject.SetActive(true);
