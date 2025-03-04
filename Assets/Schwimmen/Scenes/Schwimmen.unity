@@ -1210,8 +1210,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initialMoveAmount: 0.5
   waterDeceleration: 0.05
-  minSpeed: 1
-  maxSpeed: 3
+  minSpeed: 3
+  maxSpeed: 6
   jumpForce: 2
   gameManager: {fileID: 151544289}
   swimmerID: 2
@@ -1441,8 +1441,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initialMoveAmount: 0.5
   waterDeceleration: 0.05
-  minSpeed: 1
-  maxSpeed: 3
+  minSpeed: 3
+  maxSpeed: 6
   jumpForce: 2
   gameManager: {fileID: 151544289}
   swimmerID: 1
@@ -4049,7 +4049,7 @@ MonoBehaviour:
   initialMoveAmount: 0.5
   waterDeceleration: 0.05
   minSpeed: 1
-  maxSpeed: 3
+  maxSpeed: 9
   jumpForce: 2
   gameManager: {fileID: 151544289}
   swimmerID: 5
@@ -7977,11 +7977,11 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Nach Ablauf des Countdowns klicken Sie auf eine beliebige Stelle auf dem
-    Bildschirm, um abzuspringen. Anschlie\xDFend tippen Sie abwechselnd auf die blauen
-    und gr\xFCnen Quadrate, um an Geschwindigkeit zu gewinnen. Achten Sie darauf,
-    nur die richtigen Quadrate zu treffen \u2013 ein falscher Klick verringert Ihre
-    Geschwindigkeit.\n\nDr\xFCcken Sie die Leertaste um zu starten"
+  m_Text: "Klicken Sie auf eine beliebige Stelle auf dem Bildschirm, um im richtigen
+    Moment abzuspringen. Anschlie\xDFend tippen Sie abwechselnd auf die blauen und
+    gr\xFCnen Quadrate, um an Geschwindigkeit zu gewinnen. Achten Sie darauf, nur
+    die richtigen Quadrate zu treffen \u2013 ein falscher Klick verringert Ihre Geschwindigkeit.\n\nDr\xFCcken
+    Sie die Leertaste um zu starten"
 --- !u!222 &1504883790
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -10455,8 +10455,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initialMoveAmount: 0.5
   waterDeceleration: 0.05
-  minSpeed: 1
-  maxSpeed: 3
+  minSpeed: 3
+  maxSpeed: 6
   jumpForce: 2
   gameManager: {fileID: 151544289}
   swimmerID: 3
