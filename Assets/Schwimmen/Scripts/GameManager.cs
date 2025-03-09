@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
     // Zwei Arrays: links für die Bahn-/Schwimmerangaben, rechts für die Zeiten
     public Text[] laneResultTexts; 
     public Text[] timeResultTexts;
+    // UI-Text für den Highscore
+    public Text highscoreText;
 
     // Dictionaries für Start- und Endzeiten (jeweils relativ zur Rennstartzeit)
     private Dictionary<int, float> swimmerTimes = new Dictionary<int, float>();
@@ -40,9 +42,22 @@ public class GameManager : MonoBehaviour
     // Hier trägst du deine Spieler-ID ein – z. B. 4 (das ist dann deine Bahn)
     public int playerSwimmerID = 4;
 
+    // Highscore – hier wird die beste (niedrigste) Zeit des Spielers gespeichert
+    private float highscore;
+
     void Start()
     {
-        
+        // Lade den Highscore aus PlayerPrefs (falls vorhanden)
+        if (PlayerPrefs.HasKey("Highscore"))
+        {
+            highscore = PlayerPrefs.GetFloat("Highscore");
+        }
+        else
+        {
+            // Falls noch kein Highscore existiert, setzen wir einen sehr hohen Standardwert.
+            highscore = float.MaxValue;
+        }
+        UpdateHighscoreText();
 
         if (startCanvas != null)
             startCanvas.SetActive(true);
@@ -64,7 +79,6 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && !gameStarted)
         {
             StartGame();
-            
         }
 
         if (raceOngoing)
@@ -95,7 +109,6 @@ public class GameManager : MonoBehaviour
     private IEnumerator StartRace()
     {
         timerBackground.gameObject.SetActive(true);
-
 
         int countdown = 3;
         while (countdown > 0)
@@ -129,27 +142,38 @@ public class GameManager : MonoBehaviour
 
     // Beim Ziel wird die Endzeit relativ zum Start gemessen (T2 - T1)
     public void StopTimer(int swimmerID)
-{
-    if (!swimmerTimes.ContainsKey(swimmerID))
     {
-        // Messe die Rennzeit ab dem offiziellen Start (raceStartTime)
-        float elapsedTime = Time.time - raceStartTime;
-        swimmerTimes[swimmerID] = elapsedTime;
-        DisplayResults();
-        Debug.Log("Schwimmer " + swimmerID + " finish time: " + elapsedTime + " s");
-
-        if (swimmerTimes.Count == totalSwimmers)
+        if (!swimmerTimes.ContainsKey(swimmerID))
         {
-            ShowEndCanvas();
+            // Messe die Rennzeit ab dem offiziellen Start (raceStartTime)
+            float elapsedTime = Time.time - raceStartTime;
+            swimmerTimes[swimmerID] = elapsedTime;
+            DisplayResults();
+            Debug.Log("Schwimmer " + swimmerID + " finish time: " + elapsedTime + " s");
+
+            // Falls dieser Schwimmer der Spieler ist, Highscore aktualisieren
+            if (swimmerID == playerSwimmerID)
+            {
+                if (elapsedTime < highscore)
+                {
+                    highscore = elapsedTime;
+                    SaveHighscore(highscore);
+                    UpdateHighscoreText();
+                    Debug.Log("Neuer Highscore: " + highscore + " s");
+                }
+            }
+
+            if (swimmerTimes.Count == totalSwimmers)
+            {
+                ShowEndCanvas();
+            }
         }
     }
-}
-
 
     // Ergebnisse sortieren und in zwei Spalten anzeigen:
     // Linke Spalte: "Bahn X" (wo X die Schwimmer-ID ist)
     // Rechte Spalte: Zeit in s, evtl. mit Medaillen und Kennzeichnung (Du)
-  private void DisplayResults()
+    private void DisplayResults()
     {
         var sortedResults = swimmerTimes.OrderBy(x => x.Value).ToList();
 
@@ -157,18 +181,10 @@ public class GameManager : MonoBehaviour
         {
             if (i < sortedResults.Count)
             {
-                
-
-                // Falls dieser Schwimmer dein eigener ist, wird das markiert
                 string playerMark = "";
                 if (sortedResults[i].Key == playerSwimmerID)
                     playerMark = " (Du)";
-                // Linke Spalte: Zeigt direkt "Bahn [Schwimmer-ID]"
                 laneResultTexts[i].text = "Bahn " + sortedResults[i].Key.ToString() + playerMark;
-
-                
-
-                // Rechte Spalte: Zeit + Medaillen + ggf. (Du)
                 timeResultTexts[i].text = sortedResults[i].Value.ToString("F2") + " s";
             }
             else
@@ -198,5 +214,28 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene("Menü");
+    }
+
+    // Speichert den Highscore in den PlayerPrefs
+    private void SaveHighscore(float newHighscore)
+    {
+        PlayerPrefs.SetFloat("Highscore", newHighscore);
+        PlayerPrefs.Save();
+    }
+
+    // Aktualisiert den Highscore-Text in der UI
+    private void UpdateHighscoreText()
+    {
+        if (highscoreText != null)
+        {
+            if (highscore == float.MaxValue)
+            {
+                highscoreText.text = "Highscore: ---";
+            }
+            else
+            {
+                highscoreText.text = "Highscore: " + highscore.ToString("F2") + " s";
+            }
+        }
     }
 }
