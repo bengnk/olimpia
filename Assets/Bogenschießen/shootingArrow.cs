@@ -219,12 +219,15 @@ public class ArrowShoot : MonoBehaviour
 
 
         // Generiere zufällige Punktzahlen für 4 Gegner zwischen 23 und 30
+        int[] validScores = { 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 30 }; // Alle möglichen Summen
         int[] enemyScores = new int[4];
+
         for (int i = 0; i < 4; i++)
         {
-            enemyScores[i] = Random.Range(23, 31); // Gegnerpunkte zwischen 23 und 30
+            enemyScores[i] = validScores[Random.Range(0, validScores.Length)];
             Debug.Log("Gegner " + (i + 1) + " Punktestand: " + enemyScores[i]);
         }
+
 
         // Zeige die Punktzahl auf dem Canvas an, sowohl Spieler- als auch Gegnerpunkte
         scoreDisplay.ShowScore(totalScore, enemyScores);
