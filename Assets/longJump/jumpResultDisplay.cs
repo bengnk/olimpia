@@ -123,11 +123,7 @@ public class JumpResultDisplay : MonoBehaviour
                 }
             }
 
-            // Highscore prüfen und speichern
-            if (float.TryParse(playerDistance, out float playerScoreFinal))
-            {
-                CheckAndSaveHighscore(playerScoreFinal);  // Überprüfen und speichern, falls notwendig
-            }
+            CheckAndSaveHighscore(playerDistance);  // Überprüfen und speichern, falls notwendig
 
             // Nach 5 Sekunden das Canvas anzeigen
             Invoke("DisplayCanvas", 5f);
