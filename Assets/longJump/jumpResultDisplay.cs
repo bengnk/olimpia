@@ -36,9 +36,6 @@ public class JumpResultDisplay : MonoBehaviour
         // Verknüpfe die Button-Events mit den Methoden
         restartButton.onClick.AddListener(RestartGame);
         mainMenuButton.onClick.AddListener(GoToMainMenu);
-
-        // Setze den Highscore zu Beginn
-        DisplayHighscore();
     }
 
     // Zeige die Sprungweite des Spielers und die Sprungweiten der Gegner an
@@ -123,7 +120,7 @@ public class JumpResultDisplay : MonoBehaviour
                 }
             }
 
-            CheckAndSaveHighscore(playerDistance);  // Überprüfen und speichern, falls notwendig
+            CheckAndSaveHighscore(float.Parse(playerDistance));  // Überprüfen und speichern, falls notwendig
 
             // Nach 5 Sekunden das Canvas anzeigen
             Invoke("DisplayCanvas", 5f);
@@ -139,15 +136,15 @@ public class JumpResultDisplay : MonoBehaviour
         {
             PlayerPrefs.SetFloat(highscoreKey, newScore);  // Neuer Highscore speichern
             PlayerPrefs.Save();  // Speichern erzwingen
+            DisplayHighscore(newScore);
             Debug.Log("Neuer Highscore: " + newScore);
         }
     }
 
     // Methode, um den Highscore anzuzeigen
-    private void DisplayHighscore()
+    private void DisplayHighscore(float score)
     {
-        float highscore = PlayerPrefs.GetFloat(highscoreKey, 0f);  // Highscore laden
-        highscoreText.text = "Highscore: " + highscore.ToString("F2") + " m";  // Highscore im Textfeld anzeigen
+        highscoreText.text = "Highscore: " + score + " m";  // Highscore im Textfeld anzeigen
     }
 
     // Methode, um das Canvas anzuzeigen
