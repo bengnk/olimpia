@@ -129,10 +129,12 @@ public class JumpResultDisplay : MonoBehaviour
 
         if (newScore > currentHighscore)
         {
-            PlayerPrefs.SetFloat(highscoreKey, newScore);  // Neuer Highscore speichern
-            PlayerPrefs.Save();  // Speichern erzwingen
+            PlayerPrefs.SetFloat(highscoreKey, newScore);
+            PlayerPrefs.Save();
             DisplayHighscore(newScore);
             Debug.Log("Neuer Highscore: " + newScore);
+        } else {
+            DisplayHighscore(currentHighscore);
         }
     }
 
