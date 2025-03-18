@@ -170,30 +170,54 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // Ergebnisse sortieren und in zwei Spalten anzeigen:
-    // Linke Spalte: "Bahn X" (wo X die Schwimmer-ID ist)
-    // Rechte Spalte: Zeit in s, evtl. mit Medaillen und Kennzeichnung (Du)
-    private void DisplayResults()
-    {
-        var sortedResults = swimmerTimes.OrderBy(x => x.Value).ToList();
 
-        for (int i = 0; i < laneResultTexts.Length; i++)
+private void DisplayResults()
+{
+    var sortedResults = swimmerTimes.OrderBy(x => x.Value).ToList();
+
+    for (int i = 0; i < laneResultTexts.Length; i++)
+    {
+        if (i < sortedResults.Count)
         {
-            if (i < sortedResults.Count)
+            int lane = sortedResults[i].Key;
+            string displayName = "";
+
+            // Namen je nach Bahnzuordnung: Bei Bahn 4 bleibt es "du"
+            switch (lane)
             {
-                string playerMark = "";
-                if (sortedResults[i].Key == playerSwimmerID)
-                    playerMark = " (Du)";
-                laneResultTexts[i].text = "Bahn " + sortedResults[i].Key.ToString() + playerMark;
-                timeResultTexts[i].text = sortedResults[i].Value.ToString("F2") + " s";
+                case 1:
+                    displayName = "Michael Phelps (Bahn 1)";
+                    break;
+                case 2:
+                    displayName = "Nemo (Bahn 2)";
+                    break;
+                case 3:
+                    displayName = "Ariel die Meerjungfrau (Bahn 3)";
+                    break;
+                case 4:
+                    // Hier bleibt es ausschließlich "du"
+                    displayName = "Du";
+                    break;
+                case 5:
+                    displayName = "Spongebob (Bahn 5)";
+                    break;
+                default:
+                    displayName = "Bahn " + lane.ToString();
+                    break;
             }
-            else
-            {
-                laneResultTexts[i].text = "";
-                timeResultTexts[i].text = "";
-            }
+
+            laneResultTexts[i].text = displayName;
+            timeResultTexts[i].text = sortedResults[i].Value.ToString("F2") + " s";
+        }
+        else
+        {
+            laneResultTexts[i].text = "";
+            timeResultTexts[i].text = "";
         }
     }
+}
+
+
 
     private void ShowEndCanvas()
     {
