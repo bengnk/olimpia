@@ -78,23 +78,20 @@ public class JumpResultDisplay : MonoBehaviour
             int count = 0;
             int count2 = 0;
             int tmp = 0;
+            List<string> longJumper = new List<string> { "Bugs Bunny", "Mike Powell", "Bob Beamon", "Malaika Mihambo" };
             foreach (float result in allResults)
             {
                 if (index < opponentResultTexts.Length)
                 {
-                    if (float.TryParse(playerDistance, out float playerDistanceFloat) && result == playerDistanceFloat && count == 0)
-                    {
+                    if (float.TryParse(playerDistance, out float playerDistanceFloat) && result == playerDistanceFloat && count == 0) {
                         opponentResultTexts[index].text = result.ToString("F2") + " m";
                         playerTexts[index].text = "Du";
                         count++; // damit nicht mehrfach Du angezeigt werden kann
-                    }
-                    else
-                    {
-                        tmp++;
+                    } else {
                         opponentResultTexts[index].text = result.ToString("F2") + " m";
-                        playerTexts[index].text = "Gegner " + tmp;
+                        playerTexts[index].text =  longJumper[tmp];
+                        tmp++;
                     }
-
                     index++;
                 }
             }
@@ -103,19 +100,17 @@ public class JumpResultDisplay : MonoBehaviour
             foreach (string foul in foulResults)
             {
                 if (index < opponentResultTexts.Length)
-                {
-                    if ((playerDistance == "Foul" || playerDistance == "0,00") && count2 == 0)
-                    {
+                {   
+                    if ((playerDistance == "Foul" || playerDistance == "0,00") && count2 == 0) {
                         playerTexts[index].text = "Du";
                         opponentResultTexts[index].text = "Foul";
                         count2++;
-                    }
-                    else
-                    {
-                        playerTexts[index].text = "Gegner " + index;
+                    } else {
+                        playerTexts[index].text = longJumper[tmp];
                         opponentResultTexts[index].text = "Foul";
+                        tmp++;    
                     }
-
+                    
                     index++;
                 }
             }
