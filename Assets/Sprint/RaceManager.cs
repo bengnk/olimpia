@@ -94,7 +94,7 @@ public class RaceManager : MonoBehaviour
         }
         else
         {
-            player1TimeText.text = "Bot Zeit: " + player1Time.ToString("F2") + "s";
+            player1TimeText.text = "Usain Bolt: " + player1Time.ToString("F2") + "s";
             player2TimeText.text = "Deine Zeit: " + player2Time.ToString("F2") + "s";
         }
 
